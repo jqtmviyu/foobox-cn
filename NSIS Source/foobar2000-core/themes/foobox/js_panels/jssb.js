@@ -95,12 +95,14 @@ ppt = {
 	headerBarHeight: 28,
 	enableTouchControl: window.GetProperty("_PROPERTY: Enable Scroll Touch Control", true),
 	botStampHeight: 48*zdpi,
-	default_botGridHeight: 30,
+	default_botGridHeight: 26,
 	botGridHeight: 0,
 	botTextRowHeight: 17*zdpi,
 	textLineHeight: 10*zdpi
 	//rawBitmap: false
 };
+
+var _showAllItem = ppt.showAllItem;
 
 cTouch = {
 	down: false,
@@ -948,6 +950,8 @@ oBrowser = function(name) {
 			this.marginSide = 0;
 			this.marginCover = 1;
 		};
+		if(this.groups.length < 2) ppt.showAllItem = 0;
+		else ppt.showAllItem = _showAllItem;
 		// Adjust Column 
 		this.totalColumns = Math.floor((this.w - this.marginLR * 2) / this.thumb_w);
 		if (this.totalColumns < 1) this.totalColumns = 1;
@@ -1290,13 +1294,13 @@ oBrowser = function(name) {
 				};
 			};
 		};
-
+		if (g < 2) ppt.showAllItem = 0;
+		else ppt.showAllItem = _showAllItem;
 		if (g > 0) {
 			// update last group properties
 			this.groups[g - 1].finalize(t, tr, pl);
-
 			// add 1st group ("ALL" item)
-			if (ppt.showAllItem && g > 1) {
+			if (ppt.showAllItem) {// && g > 1) {
 				this.groups.unshift(new oGroup(0, 0, null, null));
 				this.groups[0].finalize(t_all, tr_all, pl_all);
 			};
@@ -1378,7 +1382,7 @@ oBrowser = function(name) {
 		//window.NotifyOthers("JSSmoothBrowser->JSSmoothPlaylist:avoid_on_playlist_items_removed_callbacks_on_sendItemToPlaylist", true);
 
 		// parse stored tags
-		if (ppt.showAllItem && index == 0 && this.groups.length > 1) {
+		if (ppt.showAllItem && index == 0){// && this.groups.length > 1) {
 			var arr = null;
 		};
 		else {
@@ -1542,8 +1546,8 @@ oBrowser = function(name) {
 	this.init_swbtn = function(){
 		switch(ppt.tagMode){
 			case 1:
-			if (ppt.albumMode ==0) this.switch_btn = new button(images.sw_btn_n0, images.sw_btn_n0, images.sw_btn_n0, "切换至简单专辑模式");
-			else this.switch_btn = new button(images.sw_btn_n1, images.sw_btn_n1, images.sw_btn_n1, "切换至高级专辑模式");
+			if (ppt.albumMode ==0) this.switch_btn = new button(images.sw_btn_n1, images.sw_btn_n1, images.sw_btn_n1, "切换至简单专辑模式");
+			else this.switch_btn = new button(images.sw_btn_n0, images.sw_btn_n0, images.sw_btn_n0, "切换至高级专辑模式");
 			break;
 			case 2:
 			if (ppt.artistMode ==0) this.switch_btn = new button(images.sw_btn_n0, images.sw_btn_n0, images.sw_btn_n0, "切换至艺术家");
@@ -1561,10 +1565,10 @@ oBrowser = function(name) {
 		switch(ppt.tagMode){
 			case 1:
 			if (ppt.albumMode ==0) {
-				this.switch_btn.img = Array(images.sw_btn_n0, images.sw_btn_n0, images.sw_btn_n0);
+				this.switch_btn.img = Array(images.sw_btn_n1, images.sw_btn_n1, images.sw_btn_n1);
 				this.switch_btn.Tooltip.Text = "切换至简单专辑模式";
 			}else{
-				this.switch_btn.img = Array(images.sw_btn_n1, images.sw_btn_n1, images.sw_btn_n1);
+				this.switch_btn.img = Array(images.sw_btn_n0, images.sw_btn_n0, images.sw_btn_n0);
 				this.switch_btn.Tooltip.Text = "切换至高级专辑模式";
 			}
 			break;
@@ -1621,13 +1625,13 @@ oBrowser = function(name) {
 				if (ay >= (0 - this.rowHeight) && ay < this.y + this.h) { // if stamp visible, we have to draw it
 
 					// parse stored tags
-					if (!(ppt.showAllItem && i == 0 && total > 1)) {
+					if (!(ppt.showAllItem && i == 0)) {// && total > 1)) {
 						if (this.groups[i].groupkey.length > 0) {
 							var arr = this.groups[i].groupkey.split(" ^^ ");
 						};
 					};
 					// get cover
-					if (ppt.showAllItem && i == 0 && total > 1) {
+					if (ppt.showAllItem && i == 0) {// && total > 1) {
 						//if (ppt.rawBitmap) {
 						//	this.groups[i].cover_img = images.all.CreateRawBitmap();
 						//};
@@ -1685,7 +1689,7 @@ oBrowser = function(name) {
 							var im_h = coverWidth;
 						};
 						// save coords ALL cover image:
-						if (ppt.showAllItem && i == 0 && total > 1) {
+						if (ppt.showAllItem && i == 0) {// && total > 1) {
 							all_x = ax + Math.round((aw - im_w) / 2);
 							all_y = coverTop + coverWidth - im_h;
 							all_w = im_w;
@@ -1750,7 +1754,7 @@ oBrowser = function(name) {
 
 					if (ppt.panelMode == 1) { // panelMode = 1 (Art + bottom labels)
 						// draw text
-						if (ppt.showAllItem && i == 0 && total > 1) { // aggregate item ( [ALL] )
+						if (ppt.showAllItem && i == 0) {// && total > 1) { // aggregate item ( [ALL] )
 							try {
 								if (ppt.tagMode == 1) {
 									gr.gdiDrawText("所有项目", g_font_b, txt_color1, ax + Math.round((aw - coverWidth) / 2), (coverTop + 5 + coverWidth), coverWidth, ppt.botTextRowHeight, lt_txt);
@@ -1790,7 +1794,7 @@ oBrowser = function(name) {
 					};
 					else if (this.groups[i].cover_img) { // panelMode = 3 (Grid)
 						// draw text
-						if (ppt.showAllItem && i == 0 && total > 1) { // aggregate item ( [ALL] )
+						if (ppt.showAllItem && i == 0) {// && total > 1) { // aggregate item ( [ALL] )
 							// nothing
 						};
 						else {
@@ -1856,7 +1860,7 @@ oBrowser = function(name) {
 
 			// fill ALL cover image with the 1st four cover art found
 			// get cover
-			if (all_x > -1 && ppt.showAllItem && g_start_ == 0 && total > 1) {
+			if (all_x > -1 && ppt.showAllItem && g_start_ == 0) {// && total > 1) {
 				var ii_w = Math.floor(all_w / 2);
 				var ii_h = Math.floor(all_h / 2);
 				var ii_x1 = all_x;
@@ -1899,7 +1903,7 @@ oBrowser = function(name) {
 			// draw top header bar 
 			if (ppt.showHeaderBar) {
 				var item_txt = new Array("", "张专辑", "位专辑艺术家", "位艺术家", "个流派", "个文件夹");
-				var nb_groups = (ppt.showAllItem && total > 1 ? total - 1 : total);
+				var nb_groups = (ppt.showAllItem/* && total > 1*/ ? total - 1 : total);
 				var _idx1 = (ppt.tagMode == 2 && ppt.artistMode);
 				var _idx2 = (ppt.tagMode == 3 ? (ppt.genre_dir ? 2 : 1) : 0);
 				var boxText = nb_groups + " " +  item_txt[ppt.tagMode+_idx1+_idx2] + "  ";
@@ -2273,7 +2277,7 @@ oBrowser = function(name) {
 		_menu2.AppendMenuItem(MF_STRING, 910, "标题栏");
 		_menu2.CheckMenuItem(910, ppt.showHeaderBar);
 		_menu2.AppendMenuItem(MF_STRING, 911, "合计项目");
-		_menu2.CheckMenuItem(911, ppt.showAllItem);
+		_menu2.CheckMenuItem(911, _showAllItem);
 		_menu2.AppendMenuSeparator();
 		_menu2.AppendMenuItem(MF_STRING, 912, "重置磁盘缓存");
 		_menu2.AppendTo(_menu, MF_STRING, "显示");
@@ -2373,8 +2377,10 @@ oBrowser = function(name) {
 			get_metrics();
 			break;
 		case (idx == 911):
-			ppt.showAllItem = !ppt.showAllItem;
-			window.SetProperty("_PROPERTY: Show ALL item", ppt.showAllItem);
+			_showAllItem = !_showAllItem;
+			if(brw.groups.length < 2) ppt.showAllItem = 0;
+			else ppt.showAllItem = _showAllItem;
+			window.SetProperty("_PROPERTY: Show ALL item", _showAllItem);
 			brw.populate(false);
 			break;
 		case (idx == 912):
@@ -3070,7 +3076,7 @@ function on_mouse_leave() {
 function get_metrics() {
 	ppt.thumbnailWidthMin = Math.floor(ppt.default_thumbnailWidthMin * zdpi);
 	if(ppt.tagMode == 1 && ppt.albumMode == 0){
-	 ppt.botGridHeight = Math.floor((ppt.default_botGridHeight + 12) * zdpi);
+	 ppt.botGridHeight = Math.floor((ppt.default_botGridHeight + 14) * zdpi);
 	}
 	else ppt.botGridHeight = Math.floor(ppt.default_botGridHeight * zdpi);
 	

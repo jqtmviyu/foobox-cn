@@ -308,7 +308,7 @@ function on_mouse_rbtn_up(x, y) {
 		rMenu.AppendMenuSeparator();
 		rMenu.AppendMenuItem(MF_STRING, 1, "激活正在播放项目");
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
-		if(fso.FileExists(fb.FoobarPath +"assemblies\\MusicTag\\MusicTag.exe") && (tracktype < 2) && (follow_cursor || !fb.IsPlaying))
+		if(fso.FileExists(fb.FoobarPath +"assemblies\\MusicTag\\MusicTag.exe") && (tracktype < 2) && (follow_cursor || !fb.IsPlaying) && g_metadb)
 			rMenu.AppendMenuItem(MF_STRING, 4, "用MusicTag编辑");
 		rMenu.AppendMenuItem(MF_STRING, 2, "属性");
 		rMenu.AppendMenuSeparator();
@@ -389,6 +389,7 @@ function on_item_focus_change() {
 }
 
 function on_metadb_changed() {
+	if(!g_metadb) return;
 	rating = g_tfo.rating.EvalWithMetadb(g_metadb);
 	if (rating == "?") {
 		rating = 0;
@@ -408,8 +409,10 @@ function on_metadb_changed() {
 function on_playback_new_track(metadb) {
 	on_item_focus_change();
 	if(random_color != 0) window.RepaintRect(0, wh - spec_h, ww, spec_h);
-	var track_len = fb.TitleFormat("%length%").EvalWithMetadb(g_metadb);
-	window.NotifyOthers("g_track_len", track_len);
+	if(g_metadb){
+		var track_len = fb.TitleFormat("%length%").EvalWithMetadb(g_metadb);
+		window.NotifyOthers("g_track_len", track_len);
+	}
 }
 
 function on_playback_stop(metadb) {
