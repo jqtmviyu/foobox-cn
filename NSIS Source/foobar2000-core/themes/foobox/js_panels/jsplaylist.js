@@ -108,7 +108,7 @@ var star_arr = new Array(1*zdpi, 5.5*zdpi, 4.05*zdpi, 8.8*zdpi, 3.5*zdpi, 13*zdp
 
 // WSH statistics globals
 var tf_path = fb.TitleFormat("$left(%_path_raw%,4)");
-var g_path, g_track_type;
+var g_track_type;
 var repeat_pls = window.GetProperty("PLAYBACK: Repeat playlists", false);
 var dl_prefix_folder = window.GetProperty("DOWNLOAD: prefix output folder", "B:\\Download");
 var dl_skip = window.GetProperty("DOWNLOAD: auto skip", true);
@@ -2060,12 +2060,12 @@ function on_playlist_items_selection_change() {
 	full_repaint();
 };
 
-function on_selection_changed(metadb) {
-	if (metadb) {
-		g_path = tf_path.EvalWithMetadb(metadb);
-		g_track_type = TrackType(g_path);
-	};
-};
+//function on_selection_changed(metadb) {
+//	if (metadb) {
+//		g_path = tf_path.EvalWithMetadb(metadb);
+//		g_track_type = TrackType(g_path);
+//	};
+//};
 
 function on_item_focus_change(playlist, from, to) {
 	if (!g_avoid_on_item_focus_change) {
@@ -2073,10 +2073,10 @@ function on_item_focus_change(playlist, from, to) {
 		if (g_metadb) {
 			on_metadb_changed();
 		};
-		else {
-			g_path = "";
-			g_track_type = "";
-		};
+		//else {
+			//g_path = "";
+		//	g_track_type = "";
+		//};
 		if (playlist == p.list.playlist) {
 			p.list.focusedTrackId = to;
 			plman.SetActivePlaylistContext();
@@ -2108,10 +2108,10 @@ function on_item_focus_change(playlist, from, to) {
 };
 
 function on_metadb_changed(metadb_or_metadbs, fromhook) {
-	if (g_metadb) {
-		g_path = tf_path.EvalWithMetadb(g_metadb);
-		g_track_type = TrackType(g_path);
-	};
+	//if (g_metadb) {
+	//	g_path = tf_path.EvalWithMetadb(g_metadb);
+	//	g_track_type = TrackType(g_path);
+	//};
 	// rebuild list to draw
 	p.list.setItems(false);
 	full_repaint();
@@ -2700,13 +2700,12 @@ function on_playback_starting(cmd, is_paused) {
 };
 
 function on_playback_new_track(metadb) {
-	// update g_metadb and g_track_type because of on_playback_time uses
-	//on_item_focus_change();
-	g_metadb = metadb;
-	if (g_metadb) {
-		g_path = tf_path.EvalWithMetadb(g_metadb);
-		g_track_type = TrackType(g_path);
-	};
+	//// update g_metadb and g_track_type because of on_playback_time uses
+	//g_metadb = metadb;
+	//if (g_metadb) {
+	//	g_path = tf_path.EvalWithMetadb(g_metadb);
+	//	g_track_type = TrackType(g_path);
+	//};
 	full_repaint();
 };
 

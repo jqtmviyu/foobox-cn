@@ -1176,6 +1176,8 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 					if (!utils.IsKeyPressed(VK_SHIFT)) {
 						//var g_path = tf_path.EvalWithMetadb(fb.GetFocusItem());
 						//g_track_type = TrackType(g_path);
+						g_track_type = TrackType(fb.GetFocusItem().rawpath.substring(0, 4));
+						if(g_track_type < 2) g_track_type = -1;
 						p.list.contextMenu(x, y, this.track_index, this.row_index);
 					};
 				};
@@ -2667,8 +2669,13 @@ oList = function(object_name, playlist) {
 				break;
 			case (ret == 1012):
 				var WshShell = new ActiveXObject("WScript.Shell");
-				var obj_file = fb.Titleformat("%path%").EvalWithMetadb(fb.GetFocusItem());
-				WshShell.Run("\"" + fb.FoobarPath + "assemblies\\MusicTag\\MusicTag.exe" + "\" " + "\"" + obj_file + "\"", 5);
+				if (g_track_type > -1) {
+					var obj_file = fb.Titleformat("%path%").EvalWithMetadb(fb.GetFocusItem());
+					WshShell.Run("\"" + fb.FoobarPath + "assemblies\\MusicTag\\MusicTag.exe" + "\" " + "\"" + obj_file + "\"", 5);
+				} else{
+					var obj_file = fb.Titleformat("$directory_path(%path%)").EvalWithMetadb(fb.GetFocusItem());
+					WshShell.Run("\"" + fb.FoobarPath + "assemblies\\MusicTag\\MusicTag.exe" + "\" " + "\"" + obj_file + "\"", 5);
+				}
 				break;
 			case (ret == 1013):
 				if (!fso.FolderExists(dl_prefix_folder)) {

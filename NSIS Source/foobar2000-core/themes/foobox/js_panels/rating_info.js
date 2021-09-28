@@ -307,9 +307,9 @@ function on_mouse_rbtn_up(x, y) {
 		rMenu.CheckMenuItem(3, is_mood ? 1 : 0);
 		rMenu.AppendMenuSeparator();
 		rMenu.AppendMenuItem(MF_STRING, 1, "激活正在播放项目");
-		var fso = new ActiveXObject("Scripting.FileSystemObject");
-		if(fso.FileExists(fb.FoobarPath +"assemblies\\MusicTag\\MusicTag.exe") && (tracktype < 2) && (follow_cursor || !fb.IsPlaying) && g_metadb)
-			rMenu.AppendMenuItem(MF_STRING, 4, "用MusicTag编辑");
+		//var fso = new ActiveXObject("Scripting.FileSystemObject");
+		//if(fso.FileExists(fb.FoobarPath +"assemblies\\MusicTag\\MusicTag.exe") && (tracktype < 2) && (follow_cursor || !fb.IsPlaying) && g_metadb)
+		//	rMenu.AppendMenuItem(MF_STRING, 4, "用MusicTag编辑");
 		rMenu.AppendMenuItem(MF_STRING, 2, "属性");
 		rMenu.AppendMenuSeparator();
 		rMenu.AppendMenuItem(MF_STRING, 5, "面板属性");
@@ -330,11 +330,11 @@ function on_mouse_rbtn_up(x, y) {
 			on_size();
 			window.RepaintRect(0, top_padding, ww, top_padding + mood_h);
 			break;
-		case 4:
-			var WshShell = new ActiveXObject("WScript.Shell");
-			var obj_file = fb.Titleformat("%path%").EvalWithMetadb(g_metadb);
-			WshShell.Run("\"" + fb.FoobarPath + "assemblies\\MusicTag\\MusicTag.exe" + "\" " + "\"" + obj_file + "\"", 5);
-			break;
+		//case 4:
+		//	var WshShell = new ActiveXObject("WScript.Shell");
+		//	var obj_file = fb.Titleformat("%path%").EvalWithMetadb(g_metadb);
+		//	WshShell.Run("\"" + fb.FoobarPath + "assemblies\\MusicTag\\MusicTag.exe" + "\" " + "\"" + obj_file + "\"", 5);
+		//	break;
 		case 5:
 			window.ShowProperties();
 			break;
