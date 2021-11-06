@@ -1911,7 +1911,7 @@ oPage = function(id, objectName, label, nbrows) {
 			this.elements.push(new oTextBox(6, txtbox_x + 30, Math.ceil(cSettings.topBarHeight + rh * 10.25), oTextBox_4, cHeaderBar.height, "预设下载目录，自定义时请确保该路径有效（需提前创建），否则更改将无效", dl_prefix_folder, "settings_textboxes_action", this.id));
 			this.elements.push(new oTextBox(7, txtbox_x + 30, Math.ceil(cSettings.topBarHeight + rh * 12.25), oTextBox_4, cHeaderBar.height, "下载的音频命名格式", dl_rename_by, "settings_textboxes_action", this.id));
 			this.elements.push(new oCheckBox(8, 20, cSettings.topBarHeight + rh * 15.25, "顺序播放时自动播放下一个播放列表 (遇到空列表停止)", "repeat_pls", "settings_checkboxes_action", this.id));
-			this.elements.push(new oCheckBox(9, 20, cSettings.topBarHeight + rh * 16.25, "对非网络播放列表禁用底部工具栏", "properties.disableToolbar", "settings_checkboxes_action", this.id));
+			this.elements.push(new oCheckBox(9, 20, cSettings.topBarHeight + rh * 16.25, "禁用底部工具栏，仅下载时激活", "properties.disableToolbar", "settings_checkboxes_action", this.id));
 			break;
 		case 1:
 			// Columns

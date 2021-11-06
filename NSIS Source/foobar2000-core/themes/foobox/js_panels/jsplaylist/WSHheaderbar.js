@@ -791,7 +791,7 @@ oHeaderBar = function() {
 		_groups.AppendMenuItem(MF_STRING, 18, "启用分组");
 		_groups.CheckMenuItem(18, properties.showgroupheaders);
 		if (properties.showgroupheaders) {
-			_groups.AppendMenuItem(MF_STRING, 17, "网络播放列表禁止分组");
+			_groups.AppendMenuItem(MF_STRING, 17, "电台列表禁止分组");
 			_groups.CheckMenuItem(17, properties.NetDisableGroup);
 			_groups.AppendMenuItem(MF_STRING, 19, "启用播放列表过滤");
 			_groups.CheckMenuItem(19, properties.enablePlaylistFilter);

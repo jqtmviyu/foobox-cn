@@ -2715,6 +2715,7 @@ oList = function(object_name, playlist) {
 						}
 					}
 				};
+				
 				if(!toolbar.dl_timer){
 					toolbar.dl_timer = window.SetInterval(function(){
 						if(p.list.dlitems.length > 0){
@@ -2755,6 +2756,7 @@ oList = function(object_name, playlist) {
 									dl_avoid_flush = false;
 								}
 							}
+							toolbar.disabled = false;
 							toolbar.dlmode = true;
 							toolbar.repaint_dl();
 						} else {

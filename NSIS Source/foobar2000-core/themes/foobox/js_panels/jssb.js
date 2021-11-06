@@ -31,6 +31,7 @@ _TFsorting[2] = "%artist% | $if(%album%,%date%,'9999') | %album% | %discnumber% 
 _TFsorting[3] = "%genre% | %album artist% | $if(%album%,%date%,'9999') | %album% | %discnumber% | %tracknumber% | %title%";
 _TFsorting[4] = "$directory_path(%path%) | %album artist% | $if(%album%,%date%,'9999') | %album% | %discnumber% | %tracknumber% | %title%";
 var boxText_len = 0;
+var albumsource = 0;
 
 images = {
 	path: fb.FoobarPath + "themes\\foobox\\images\\",
@@ -2202,7 +2203,7 @@ oBrowser = function(name) {
 			case 898:
 				var index = DLItems.length;
 				DLItems.push(new oDLItem(index, ppt.tagMode, albumIndex));
-				SingleDownload(DLItems[index]);
+				SingleDownload(DLItems[index], 0);
 				break;
 			case 899:
 				var list_g = "";
@@ -2685,7 +2686,7 @@ function on_paint(gr) {
 	}
 };
 
-function SingleDownload(obj){
+function SingleDownload(obj, alb_source){
 	var savepath;
 	if(obj.type == 1){
 		if(ppt.albumMode == 0){
@@ -2709,7 +2710,7 @@ function SingleDownload(obj){
 			}
 			else savepath = fb.TitleFormat(album_cover_dir).EvalWithMetadb(brw.groups[obj.groupIndex].metadb);
 		} else savepath =  album_cover_dir;
-		search_album(obj.idx, til, art, alb, savepath, filename);
+		search_album(obj.idx, til, art, alb, savepath, filename, alb_source);
 	} else{
 		var down_art = brw.groups[obj.groupIndex].groupkey;
 		var art = down_art.replace(/(\\|:|\*|\?|"|<|>|\/|\|)/g, "");
@@ -2747,12 +2748,12 @@ function on_http_ex_run_status(info){
 			}
 			else var info2 = new Array(DLItems[info.ID].type, DL_metadb);
 			window.NotifyOthers("refresh cover", info2);
-			insertQueue();
+			insertQueue(albumsource);
 		}
 	}
 }
 
-function insertQueue(){
+function insertQueue(alb_source){
 	var all_done = true;
 	for (var i = 0; i < DLItems.length; i++) {
 		if(DLItems[i].downloaded == 0) {
@@ -2767,7 +2768,7 @@ function insertQueue(){
 			if(DLQueue.length > 0){
 				for (var i = 0; i < k; i++) {
 					DLItems.push(new oDLItem(i, ppt.tagMode, DLQueue[i]));
-					SingleDownload(DLItems[i]);
+					SingleDownload(DLItems[i], alb_source);
 				}
 				ppt.dl_scrlock = true;
 				var info = new Array(ppt.dl_scrlock, ppt.tagMode);
@@ -2885,16 +2886,44 @@ function on_mouse_lbtn_up(x, y) {
 				brw.reset_swbtn();
 			}
 			if (ppt.tagMode < 3 && brw.dl_btn.checkstate("up", x, y) == ButtonStates.hover) {
-				DLItems = [];
-				DLQueue =[];
-				var k = 0;
-				for (i = (ppt.showAllItem ? 1 : 0); i < brw.groups.length; i++) {
-					if(brw.groups[i].cover_type == 0){
-						if(k < 2) {
-							DLItems.push(new oDLItem(k, ppt.tagMode, i));
-							SingleDownload(DLItems[k]);
-						}else DLQueue.push(i);
-						k++;
+				if(ppt.tagMode == 1){
+					var _menu = window.CreatePopupMenu();
+					_menu.AppendMenuItem(MF_STRING, 20, "全部 (优先iTunes)");
+					_menu.AppendMenuSeparator();
+					_menu.AppendMenuItem(MF_STRING, 21, "网易云");
+					_menu.AppendMenuItem(MF_STRING, 22, "iTunes");
+				
+					idx = _menu.TrackPopupMenu(cFilterBox.x + cFilterBox.w + Math.round(22 * zdpi) + 5, cSwitchBtn.y + 12 * zdpi + 12);
+					_menu.Dispose();
+					switch (true) {
+						case (idx >= 20 && idx <= 22):
+						DLItems = [];
+						DLQueue =[];
+						albumsource = idx - 20;
+						var k = 0;
+						for (i = (ppt.showAllItem ? 1 : 0); i < brw.groups.length; i++) {
+							if(brw.groups[i].cover_type == 0){
+								if(k < 2) {
+									DLItems.push(new oDLItem(k, ppt.tagMode, i));
+									SingleDownload(DLItems[k], albumsource);
+								}else DLQueue.push(i);
+								k++;
+							}
+						}
+						break;
+					}
+				} else {
+					DLItems = [];
+					DLQueue =[];
+					var k = 0;
+					for (i = (ppt.showAllItem ? 1 : 0); i < brw.groups.length; i++) {
+						if(brw.groups[i].cover_type == 0){
+							if(k < 2) {
+								DLItems.push(new oDLItem(k, ppt.tagMode, i));
+								SingleDownload(DLItems[k]);
+							}else DLQueue.push(i);
+							k++;
+						}
 					}
 				}
 			}
@@ -3165,7 +3194,7 @@ function get_images() {
 	gb.FillRoundRect(10*zdpi+2,x5+2, 10*zdpi-4,10*zdpi-4, x5-2,x5-2, RGBA(255, 255, 255, 180));
 	images.sw_btn_n1.ReleaseGraphics(gb);
 	
-	var points = Array(10*zdpi,4*zdpi, 14*zdpi,4*zdpi, 14*zdpi,9*zdpi, 17*zdpi,9*zdpi, 12*zdpi,13.5*zdpi, 7*zdpi,9*zdpi, 10*zdpi,9*zdpi);
+	var points = Array(10*zdpi,4*zdpi, 14*zdpi,4*zdpi, 14*zdpi,8*zdpi, 17*zdpi,8*zdpi, 12*zdpi,13.5*zdpi, 7*zdpi,8*zdpi, 10*zdpi,8*zdpi);
 	col_2 =g_btn_color2 & 0xccffffff;
 	images.down_all = gdi.CreateImage(cSwitchBtn.w, cSwitchBtn.h);
 	gb = images.down_all.GetGraphics();
@@ -3868,7 +3897,7 @@ function on_notify_data(name, info) {
 		if(group_idx != -1){
 			var index = DLItems.length;
 			DLItems.push(new oDLItem(index, ppt.tagMode, group_idx));
-			SingleDownload(DLItems[index]);
+			SingleDownload(DLItems[index], 0);
 			if(dlmode == 3) {
 				group_idx = -1;
 				dlmode -= ppt.tagMode;
@@ -3889,7 +3918,7 @@ function on_notify_data(name, info) {
 					}
 					else savepath = fb.TitleFormat(album_cover_dir).EvalWithMetadb(DL_metadb);
 				} else savepath =  album_cover_dir;
-				search_album(index, til, art, alb, savepath, filename);
+				search_album(index, til, art, alb, savepath, filename, 0);
 			}
 			if(dlmode != 1){
 				var index = DLItems.length;

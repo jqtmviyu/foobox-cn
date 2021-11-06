@@ -1669,7 +1669,7 @@ function playlistName2icon(name, auto_playlist, playing_playlist) {
 				else return images.icon_auto_pl_hl;
 			}else{
 				if (name.substr(0, 2) == "电台") return images.radios_icon_hl;
-				if (name.substr(0, 2) == "榜单") return images.board_icon_hl;
+				//if (name.substr(0, 2) == "榜单") return images.board_icon_hl;
 				else return images.icon_normal_pl_playing_hl;
 			}
 		} else {
@@ -1682,7 +1682,7 @@ function playlistName2icon(name, auto_playlist, playing_playlist) {
 				else return images.icon_auto_pl;
 			}else{
 				if (name.substr(0, 2) == "电台") return images.radios_icon;
-				if (name.substr(0, 2) == "榜单") return images.board_icon;
+				//if (name.substr(0, 2) == "榜单") return images.board_icon;
 				else return images.icon_normal_pl;
 			}
 		}
@@ -1697,7 +1697,7 @@ function playlistName2icon(name, auto_playlist, playing_playlist) {
 		else return images.icon_auto_pl;
 		} else{
 			if (name.substr(0, 2) == "电台") return images.radios_icon;
-			if (name.substr(0, 2) == "榜单") return images.board_icon;
+			//if (name.substr(0, 2) == "榜单") return images.board_icon;
 			if (playing_playlist) return images.icon_normal_pl_playing;
 			else return images.icon_normal_pl;
 		}
@@ -1888,7 +1888,7 @@ function get_images() {
 	gb.SetSmoothingMode(0);
 	images.mood_icon_hl.ReleaseGraphics(gb);
 	
-	images.board_icon_hl = gdi.CreateImage(imgw, imgh);
+	/*images.board_icon_hl = gdi.CreateImage(imgw, imgh);
 	gb = images.board_icon_hl.GetGraphics();
 	gb.SetSmoothingMode(2);
 	gb.DrawLine(_x7, _x18, _x11, _x12, 1, g_color_playing_txt);
@@ -1896,7 +1896,7 @@ function get_images() {
 	gb.DrawLine(_x13, _x17, _x18, _x10, 1, g_color_playing_txt);
 	gb.FillPolygon(g_color_playing_txt, 0, point_arr2);
 	gb.SetSmoothingMode(0);
-	images.board_icon_hl.ReleaseGraphics(gb);
+	images.board_icon_hl.ReleaseGraphics(gb);*/
 };
 
 function get_font() {
