@@ -1,7 +1,7 @@
 ﻿// Name "JS Smooth Browser"
 // Version "20151114-1630-340"
 // Author "Br3tt aka Falstaff >> http://br3tt.deviantart.com"
-// mod for foobox http://blog.sina.com.cn/dream7180
+// mod for foobox https://github.com/dream7180
 var fbx_set = [];
 window.NotifyOthers("get_fbx_set", fbx_set);
 var zdpi = fbx_set[9];
@@ -2890,8 +2890,8 @@ function on_mouse_lbtn_up(x, y) {
 					var _menu = window.CreatePopupMenu();
 					_menu.AppendMenuItem(MF_STRING, 20, "全部 (优先iTunes)");
 					_menu.AppendMenuSeparator();
-					_menu.AppendMenuItem(MF_STRING, 21, "网易云");
-					_menu.AppendMenuItem(MF_STRING, 22, "iTunes");
+					_menu.AppendMenuItem(MF_STRING, 21, "iTunes");
+					_menu.AppendMenuItem(MF_STRING, 22, "网易云");
 				
 					idx = _menu.TrackPopupMenu(cFilterBox.x + cFilterBox.w + Math.round(22 * zdpi) + 5, cSwitchBtn.y + 12 * zdpi + 12);
 					_menu.Dispose();

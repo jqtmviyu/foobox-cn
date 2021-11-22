@@ -1,7 +1,7 @@
 ﻿// Name "JS Smooth Playlist Manager"
 // Version "20151115-1000-151"
 // Author "Br3tt aka Falstaff >> http://br3tt.deviantart.com"
-//mod for foobox http://blog.sina.com.cn/dream7180
+//mod for foobox https://github.com/dream7180
 
 var fbx_set = [];
 window.NotifyOthers("get_fbx_set", fbx_set);

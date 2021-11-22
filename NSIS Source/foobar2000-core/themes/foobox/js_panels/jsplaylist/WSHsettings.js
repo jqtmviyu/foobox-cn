@@ -1,5 +1,5 @@
 ﻿// *****************************************************************************************************************************************
-// SETTINGS functions by Br3tt aka Falstaff (c)2015, mod for foobox http://blog.sina.com.cn/dream7180
+// SETTINGS functions by Br3tt aka Falstaff (c)2015, mod for foobox https://github.com/dream7180
 // *****************************************************************************************************************************************
 
 // Objects linked functions

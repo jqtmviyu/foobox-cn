@@ -1,4 +1,4 @@
-﻿//by Asion, mod for foobox http://blog.sina.com.cn/dream7180
+﻿//by Asion, mod for foobox https://github.com/dream7180
 ppt = {
 	source: window.GetProperty("Search Source", 1),
 	autosearch: window.GetProperty("Search Box: Auto-validation", false),

@@ -1,5 +1,5 @@
 ﻿// *****************************************************************************************************************************************
-// headerBar object by Br3tt aka Falstaff (c)2015, mod for foobox http://blog.sina.com.cn/dream7180
+// headerBar object by Br3tt aka Falstaff (c)2015, mod for foobox https://github.com/dream7180
 // *****************************************************************************************************************************************
 
 oBorder = function() {

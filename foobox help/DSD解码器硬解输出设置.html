@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>SACD/DSD 解码器硬解输出设置</title>
+<style type="text/css">
+body
+{
+padding-left:20px;
+padding-top:10px;
+padding-right:20px;
+padding-bottom:20px;
+}
+p{
+font-family: Tahoma, Verdana, 微软雅黑, Arial,sans-serif;
+font-size: 10pt;
+}
+</style>
+</head>
+<body>
+<p align="center"><font size="+1", style="font-weight:bold;">SACD/DSD 解码器硬解输出设置</font></p>
+<hr>
+<p>如果您有SACD/DSD解码器硬件及音源，安装时选上SACD/DSD相关解码和输出组件。<br /></font></p>
+<p>
+<p><font color="#0d7d0f" style="font-weight:bold;">【DoP 模式(DSD64、DSD128)按以下方法设置】</font></p>
+<p>
+1. 打开“参数选项”；<br />
+2. “播放”->“输出”页面->“设备”，选择“<ASIO 或 WASAPI> : <DAC 解码器>”(例如：ASIO : USB DAC)；<br />
+4. “SACD” 页面 ->“输出(每个设备)” ->“类型”，改成 DSD 或 DSD+PCM，然后点“应用”；<br />
+5. 然后确定或应用即可。<br />
+</p><br />
+<p><font color="#0d7d0f" style="font-weight:bold;">【DSD128 以上需用 Native 模式，按以下方法设置】</font></p>
+<p>
+1.打开“参数选项”；<br />
+2.“播放”->“输出” 页面->“设备”，选择“ASIO : DSD 转码器 (DoP/Native)”，然后点“应用”；<br />
+3.“播放”->“输出”->“ASIO” 页面，双击“DSD 转码器 (DoP/Native)”，“ASIO 设备”选择你的 DAC 解码器；<br />
+4.点击下方各个采样率右侧的“-”或“Dop”，选择“DSD”，然后点“确定”；<br />
+5.“SACD” 页面 ->“输出(每个设备)” ->“类型”，改成 DSD 或 DSD+PCM，然后点“应用”。<br />
+</p>
+<br />
+<p><font color="#0d7d0f" style="font-weight:bold;">【Native 模式另一个设置方式(适合有带ASIO+DSD输出插件)，按以下方法设置】</font></p>
+<p>
+1.打开“参数选项”；<br />
+2.“播放”->“输出” 页面->“设备”，选择“ASIO+DSD : <DAC 解码器>”(例如：ASIO+DSD : USB DAC)，然后点“应用”；<br />
+3.“SACD” 页面 ->“输出(每个设备)” ->“类型”，改成 DSD 或 DSD+PCM，然后点“应用”。<br />
+</p>
+<br />
+<p><font color="#0d7d0f" style="font-weight:bold;">【备注】</font></p>
+<p>
+如果你的 DAC 解码器 不支持多声道, 在 DSP 使用 "转换声道为立体声"。<br />
+如果你的 DAC 解码器 不支持 DSD 源采样率可以使用 DSP 处理器 插件。<br />
+使用 DSD 模式采样率可以达到 2822400, 5644800, 等等。并且电平表之类的插件将无显示。<br />
+</p>
+<br />
+<p></p>
+<p>---The End---</p>
+</body>
+</html>

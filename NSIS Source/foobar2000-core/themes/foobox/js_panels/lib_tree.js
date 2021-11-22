@@ -1,7 +1,7 @@
 ﻿// Name "Library Tree"
 // Version "1.3.9.2"
 // Author "Wilb, 汉化:alwaysbeta"
-// mod for foobox http://blog.sina.com.cn/dream7180
+// mod for foobox https://github.com/dream7180
 
 var fbx_set = [];
 window.NotifyOthers("get_fbx_set", fbx_set);

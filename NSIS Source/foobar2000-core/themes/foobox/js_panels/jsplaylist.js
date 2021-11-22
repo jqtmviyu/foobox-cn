@@ -1,7 +1,7 @@
 ﻿// Name "JSPlaylist"
 // Version "1.3.2"
 // Author "Br3tt aka Falstaff >> http://br3tt.deviantart.com"
-// mod for foobox http://blog.sina.com.cn/dream7180
+// mod for foobox https://github.com/dream7180
 var fbx_set = [];
 window.NotifyOthers("get_fbx_set", fbx_set);
 var zdpi = fbx_set[9];
@@ -24,7 +24,7 @@ var show_shadow = fbx_set[28];
 var sys_scrollbar = fbx_set[29];
 var col_by_cover = fbx_set[30];
 // GLOBALS
-var g_script_version = "6.1.6.7";
+var g_script_version = "6.1.6.8";
 var g_middle_clicked = false;
 var g_middle_click_timer = false;
 var g_queue_origin = -1;
