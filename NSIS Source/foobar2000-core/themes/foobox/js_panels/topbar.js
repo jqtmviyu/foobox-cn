@@ -75,7 +75,7 @@ var buttons = Array();
 var hbtn = false;
 var search_x = x_offset + imgw*(6+show_vis) + btn_space*(6+show_vis)  + spacer,
 	search_y = 11*zdpi, x_lib = 0;
-search_w = 150*zdpi, search_h = 22*zdpi;
+search_w = 175*zdpi, search_h = 22*zdpi;
 window.DlgCode = DLGC_WANTALLKEYS;
 get_font();
 get_colors();
@@ -93,7 +93,7 @@ function on_size() {
 	search_y = Math.min(wh/2, 11*zdpi);
 	BtnSetSize_onsize();
 	caption_n_full(ui_noborder);
-	g_searchbox.setSize(search_x, search_y, search_w, search_h);
+	g_searchbox.setSize(search_x, search_y, Math.min(search_w, Math.max(150, ww/5)), search_h);
 	g_searchbox.inputbox.visible = true;
 }
 
@@ -614,11 +614,11 @@ function init_buttons() {
 		menuman5.BuildMenu(child5, 901, 300);
 		menuman6.BuildMenu(child6, 1201, 100);
 
-		var fso = new ActiveXObject("Scripting.FileSystemObject");
-		if(fso.FileExists(fb.FoobarPath + "assemblies\\MusicTag\\MusicTag.exe")){
-			basemenu.AppendMenuSeparator();
-			basemenu.AppendMenuItem(MF_STRING, 1319, "MusicTag");
-		}
+		//var fso = new ActiveXObject("Scripting.FileSystemObject");
+		//if(fso.FileExists(fb.FoobarPath + "assemblies\\MusicTag\\MusicTag.exe")){
+		//	basemenu.AppendMenuSeparator();
+		//	basemenu.AppendMenuItem(MF_STRING, 1319, "MusicTag");
+		//}
 		basemenu.AppendMenuSeparator();
 		basemenu.AppendMenuItem(MF_STRING, 1311, "foobox 帮助");
 
@@ -652,10 +652,10 @@ function init_buttons() {
 		case (ret == 1311):
 			AboutFoobox();
 			break;
-		case (ret == 1319):
-			var WshShell = new ActiveXObject("WScript.Shell");
-			WshShell.Run("\"" + fb.FoobarPath + "assemblies\\MusicTag\\MusicTag.exe" + "\"", 5);
-			break;
+		//case (ret == 1319):
+		//	var WshShell = new ActiveXObject("WScript.Shell");
+		//	WshShell.Run("\"" + fb.FoobarPath + "assemblies\\MusicTag\\MusicTag.exe" + "\"", 5);
+		//	break;
 		}
 		buttons[3].Reset();
 		basemenu.Dispose();
@@ -742,8 +742,10 @@ function init_icons() {
 		c_normal = RGB(240, 240, 240),
 		c_hover = RGB(255, 255, 255),
 		c_down = RGB(200, 200, 200),
-		c_shadow_h = RGBA(0, 0, 0, 70),
-		c_shadow = RGBA(0, 0, 0, 90);
+		//c_shadow_h = RGBA(0, 0, 0, 90),
+		//c_shadow = RGBA(0, 0, 0, 110);
+		c_shadow_h = RGBA(255, 255, 255, 30),
+		c_shadow = RGBA(255, 255, 255, 20);
 		
 	try {
 		var _x5 = 5*zdpi, _x6 = 6*zdpi, _y6 = Math.floor(_x6), _x7 = 7*zdpi, _y7 = Math.floor(_x7), _x8 = 8*zdpi, _x9 = 9*zdpi, _y9 = Math.floor(_x9), _x10 = 10*zdpi, 
