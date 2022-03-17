@@ -1,29 +1,29 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
- lang="en" dir="ltr">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTM L 1.0 Strict//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh"
+ lang="zh" dir="ltr">
 <head>
-  <title>Title Formatting Syntax Reference</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>标题格式化语法参考</title>
   <link rel="stylesheet" type="text/css" href="titleformat_help.css" />
 </head>
 <body>
 <div class="dokuwiki export">
 <div class="toc">
-<div class="tocheader toctoggle" id="toc__header">Table of Contents</div>
+<div class="tocheader toctoggle" id="toc__header">目录</div>
 <div id="toc__inside">
 
 <ul class="toc">
 <li class="clear">
 
 <ul class="toc">
-<li class="level2"><div class="li"><span class="li"><a href="#title_formatting_syntax_reference" class="toc">Title Formatting Syntax Reference</a></span></div>
+<li class="level2"><div class="li"><span class="li"><a href="#title_formatting_syntax_reference" class="toc">标题格式化语法参考</a></span></div>
 <ul class="toc">
-<li class="level3"><div class="li"><span class="li"><a href="#generic_fields" class="toc">Generic fields</a></span></div></li>
-<li class="level3"><div class="li"><span class="li"><a href="#context-specific_fields" class="toc">Context-specific fields</a></span></div></li>
-<li class="level3"><div class="li"><span class="li"><a href="#functions" class="toc">Functions</a></span></div></li>
-<li class="level3"><div class="li"><span class="li"><a href="#variable_operations" class="toc">Variable operations</a></span></div></li>
-<li class="level3"><div class="li"><span class="li"><a href="#other" class="toc">Other</a></span></div></li></ul>
+<li class="level3"><div class="li"><span class="li"><a href="#generic_fields" class="toc">一般字段</a></span></div></li>
+<li class="level3"><div class="li"><span class="li"><a href="#context-specific_fields" class="toc">上下文字段</a></span></div></li>
+<li class="level3"><div class="li"><span class="li"><a href="#functions" class="toc">函数</a></span></div></li>
+<li class="level3"><div class="li"><span class="li"><a href="#variable_operations" class="toc">变量操作</a></span></div></li>
+<li class="level3"><div class="li"><span class="li"><a href="#other" class="toc">其它</a></span></div></li></ul>
 </li></ul>
 </li></ul>
 </div>
@@ -31,389 +31,564 @@
 
 
 
-<h2><a name="title_formatting_syntax_reference" id="title_formatting_syntax_reference">Title Formatting Syntax Reference</a></h2>
+<h2><a name="title_formatting_syntax_reference" id="title_formatting_syntax_reference">标题格式化语法参考</a></h2>
 <div class="level2">
 
 </div>
 <!-- SECTION "Title Formatting Syntax Reference" [1-46] -->
-<h3><a name="generic_fields" id="generic_fields">Generic fields</a></h3>
+<h3><a name="generic_fields" id="generic_fields">一般字段</a></h3>
 <div class="level3">
 <table class="inline">
 	<tr>
-		<th> Syntax </th><th> Description </th>
+		<th> 语法 </th>
+		<th> 解释 </th>
 	</tr>
 	<tr>
-		<td> %title% </td><td> Title of the track. If “title” metadata field is missing, file name is used instead. </td>
+		<td> %title% </td>
+		<td> 音轨标题。若元数据 “title” 不存在则使用文件名代替。</td>
 	</tr>
 	<tr>
-		<td> %artist% </td><td> Name of the artist of the track. Checks following metadata fields, in this order: “artist”, “album artist”, “composer”, “performer”. </td>
+		<td> %artist% </td>
+		<td> 艺术家名。依次检查下列元数据字段: “artist”, “album artist”, “composer”, “performer”。</td>
 	</tr>
 	<tr>
-		<td> %album artist% </td><td> Name of the artist of the album specified track belongs to. Checks following metadata fields, in this order: “album artist”, “artist”, “composer”, “performer”. The difference between this and %artist% is that %album artist% is intended for use where consistent value across entire album is needed even when per-track artists values vary. </td>
+		<td> %album artist% </td>
+		<td> 专辑艺术家名。依次检查下列元数据字段: “album artist”, “artist”, “composer”, “performer”。与 %artist% 不同的是 %album artist% 用于在整张专辑有不同艺术家的情况。</td>
 	</tr>
 	<tr>
-		<td> %track artist% </td><td> Name of the artist of the track; present only if %album artist% is different than %artist% for specific track. Intended for use together with %album artist%, to indicate track-specific artist info, e.g. ”%album artist% - %title%[ &#039;//&#039; %track artist%]” - in this case, last part will be displayed only when track-specific artist info is present. </td>
+		<td> %track artist% </td>
+		<td> 音轨艺术家名。仅在 %album artist% 与 %artist% 不同的时候有效。用于与 %album artist% 共同使用以指定专辑中的不同艺术家，例如: ”%album artist% - %title%[ &#039;//&#039; %track artist%]” ；在这种情况下，最后一部分内容仅会在有根据音轨指定的艺术家存在时才会显示。</td>
 	</tr>
 	<tr>
-		<td> %album% </td><td> Name of the album specified track belongs to. Checks following metadata fields, in this order: “album”, “venue”. </td>
+		<td> %album% </td>
+		<td> 专辑名。依次检查下列元数据字段:  “album”, “venue”. </td>
 	</tr>
 	<tr>
-		<td> %date% </td><td> Recording date (year) of the album specified track belongs to, using “date” metadata field. </td>
+		<td> %date% </td>
+		<td> 年代。使用元数据  “date” 字段。 </td>
 	</tr>
 	<tr>
-		<td> %genre% </td><td> Genre of the album specified track belongs to, using “genre” metadata field. </td>
+		<td> %genre% </td>
+		<td> 流派，使用元数据 “genre” 字段。 </td>
 	</tr>
 	<tr>
-		<td> %tracknumber% </td><td> Two-digit index of specified track within the album. Available only when “tracknumber” field is present in track’s metadata. </td>
+		<td> %tracknumber% </td>
+		<td> 音轨号。仅在存在元数据 “tracknumber” 字段时有效。 </td>
 	</tr>
 	<tr>
-		<td> %totaltracks% </td><td> Two-digit number of tracks within the album specified track belongs to. Available only when “totaltracks” field is present in track’s metadata. </td>
+		<td> %totaltracks% </td>
+		<td> 合计音轨。仅在存在元数据 “totaltracks” 字段时有效。 </td>
 	</tr>
 	<tr>
-		<td> %discnumber% </td><td> Index of disc specified track belongs to, within the album. Available only when “discnumber”/“disc” field is present in track’s metadata. </td>
+		<td> %discnumber% </td>
+		<td> 光盘编号。仅在存在元数据 “discnumber” 或 “disc” 字段时有效。 </td>
 	</tr>
 	<tr>
-		<td> %totaldiscs% </td><td> Number of discs within the album specified track belongs to. Available only when “totaldiscs” field is present in track’s metadata. </td>
+		<td> %totaldiscs% </td>
+		<td> 合计光盘。仅在存在元数据 “totaldiscs” 字段时有效。 </td>
 	</tr>
 	<tr>
-		<td> %codec% </td><td> Name of codec used to encode the track. If exact codec name is not available, file extension is used. </td>
+		<td> %codec% </td>
+		<td> 编码格式名。若无法有效取得准确的编码格式，使用文件后缀。</td>
 	</tr>
 	<tr>
-		<td> %codec_profile% </td><td> Additional information about encoding settings used. Not always available. </td>
+		<td> %codec_profile% </td>
+		<td> 关于编码设置的附加信息，并不总是有效。</td>
 	</tr>
 	<tr>
-		<td> %filename% </td><td> Name of file, excluding directory path and extension. </td>
+		<td> %filename% </td>
+		<td>文件名，不包括后缀名和目录</td>
 	</tr>
 	<tr>
-		<td> %filename_ext% </td><td> Name of the file, including extension but excluding directory path. </td>
+		<td> %filename_ext% </td>
+		<td> 文件名，包括后缀名但不包括目录。</td>
 	</tr>
 	<tr>
-		<td> %directoryname% </td><td> Name of the directory the file is in. </td>
+		<td> %directoryname% </td>
+		<td> 文件所处目录名。</td>
 	</tr>
 	<tr>
-		<td> %path% </td><td> Full path of the file. Note that %path_sort% should be use for sorting instead of %path%. </td>
+		<td> %path% </td>
+		<td> 文件路径，注意排序时应使用 %path_sort% 而非 %path%。</td>
 	</tr>
 	<tr>
-		<td> %subsong% </td><td> Index of the track within the file, for use with file formats that support multiple tracks within single physical file (e.g. chapters or a cuesheet). </td>
+		<td> %subsong% </td>
+		<td> 文件内的音轨编号，用于单文件支持多音轨的文件格式(例如章节和CUE)。</td>
 	</tr>
 	<tr>
-		<td> %path_sort% </td><td colspan="2"> Path of the file; for use with sorting, where order of subsongs within a file needs to be preserved; exact value returned by it is undefined and should not be relied on. </td>
+		<td> %path_sort% </td>
+		<td colspan="2"> 结合了音轨号的文件路径，用于排序；返回值不确定，因此不应依赖其返回值。</td>
 	</tr>
 	<tr>
-		<td> %length% </td><td> Length of the track, formatted as <em>[HH:]MM:SS</em>. </td>
+		<td> %length% </td>
+		<td> 长度，格式为 [HH:]MM:SS。</td>
 	</tr>
 	<tr>
-		<td> %length_seconds% </td><td> Length of the track, in seconds, formatted as an integer. </td>
+		<td> %length_seconds% </td>
+		<td> 长度，单位为秒，格式是整数。</td>
 	</tr>
 	<tr>
-		<td> %bitrate% </td><td> Bitrate of the track in kilobits per second (kbps); includes dynamic VBR bitrate display for currently played track. </td>
+		<td> %bitrate% </td>
+		<td> 比特率，单位为千比特每秒(kbps)；支持动态 VBR 比特率。</td>
 	</tr>
 	<tr>
-		<td> %channels% </td><td> Number of channels in the track (mono/stereo/etc). </td>
+		<td> %channels% </td>
+		<td> 声道数(mono/stereo/etc)。</td>
 	</tr>
 	<tr>
-		<td> %samplerate% </td><td> Sample rate of the track, in Hz. </td>
+		<td> %samplerate% </td>
+		<td> 采样率，单位为 Hz。</td>
 	</tr>
 	<tr>
-		<td> %replaygain_track_gain%, %replaygain_album_gain%, %replaygain_track_peak%, %replaygain_album_peak%, %replaygain_track_peak_db%, %replaygain_album_peak_db% </td><td> ReplayGain information. </td>
+		<td> %replaygain_track_gain%, %replaygain_album_gain%, %replaygain_track_peak%, %replaygain_album_peak% </td>
+		<td> 播放增益相关信息。 </td>
 	</tr>
 	<tr>
-		<td> %filesize% </td><td> Size of the file, in bytes. </td>
+		<td> %filesize%</td>
+		<td> 文件大小，单位为字节。 </td>
 	</tr>
 	<tr>
-		<td> %filesize_natural% </td><td> Size of the file, automatically formatted in appropriate units such as megabytes or kilobytes. </td>
+		<td> %filesize_natural%</td>
+		<td> 文件大小，将根据实际情况返回如MB或KB的形式。 </td>
 	</tr>
 	<tr>
-		<td> %last_modified% </td><td> Last modification time of the file, formatted as <em>YYYY-MM-DD HH:MM:SS</em>. </td>
+		<td> %last_modified%</td>
+		<td> 返回文件最后更改时间，格式为  YYYY-MM-DD HH:MM:SS。 </td>
 	</tr>
 </table>
 
 <p>
-The above list is not complete, there are other less relevant fields as well as generic %field% &rArr; metadata and %__field% &rArr; tech info remappings provided for backwards compatibility. 
-</p>
+以上列表内容没有完成，还有一些不太重要的字段如 %field%、元数据和 %__field%、技术信息映射，它们用于保持向后兼容性。</p>
 
 </div>
-<!-- SECTION "Generic fields" [47-3887] -->
-<h3><a name="context-specific_fields" id="context-specific_fields">Context-specific fields</a></h3>
+<!-- SECTION "Generic fields" [47-3492] -->
+<h3><a name="context-specific_fields" id="context-specific_fields">上下文字段</a></h3>
 <div class="level3">
 <table class="inline">
 	<tr>
-		<th> Syntax </th><th> Description </th>
+		<th> 语法 </th>
+		<th>解释</th>
 	</tr>
 	<tr>
-		<td> %list_index% </td><td> Index of the item on the list it belongs to. Applies to: playlist, list of items processed by masstagger/massrenamer, etc. Padded with zeros to match max. width of possible index within the list. </td>
+		<td> %list_index% </td>
+		<td> 指定项目所在的列表编号。应用于：播放列表，由 masstagger/massrenamer 处理过的项目的列表，等等。在结果前补足0以适应列表中最大数的位数。 </td>
 	</tr>
 	<tr>
-		<td> %list_total% </td><td> Number of items on the list specified item belongs to. Applies to: playlist, list of items processed by masstagger/massrenamer, etc. </td>
+		<td> %list_total% </td>
+		<td> 指定项目所在列表的总项目数。应用于：播放列表，由 masstagger/massrenamer 处理过的列表，等等。 </td>
 	</tr>
 	<tr>
-		<td> %isplaying% </td><td> Present if e.g. a playlist item is currently being played, absent otherwise. Meant to be used as a switch for $if(). </td>
+		<td> %isplaying% </td>
+		<td> 若当前项目正在播放则有效，例如: 一个播放列表项正在播放。用于 $if() 中的条件。 </td>
 	</tr>
 	<tr>
-		<td> %ispaused% </td><td> Present if e.g. a playlist item is currently being played and is paused, absent otherwise. Meant to be used as a switch for $if(). </td>
+		<td> %ispaused% </td>
+		<td> 若当前项目正在播放并处于暂停状态则有效，例如: 一个播放列表项已暂停。用于 $if() 中的条件。 </td>
 	</tr>
 	<tr>
-		<td> %playback_time% </td><td> Current playback time, formatted as <em>[HH:]MM:SS</em>. Available only in contexts where playback related data is displayed, such as statusbar. </td>
+		<td> %playback_time% </td>
+		<td> 当前播放时间，格式为 [HH:]MM:SS。仅在某些使用播放上下文信息的地方有效，例如状态栏。 </td>
 	</tr>
 	<tr>
-		<td> %playback_time_seconds% </td><td> Current playback time, in seconds, formatted as integer. Available only in contexts where playback related data is displayed, such as statusbar. </td>
+		<td> %playback_time_seconds% </td>
+		<td> 当前播放时间，单位为秒。格式为整数。仅在某些使用播放上下文信息的地方有效，例如状态栏。 </td>
 	</tr>
 	<tr>
-		<td> %playback_time_remaining% </td><td> Remaining playback time, formatted as <em>[HH:]MM:SS</em>. Available only in contexts where playback related data is displayed, such as statusbar. Not available when duration of currently playing track is not known. </td>
+		<td> %playback_time_remaining% </td>
+		<td> 剩余播放时间，格式为 [HH:]MM:SS。仅在某些会使用播放上下文信息的地方有效，例如状态栏。若当前播放音轨无持续时间信息则无效。 </td>
 	</tr>
 	<tr>
-		<td> %playback_time_remaining_seconds% </td><td> Remaining playback time, in seconds, formatted as integer. Available only in contexts where playback related data is displayed, such as statusbar. Not available when length of currently playing track is not known. </td>
+		<td> %playback_time_remaining_seconds% </td>
+		<td> 剩余播放时间，单位为秒。格式为整数。仅在某些使用播放上下文信息的地方有效，例如状态栏。若当前播放音轨无持续时间信息则无效。 </td>
 	</tr>
 	<tr>
-		<td> %queue_index% </td><td> Index of the specified item in the playback queue; available in playlist only. If the item has been queued multiple times, %queue_index% evaluates to the first index. </td>
+		<td> %queue_index% </td>
+		<td> 指定项目所处队列的编号，仅对播放列表有效。 </td>
 	</tr>
 	<tr>
-		<td> %queue_indexes% </td><td> List of indexes of the specified item in the playback queue; available in playlist only. Same as %queue_index% unless the item has been queued more than once. </td>
+		<td> %queue_indexes% </td>
+		<td> 指定项目所处队列的编号列表，仅对播放列表有效。当指定项目仅在队列中出现一次则与 %queue_index% 等价。 </td>
 	</tr>
 	<tr>
-		<td> %queue_total% </td><td> Total amount of tracks in playback queue. Available only for queued tracks, for technical reasons. </td>
+		<td> %queue_total% </td>
+		<td> 队列的项目总数。由于技术上的原因该字段仅对属于队列中音轨有效。 </td>
 	</tr>
 </table>
 
 </div>
-<!-- SECTION "Context-specific fields" [3888-5918] -->
-<h3><a name="functions" id="functions">Functions</a></h3>
+<!-- SECTION "Context-specific fields" [3493-5028] -->
+<h3><a name="functions" id="functions">函数</a></h3>
 <div class="level3">
 <table class="inline">
 	<tr>
-		<th> Syntax </th><th> Description </th><th> Example </th>
+		<th> 语法 </th>
+		<th> 解释 </th>
+		<th> 示例 </th>
 	</tr>
 	<tr>
-		<td> $abbr(X) </td><td> Returns an abbreviation of X. </td><td> $abbr(%album%) </td>
+		<td> $abbr(X) </td>
+		<td> 返回 X 的缩写。</td>
+		<td> $abbr(%album%) </td>
 	</tr>
 	<tr>
-		<td> $abbr(X,Y) </td><td> Returns an abbreviation of X if X is longer than Y characters; otherwise returns full value of X. </td><td> $abbr(%album%,5) </td>
+		<td> $abbr(X,Y) </td>
+		<td>若 X 的长度不大于 Y，则返回 X 的缩写，否则返回 X。</td>
+		<td> $abbr(%album%,5) </td>
+	</tr>
+		<tr>
+		<td> $ansi(X) </td>
+		<td> 返回字符串 X 中属于当前代码页的部分，否则替换为相应最适合的字符。一般用于清理文件名与外部一些对Unicode支持不好的软件交互。 </td>
+		<td> $ansi(%title%), $ansi(%filename%) </td>
+	</tr>
+		<tr>
+		<td> $ascii(X) </td>
+		<td> 返回字符串 X 中属于ASCII表部分，否则替换为相应最适合的字符。一般用于与外部一些对Unicode支持不好的软件交互。 </td>
+		<td> $ascii(%title%), $ascii(%filename%) </td>
 	</tr>
 	<tr>
-		<td> $ansi(X) </td><td> Returns X with all characters not present in current system codepage replaced with closest matches. Useful for sanitizing filenames when interacting with other software that can&#039;t handle Unicode. </td><td> $ansi(%title%), $ansi(%filename%) </td>
+		<td> $lower(X), $upper(X) </td>
+		<td> 将 X 转换到小写/大写。</td>
+		<td> $upper(%title%) </td>
 	</tr>
 	<tr>
-		<td> $ascii(X) </td><td> Returns X with all non-<acronym title="American Standard Code for Information Interchange">ASCII</acronym> characters replaced with closest <acronym title="American Standard Code for Information Interchange">ASCII</acronym> matches. Useful for sanitizing filenames when interacting with other software that can&#039;t handle Unicode. </td><td> $ascii(%title%), $ascii(%filename%) </td>
+		<td> $num(X,Y) </td>
+		<td> 显示数字 X 并在前补足0使其长度不小于 Y (用于音轨号等)。</td>
+		<td> $num(%tracknumber%,3) </td>
 	</tr>
 	<tr>
-		<td> $lower(X), $upper(X) </td><td> Converts X to lower/uppercase. </td><td> $upper(%title%) </td>
+		<td> $caps(X) </td>
+		<td> 将所有单词的第一个字母转换为大写，所有其他字母转换为小写，例如:  “blah BLAH” &rArr; “Blah Blah”. </td>
+		<td> $caps(%title%) </td>
 	</tr>
 	<tr>
-		<td> $num(X,Y) </td><td> Displays X as a number and pads with zeros up to Y characters (useful for track numbers etc). </td><td> $num(%tracknumber%,3) </td>
+		<td> $caps2(X) </td>
+		<td> 类似于 $caps，但是不改变已为大写的字母，例如:  “blah BLAH” &rArr; “Blah BLAH”. </td>
+		<td> $caps2(%title%) </td>
 	</tr>
 	<tr>
-		<td> $caps(X) </td><td> Converts first letter in every word of X to uppercase, and all other letters to lowercase, e.g. “blah BLAH” &rArr; “Blah Blah”. </td><td> $caps(%title%) </td>
+		<td> $if(X,Y,Z) </td>
+		<td> 若 X 包含了至少一个有效字段，则执行/显示 Y， 否则执行/显示 Z。</td>
+		<td> $if(%artist%,%artist%,unknown artist) </td>
 	</tr>
 	<tr>
-		<td> $caps2(X) </td><td> Similar to $caps, but leaves uppercase letters as they are, e.g. “blah BLAH” &rArr; “Blah BLAH”. </td><td> $caps2(%title%) </td>
+		<td> $if2(X,Y) </td>
+		<td> 与 $if(X,X,Y) 相同。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $if(X,Y,Z) </td><td> If X contains at least one present field, executes/displays Y, otherwise executes/displays Z. </td><td> $if(%artist%,%artist%,unknown artist) </td>
+		<td> $if3(X,Y,Z,..) </td>
+		<td> 返回首先包含至少一个有效字段的参数。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $if2(X,Y) </td><td> Same as $if(X,X,Y). </td><td> </td>
+		<td> $ifgreater(A,B,C,D) </td>
+		<td> 若数字 A 大于 B, 则执行/返回 C，否则执行/返回 D。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $if3(X,Y,Z,..) </td><td> Returns the first of parameters that contains at least one present field. </td><td> </td>
+		<td> $iflonger(A,B,C,D) </td>
+		<td> 若字符串 A 长度大于 B，则执行/返回 C，否则执行/返回 D。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $ifgreater(A,B,C,D) </td><td> If the number A is greater than the number B, executes/returns C, otherwise executes/returns D. </td><td> </td>
+		<td> $ifequal(A,B,C,D) </td>
+		<td> 若数字 A 等于 B，则执行/返回 C，否则执行/返回 D。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $iflonger(A,B,C,D) </td><td> If the string A is longer than B characters, executes/returns C, otherwise executes/returns D. </td><td> </td>
+		<td> $longest(A,B,C,&hellip;.) </td>
+		<td> 比较字符串 A,B,C,&hellip;并返回最大长度的字符串。</td>
+		<td> $longest(%title%,%filename%) </td>
 	</tr>
 	<tr>
-		<td> $ifequal(A,B,C,D) </td><td> If the number A is equal to the number B, executes/returns C, otherwise executes/returns D. </td><td> </td>
+		<td> $len(X) </td>
+		<td> 返回字符串 X 的长度。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $longest(A,B,C,&hellip;.) </td><td> Compares lengths of of A,B,C&hellip; and returns the longest one. </td><td> $longest(%title%,%filename%) </td>
+		<td> $pad(X,Y), $pad_right(X,Y) </td>
+		<td> 对字符串 X 前/后补足空格使其长度不小于 Y。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $len(X) </td><td> Returns length of the string X in characters. </td><td> </td>
+		<td> $pad(X,Y,Z), $pad_right(X,Y,Z) </td>
+		<td> 对字符串 X 前/后补足字符 Z 使其长度不小于 Y。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $pad(X,Y), $pad_right(X,Y) </td><td> Pads X with spaces up to Y characters. </td><td> </td>
+		<td> $cut(X,Y) </td>
+		<td> 截取 X 使其长度为 Y。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $pad(X,Y,Z), $pad_right(X,Y,Z) </td><td> Pads X with Z character up to Y characters. </td><td> </td>
+		<td> $padcut(X,Y), $padcut_right(X,Y) </td>
+		<td> 对字符串 X 前/后补足空格，并截取结果使其长度不大于 Y。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $cut(X,Y) </td><td> Truncates X to Y characters. </td><td> </td>
+		<td> $insert(A,B,N) </td>
+		<td> 向字符串 A 中 N 个字符后插入字符串 B。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $padcut(X,Y), $padcut_right(X,Y) </td><td> Pads X to Y characters and truncates to Y if longer. </td><td> </td>
+		<td> $add(X,Y), $sub(X,Y), $mul(X,Y), $div(X,Y), $mod(X,Y), $min(X,Y), $max(X,Y) </td>
+		<td> 数学运算，依次为：加、减、乘、除、取模、最小值、最大值。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $insert(A,B,N) </td><td> Inserts string B into string A after N characters. </td><td> </td>
+		<td> $left(X,Y) </td>
+		<td> 返回字符串 X 的头 Y 个字符。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $add(X,Y), $sub(X,Y), $mul(X,Y), $div(X,Y), $mod(X,Y), $min(X,Y), $max(X,Y) </td><td> Various math operations. </td><td> </td>
+		<td> $right(X,Y) </td>
+		<td> 返回字符串 X 的后 Y 个字符。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $left(X,Y) </td><td> Returns Y first characters of string X. </td><td> </td>
+		<td> $and(X,Y), $or(X,Y), $xor(X,Y), $not(X) </td>
+		<td> 逻辑运算符，依次为：与、或、异或、非。用于与 $if() 协作。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $right(X,Y) </td><td> Returns Y last characters of string X. </td><td> </td>
+		<td> $fix_eol(x), $fix_eol(x,y) </td>
+		<td> 截取多行字符串，在字符串尾添加 ” (&hellip;)” (第一个版本) 或 y (第二个版本)。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $and(X,Y), $or(X,Y), $xor(X,Y), $not(X) </td><td> Various logical operations, for use with $if(). </td><td> </td>
+		<td> $meta(X) </td>
+		<td> 返回元数据字段 X 的值。 </td>
+		<td> $meta(artist) </td>
 	</tr>
 	<tr>
-		<td> $fix_eol(x), $fix_eol(x,y) </td><td> Truncates multiline strings, adding ” (&hellip;)” (version 1) or y (version 2) at the end. </td><td> </td>
+		<td> $meta_sep(X,Y), $meta_sep(X,Y,Z) </td>
+		<td> 返回元数据字段 X 中的值，对于多值情况，加上自定义分隔符。</td>
+		<td> $meta(artist,&#039;, &#039;,&#039; and &#039;) &rArr; “artist1, artist2 and artist3” </td>
 	</tr>
 	<tr>
-		<td> $meta(X) </td><td> Returns value of metadata field named X. </td><td> $meta(artist) </td>
+		<td> $meta_num(X) </td>
+		<td> 返回元数据字段 X 中值的数目。 </td>
 	</tr>
 	<tr>
-		<td> $meta_sep(X,Y), $meta_sep(X,Y,Z) </td><td> Returns metadata field named X, with custom separators for multiple values </td><td> $meta(artist,&#039;, &#039;,&#039; and &#039;) &rArr; “artist1, artist2 and artist3” </td>
+		<td> $info(X) </td>
+		<td> 返回名为 X 的技术信息。</td>
+		<td> $info(bitrate) </td>
 	</tr>
 	<tr>
-		<td> $meta_num(X) </td><td> Returns number of present values for metadata field X. </td>
+		<td> $char(X) </td>
+		<td> 插入编号为 X 的 Unicode 字符。</td>
+		<td> $char(9674) </td>
 	</tr>
 	<tr>
-		<td> $info(X) </td><td> Returns tech info field named X. </td><td> $info(bitrate) </td>
+		<td> $strcmp(X,Y) </td>
+		<td> 当字符串 X 和 Y 相同时返回 “1”，否则返回空字符串，用于与 $if() 协同使用。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $char(X) </td><td> Inserts Unicode character no. X. </td><td> $char(9674) </td>
+		<td> $stricmp(X,Y) </td>
+		<td> $strcmp(X,Y) 的不区分大小写版本。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $strcmp(X,Y) </td><td> Returns “1” when strings X and Y are identical, empty string otherwise; intended for use with $if(). </td><td> </td>
+		<td> $directory(X), $directory(X,N) </td>
+		<td> 从文件路径 X 中提取目录名，附加选项指定提取上 N 级目录名。 </td>
+		<td> $directory(%path%,2) </td>
 	</tr>
 	<tr>
-		<td> $stricmp(X,Y) </td><td> Non-case-sensitive version of $strcmp(X,Y). </td><td> </td>
+		<td> $directory_path(X) </td>
+		<td> 从文件路径 X 中获取相应目录路径。 </td>
+		<td> $directory_path(%path%) </td>
 	</tr>
 	<tr>
-		<td> $directory(X), $directory(X,N) </td><td> Extracts directory name from the file path X, optionally goes up by N directory levels. </td><td> $directory(%path%,2) </td>
+		<td> $greater(X,Y) </td>
+		<td> 比较两个整数，检测是否 X &gt; Y，用于与 $if() 和 逻辑运算符共同使用。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $directory_path(X) </td><td> Extracts directory path from the file path X. </td><td> $directory_path(%path%) </td>
+		<td> $longer(X,Y) </td>
+		<td> 比较两个字符串，检测是否 X 长度大于 Y，用于与 $if() 和 逻辑运算符共同使用。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $greater(X,Y) </td><td> Compares two integers, tests if X&gt;Y, intended for use with $if() and logical operators. </td><td> </td>
+		<td> $strchr(X,Y) </td>
+		<td> 查找字符串 X 中字符 Y 首先出现位置。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $longer(X,Y) </td><td> Compares two strings, tests if X is longer than Y, intended for use with $if() and logical operators. </td><td> </td>
+		<td> $strrchr(X,Y) </td>
+		<td> 查找字符串 X 中字符 Y 最后出现位置。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $strchr(X,Y) </td><td> Finds first occurrence of character Y in string X. </td><td> </td>
+		<td> $strstr(X,Y) </td>
+		<td> 查找字符串 X 中字符串 Y 中首先出现位置。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $strrchr(X,Y) </td><td> Finds last occurrence of character Y in string X. </td><td> </td>
+		<td> $progress2(A,B,C,D,E) </td>
+		<td> 创建进度条。(版本2)</td>
+		<td> $progress2(%playback_time_seconds%,%length%,20,’#’,’=’) &rArr; ”#####===============” </td>
 	</tr>
 	<tr>
-		<td> $strstr(X,Y) </td><td> Finds first occurrence of string Y in string X. </td><td> </td>
+		<td> $select(N,A,B,C,&hellip;.) </td>
+		<td> 返回从 A,B,C... 的第 N 个参数。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $select(N,A,B,C,&hellip;.) </td><td> Returns N-th of A,B,C&hellip; parameters. </td><td> </td>
+		<td> $repeat(X,N) </td>
+		<td> 重复X N 次。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $repeat(X,N) </td><td> Repeats X N times. </td><td> </td>
+		<td> $replace(A,B,C) </td>
+		<td> 将字符串 A 中所有出现的字符串 B 替换为字符串 C。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $replace(A,B,C) </td><td> Replaces all occurrences of string B in string A with string C. </td><td> </td>
+		<td> $ext(X) </td>
+		<td>从文件名/路径 X 中提取后缀名。 </td>
+		<td> $ext(%path%) </td>
 	</tr>
 	<tr>
-		<td> $ext(X) </td><td> Extracts extension from file path / file name. </td><td> $ext(%path%) </td>
+		<td> $substr(A,B,C) </td>
+		<td> 返回 A 的子串，从第 B 个字符到 第C 个字符。</td>
+		<td> $substr(blah,1,2) &rArr; “bl” </td>
 	</tr>
 	<tr>
-		<td> $substr(A,B,C) </td><td> Returns substring of string A, starting from B-th character and ending at C-th character </td><td> $substr(blah,1,2) &rArr; “bl” </td>
+		<td> $trim(A) </td>
+		<td> 移除字符串 A 中首/尾空白字符。 </td>
+		<td> $trim(%title%) </td>
 	</tr>
 	<tr>
-		<td> $trim(A) </td><td> Trims leading/trailing space characters from A. </td><td> $trim(%title%) </td>
+		<td> $tab() </td>
+		<td> 生成一个制表符，等同于 $char(9)。参见下面 “Tab(制表符)” 以获取详尽信息。 </td>
+		<td> $tab() </td>
 	</tr>
 	<tr>
-		<td> $tab() </td><td> Generates a tab character; equivalent to $char(9). See “tab character” explanation below for more info about its use. </td><td> $tab() </td>
+		<td> $stripprefix(X) </td>
+		<td> 将前缀 “A” 和 “The” 从X中移除。 </td>
+		<td> $strippefix(%artist%) &rArr; “The Prodigy” 变为 “Prodigy” </td>
 	</tr>
 	<tr>
-		<td> $stripprefix(X) </td><td> Removes “A” and “The” prefixes from X. </td><td> $stripprefix(%artist%) &rArr; “The Prodigy” becomes “Prodigy” </td>
+		<td> $stripprefix(X,prefix1,prefix2,&hellip;) </td>
+		<td> 将指定前缀从 X 中移除。 </td>
+		<td> $stripprefix(%artist%,a,the) &rArr; “The Prodigy” 变为 “Prodigy” </td>
 	</tr>
 	<tr>
-		<td> $stripprefix(X,prefix1,prefix2,&hellip;) </td><td> Removes the specified prefixes from X. </td><td> $stripprefix(%artist%,a,the) &rArr; “The Prodigy” becomes “Prodigy” </td>
+		<td> $swapprefix(X) </td>
+		<td> 将前缀 “A” 和 “The” 移动到 X 尾。 </td>
+		<td> $swapprefix(%artist%) &rArr; “The Prodigy” 变为 “Prodigy, The” </td>
 	</tr>
 	<tr>
-		<td> $swapprefix(X) </td><td> Moves “A” and “The” prefixes to the end of X. </td><td> $swapprefix(%artist%) &rArr; “The Prodigy” becomes “Prodigy, The” </td>
+		<td> $swapprefix(X,prefix1,prefix2,&hellip;) </td>
+		<td> 将指定前缀移动到 X 尾。 </td>
+		<td> $swapprefix(%artist%,a,the) &rArr; “The Prodigy” 变为 “Prodigy, The” </td>
 	</tr>
 	<tr>
-		<td> $swapprefix(X,prefix1,prefix2,&hellip;) </td><td> Moves the specified prefixes to the end of X. </td><td> $swapprefix(%artist%,a,the) &rArr; “The Prodigy” becomes “Prodigy, The” </td>
+		<td> $year(time) </td>
+		<td> 从时间/日期字符串中得到“年”(格式为4位数字)。 </td>
+		<td> $year(%last_modified%) </td>
 	</tr>
 	<tr>
-		<td> $peak_to_db(X) </td><td>Converts audio peak value from 0..1 PCM to decibels. See also: %replaygain_track_peak_db%, %replaygain_album_peak_db%</td><td> $peak_to_db(%replaygain_track_peak%) &rArr; “0.5” becomes “-6.02 dB” </td>
-	</tr>
-</table>
-<table class="inline">
-	<tr>
-		<td> $year(time) </td><td> Retrieves the year part (formatted as four digits) from a time/date string. </td><td> $year(%last_modified%) </td>
+		<td> $month(time) </td>
+		<td>从时间/日期字符串中得到“月”(格式为2位数字)。</td>
+		<td> $month(%last_modified%) </td>
 	</tr>
 	<tr>
-		<td> $month(time) </td><td> Retrieves the month part (formatted as two digits) from a time/date string. </td><td> $month(%last_modified%) </td>
+		<td> $day_of_month(time) </td>
+		<td>从时间/日期字符串中得到月中的第几天(格式为2位数字)。</td>
+		<td> $day_of_month(%last_modified%) </td>
 	</tr>
 	<tr>
-		<td> $day_of_month(time) </td><td> Retrieves the day of month part (formatted as two digits) from a time/date string. </td><td> $day_of_month(%last_modified%) </td>
+		<td> $date(time) </td>
+		<td> 从时间/日期字符串中得到日期信息(格式为 YYYY-MM-DD)。 </td>
+		<td> $date(%last_modified%) </td>
 	</tr>
 	<tr>
-		<td> $date(time) </td><td> Retrieves the date part (formatted as <em>YYYY-MM-DD</em>) from a time/date string. </td><td> $date(%last_modified%) </td>
-	</tr>
-	<tr>
-		<td> $time(time) </td><td> Retrieves the time part (formatted as <em>HH:MM:SS</em> or <em>HH:MM</em>) from a date/time string. </td><td> $time(%last_modified%) </td>
+		<td> $time(time) </td><td> 从时间/日期字符串中得到时间信息(格式为 HH:MM:SS 或 HH:MM)。 </td>
+		<td> $time(%last_modified%) </td>
 	</tr>
 </table>
 
 </div>
-<!-- SECTION "Functions" [5919-11937] -->
-<h3><a name="variable_operations" id="variable_operations">Variable operations</a></h3>
+<!-- SECTION "Functions" [5029-11458] -->
+<h3><a name="variable_operations" id="variable_operations">变量操作</a></h3>
 <div class="level3">
 <ul>
-<li class="level1"><div class="li"> Variables allow you to store intermediate results of text processing in order to reduce size of your formatting string.</div>
+<li class="level1">
+  <div class="li"> 变量允许你立即保存文本处理的结果减少冗余格式化文本。</div>
 </li>
-<li class="level1"><div class="li"> Variables are not kept between instances of title formatting process and modifying actual file info with them is not possible.</div>
+<li class="level1">
+  <div class="li"> 变量不能在多个运行实例中进行交换，并且无法修改实际文件信息。</div>
 </li>
-<li class="level1"><div class="li"> Variables don&#039;t allow you to do anything that you couldn&#039;t do without them already. They only allow you to shorten certain overcomplicated scripts.</div>
+<li class="level1">
+  <div class="li"> 变量的作用仅仅是缩短过于复杂脚本的尺寸，而不是有其它作用。</div>
 </li>
 </ul>
 <table class="inline">
 	<tr>
-		<th> Syntax </th><th> Description </th><th> Example </th>
+		<th> 语法 </th>
+		<th> 解释 </th>
+		<th> 示例 </th>
 	</tr>
 	<tr>
-		<td> $put(name,text) </td><td> Sets the variable named <em>name</em> to <em>text</em> and returns <em>text</em>. </td><td> “$put(x,blah)” sets variable x to “blah” and returns “blah”. </td>
+		<td> $put(name,text) </td>
+		<td> 设置名为 <em>name</em> 的变量的值为 <em>text</em> 并且返回 <em>text</em>。</td>
+		<td> “$put(x,blah)” 设置变量 x 为 “blah” 并且返回 “blah”. </td>
 	</tr>
 	<tr>
-		<td> $puts(name,text) </td><td> Silent version of $put(). Same as $put(name,text), but returns an empty string. </td><td> </td>
+		<td> $puts(name,text) </td>
+		<td>  $put() 的静默版本。与 $put(name,text) 作用相同，但返回空字符串。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> $get(name) </td><td> Returns the value of the variable named <em>name</em> or an empty string if such variable hasn&#039;t been set. </td><td> “$puts(x,blah)$get(x)$get(x)” returns “blahblah” </td>
+		<td> $get(name) </td>
+		<td> 返回名为 <em>name</em> 的值，若变量不存在，返回空字符串。</td>
+		<td> “$puts(x,blah)$get(x)$get(x)” 返回 “blahblah” </td>
 	</tr>
 </table>
 
 </div>
-<!-- SECTION "Variable operations" [11938-12838] -->
-<h3><a name="other" id="other">Other</a></h3>
+<!-- SECTION "Variable operations" [11459-12359] -->
+<h3><a name="other" id="other">其它</a></h3>
 <div class="level3">
 <table class="inline">
 	<tr>
-		<th> Syntax </th><th> Description </th><th> Example </th>
+		<th> 语法 </th>
+		<th> 解释 </th>
+		<th> 示例 </th>
 	</tr>
 	<tr>
-		<td> [ &hellip;. ] </td><td> Discards contents of the bracket when no fields referenced inside are present. Commonly used to create parts of formatting scripts that are active only when relevant fields are found. </td><td> %artist% - [%album% / ]%title% </td>
+		<td> [ &hellip;. ] </td>
+		<td> 若字段不存在引用则丢弃方括号中的所有内容。主要用于创建部分仅在相关字段有效时的格式化脚本。</td>
+		<td> %artist% - [%album% / ]%title% </td>
 	</tr>
 	<tr>
-		<td> &#039; (single quotation mark) </td><td> Inserts specified text bypassing syntax processing; allows special characters such as %,$,[,] to be inserted. In order to insert a quotation mark character, use &#039;&#039; (two single quotation marks). </td><td> </td>
+		<td> &#039; (单引号) </td>
+		<td> 插入指定文本忽略语法处理；允许有特殊字符比如&quot;%&quot;、&quot;$&quot;、&quot;[&quot;和&quot;]&quot;。若需要在文本中插入单引号，可以使用 '' (两个单引号)。 </td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> // </td><td> Comments, can be placed only at the beginning of a new line; prevent any characters following them until the end of line from being parsed. </td><td> </td>
+		<td> // </td>
+		<td> 注释，仅能用于行首；注释后的文本从行首到行尾不会被解析。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> End-of-line characters </td><td> Ignored; you can make your script more readable by splitting it into multiple lines, without affecting its output. </td><td> </td>
+		<td>EOL字符</td>
+		<td> 忽略; 你可以使你的脚本拆分为多行以增加可读性，而不会影响结果。</td>
+		<td> </td>
 	</tr>
 	<tr>
-		<td> Tab character </td><td> Used to control text alignment in certain contexts such as status bar. See also: $tab(). </td><td> %title%$tab()%length% </td>
+		<td>Tab(制表符)</td>
+		<td> 用于对特定上下文文本进行对齐，例如状态栏。参见: $tab() </td>
+		<td> %title%$tab()%length% </td>
 	</tr>
 	<tr>
-		<td> Color control: &lt; &gt; </td><td> Used to dim or highlight text, currently available in playlist and status bar. There are 3 dim and 3 highlight levels, accessible by repeating color control characters. </td><td> &lt;dim&gt; &gt;highlight&lt; &gt;&gt;extrahighlight&lt;&lt; </td>
+		<td> 颜色控制: &lt; &gt; </td><td> 用于控制文本颜色的深浅,现在可用于播放列表和状态栏.深浅都有3个级别,可通过重复颜色控制字符控制级别. </td><td> &lt;浅&gt; &gt;深&lt; &gt;&gt;更深&lt;&lt; </td>
 	</tr>
 </table>
 
 </div>
-<!-- SECTION "Other" [12839-] --></div>
+<!-- SECTION "Other" [12360-] --></div>
 </body>
 </html>
