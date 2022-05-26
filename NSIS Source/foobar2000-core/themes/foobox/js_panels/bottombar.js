@@ -91,7 +91,7 @@ function on_mouse_lbtn_down(x, y) {
 	MuteBtn.MouseDown(x, y);
 	if (PBOBtn.MouseDown(x, y)) {
 		hbtn = false;
-		PBO_Menu(pbo_start + pbo_btn_img.Width - 144, PBOBtn.y);
+		PBO_Menu(pbo_start, PBOBtn.y);
 		PBOBtn.Reset();
 	}
 	if (seekbar.MouseDown(x, y)) {
