@@ -5,8 +5,9 @@ var ui_mode_num = ui_mode ? ui_mode : Math.floor(Math.random() * 4 + 1);
 var ui_noborder = window.GetProperty("foobox.ui.noBorders", true);
 var random_color = window.GetProperty("foobox.RandomColor", 0);
 var follow_cursor = window.GetProperty("foobox.right-panels.follow.cursor", false);
+var esl_hcolor_auto = window.GetProperty("foobox.eslyric.highlight.color.auto", true);
 var esl_font_auto = window.GetProperty("foobox.eslyric.font.auto", true);
-var esl_font_bold = window.GetProperty("foobox.eslyric.font.bold", true);
+var esl_font_bold = window.GetProperty("foobox.eslyric.font.bold", false);
 var g_fname, g_fsize, g_fstyle, zdpi = 1;
 var rating2tag = window.GetProperty("foobox.rating.write.to.file", false);
 var album_front_disc = window.GetProperty("foobox.album.disc.front", false);
@@ -214,6 +215,7 @@ function on_notify_data(name, info) {
 		info[28] = show_shadow;
 		info[29] = sys_scrollbar;
 		info[30] = col_by_color;
+		info[31] = esl_hcolor_auto;
 		break;
 	case "ui_mode":
 		ui_mode = info;
@@ -235,6 +237,10 @@ function on_notify_data(name, info) {
 	case "Right_panel_follow_cursor":
 		follow_cursor = info;
 		window.SetProperty("Always follow cursor", follow_cursor);
+		break;
+	case "set_eslhcolor_auto":
+		esl_hcolor_auto = info;
+		window.SetProperty("foobox.eslyric.highlight.color.auto", esl_hcolor_auto);
 		break;
 	case "set_eslfont_auto":
 		esl_font_auto = info;

@@ -191,6 +191,17 @@ function settings_checkboxes_action(id, status, parentId) {
 			break;
 		case 9:
 			if (status) {
+				esl_hcolor_auto = true;
+				window.NotifyOthers("set_eslhcolor_auto", esl_hcolor_auto);
+			}
+			else {
+				esl_hcolor_auto = false;
+				window.NotifyOthers("set_eslhcolor_auto", esl_hcolor_auto);
+			}
+			p.settings.pages[parentId].elements[id].repaint();
+			break;
+		case 10:
+			if (status) {
 				esl_font_auto = true;
 				window.NotifyOthers("set_eslfont_auto", esl_font_auto);
 			}
@@ -200,7 +211,7 @@ function settings_checkboxes_action(id, status, parentId) {
 			}
 			p.settings.pages[parentId].elements[id].repaint();
 			break;
-		case 10:
+		case 11:
 			if (status) {
 				esl_font_bold = true;
 				window.NotifyOthers("set_eslfont_bold", esl_font_bold);
@@ -211,7 +222,7 @@ function settings_checkboxes_action(id, status, parentId) {
 			}
 			p.settings.pages[parentId].elements[id].repaint();
 			break;
-		case 13:
+		case 14:
 			if (status) {
 				ui_noborder = true;
 				window.NotifyOthers("set_ui_noborders", ui_noborder);
@@ -221,7 +232,7 @@ function settings_checkboxes_action(id, status, parentId) {
 				window.NotifyOthers("set_ui_noborders", ui_noborder);
 			}
 			break;
-		case 14:
+		case 15:
 			if (status) {
 				btn_fullscr = true;
 				window.NotifyOthers("show_button_fullscreen", btn_fullscr);
@@ -232,7 +243,7 @@ function settings_checkboxes_action(id, status, parentId) {
 			}
 			p.settings.pages[parentId].elements[id].repaint();
 			break;
-		case 15:
+		case 16:
 			if (status) {
 				album_front_disc = true;
 				window.NotifyOthers("set_album_cover", album_front_disc);
@@ -243,7 +254,7 @@ function settings_checkboxes_action(id, status, parentId) {
 			}
 			p.settings.pages[parentId].elements[id].repaint();
 			break;
-		case 16:
+		case 17:
 			if (status) {
 				follow_cursor = true;
 				window.NotifyOthers("Right_panel_follow_cursor", follow_cursor);
@@ -254,7 +265,7 @@ function settings_checkboxes_action(id, status, parentId) {
 			}
 			p.settings.pages[parentId].elements[id].repaint();
 			break;
-		case 17:
+		case 18:
 			if (status) {
 				auto_sw = true;
 				window.NotifyOthers("set_panels_interlock", auto_sw);
@@ -265,7 +276,7 @@ function settings_checkboxes_action(id, status, parentId) {
 			}
 			p.settings.pages[parentId].elements[id].repaint();
 			break;
-		case 18:
+		case 19:
 			if (status) {
 				show_shadow = true;
 				window.NotifyOthers("panel_show_shadow", show_shadow);
@@ -591,19 +602,19 @@ function settings_radioboxes_action(id, status, parentId) {
 			window.NotifyOthers("random_color_mode", random_mode);
 			get_colors();
 			break;
-		case 11:
+		case 12:
 			p.settings.pages[pid].elements[11].status = true;
 			p.settings.pages[pid].elements[12].status = false;
 			rating2tag = true;
 			window.NotifyOthers("set_rating_2_tag", rating2tag);
 			break;
-		case 12:
+		case 13:
 			p.settings.pages[pid].elements[11].status = false;
 			p.settings.pages[pid].elements[12].status = true;
 			rating2tag = false;
 			window.NotifyOthers("set_rating_2_tag", rating2tag);
 			break;
-		case 19:
+		case 20:
 			p.settings.pages[pid].elements[19].status = true;
 			p.settings.pages[pid].elements[20].status = false;
 			sys_scrollbar = true;
@@ -615,7 +626,7 @@ function settings_radioboxes_action(id, status, parentId) {
 				resize_panels();
 			}
 			break;
-		case 20:
+		case 21:
 			p.settings.pages[pid].elements[19].status = false;
 			p.settings.pages[pid].elements[20].status = true;
 			sys_scrollbar = false;
@@ -2036,18 +2047,19 @@ oPage = function(id, objectName, label, nbrows) {
 			this.elements.push(new oRadioButton(6, zoom(120, zdpi), cSettings.topBarHeight + rh * 5.25, "不变色，黑白", (random_mode == 1), "settings_radioboxes_action", this.id));
 			this.elements.push(new oRadioButton(7, zoom(280, zdpi), cSettings.topBarHeight + rh * 5.25, "不变色，保存当前配色", (random_mode == 2), "settings_radioboxes_action", this.id));
 			this.elements.push(new oCheckBox(8, 20, cSettings.topBarHeight + rh * 6.25, "跟随封面变色", "col_by_cover ? true : false", "settings_checkboxes_action", this.id));
-			this.elements.push(new oCheckBox(9, 20, cSettings.topBarHeight + rh * 8.25, "跟随全局字体", "esl_font_auto ? true : false", "settings_checkboxes_action", this.id));
-			this.elements.push(new oCheckBox(10, zoom(150, zdpi), cSettings.topBarHeight + rh * 8.25, "并加粗", "esl_font_bold ? true : false", "settings_checkboxes_action", this.id));
-			this.elements.push(new oRadioButton(11, 20, cSettings.topBarHeight + rh * 10.25, "同时写入文件标签及playcount记录", (rating2tag == true), "settings_radioboxes_action", this.id));
-			this.elements.push(new oRadioButton(12, zoom(280, zdpi), cSettings.topBarHeight + rh * 10.25, "仅由playcount记录", (rating2tag == false), "settings_radioboxes_action", this.id));
-			this.elements.push(new oCheckBox(13, 20, cSettings.topBarHeight + rh * 12.25, "无窗口边框", "ui_noborder ? true : false", "settings_checkboxes_action", this.id));
-			this.elements.push(new oCheckBox(14, zoom(150, zdpi), cSettings.topBarHeight + rh * 12.25, "显示全屏按钮", "btn_fullscr ? true : false", "settings_checkboxes_action", this.id));
-			this.elements.push(new oCheckBox(15, 20, cSettings.topBarHeight + rh * 13.25, "专辑图片 = 封面 + 碟片, 并以碟片优先 (对部分网易云下载的歌曲适用)", "album_front_disc ? true : false", "settings_checkboxes_action", this.id));
-			this.elements.push(new oCheckBox(16, 20, cSettings.topBarHeight + rh * 14.25, "右栏面板总是跟随光标 (不推荐)", "follow_cursor ? true : false", "settings_checkboxes_action", this.id));
-			this.elements.push(new oCheckBox(17, 20, cSettings.topBarHeight + rh * 15.25, "右栏面板跟随主面板联动切换", "auto_sw ? true : false", "settings_checkboxes_action", this.id));
-			this.elements.push(new oCheckBox(18, 20, cSettings.topBarHeight + rh * 16.25, "顶栏和底栏开启阴影效果", "show_shadow ? true : false", "settings_checkboxes_action", this.id));
-			this.elements.push(new oRadioButton(19, 20, cSettings.topBarHeight + rh * 18.25, "系统", (sys_scrollbar == true), "settings_radioboxes_action", this.id));
-			this.elements.push(new oRadioButton(20, zoom(120, zdpi), cSettings.topBarHeight + rh * 18.25, "较窄", (sys_scrollbar == false), "settings_radioboxes_action", this.id));
+			this.elements.push(new oCheckBox(9, 20, cSettings.topBarHeight + rh * 8.25, "高亮颜色跟随全局", "esl_hcolor_auto ? true : false", "settings_checkboxes_action", this.id));
+			this.elements.push(new oCheckBox(10, zoom(170, zdpi), cSettings.topBarHeight + rh * 8.25, "字体跟随全局", "esl_font_auto ? true : false", "settings_checkboxes_action", this.id));
+			this.elements.push(new oCheckBox(11, zoom(300, zdpi), cSettings.topBarHeight + rh * 8.25, "并加粗", "esl_font_bold ? true : false", "settings_checkboxes_action", this.id));
+			this.elements.push(new oRadioButton(12, 20, cSettings.topBarHeight + rh * 10.25, "同时写入文件标签及playcount记录", (rating2tag == true), "settings_radioboxes_action", this.id));
+			this.elements.push(new oRadioButton(13, zoom(280, zdpi), cSettings.topBarHeight + rh * 10.25, "仅由playcount记录", (rating2tag == false), "settings_radioboxes_action", this.id));
+			this.elements.push(new oCheckBox(14, 20, cSettings.topBarHeight + rh * 12.25, "无窗口边框", "ui_noborder ? true : false", "settings_checkboxes_action", this.id));
+			this.elements.push(new oCheckBox(15, zoom(150, zdpi), cSettings.topBarHeight + rh * 12.25, "显示全屏按钮", "btn_fullscr ? true : false", "settings_checkboxes_action", this.id));
+			this.elements.push(new oCheckBox(16, 20, cSettings.topBarHeight + rh * 13.25, "专辑图片=封面+碟片, 并以碟片优先 (适用于封面集成在碟片标签，会增加资源消耗)", "album_front_disc ? true : false", "settings_checkboxes_action", this.id));
+			this.elements.push(new oCheckBox(17, 20, cSettings.topBarHeight + rh * 14.25, "右栏面板总是跟随光标 (不推荐)", "follow_cursor ? true : false", "settings_checkboxes_action", this.id));
+			this.elements.push(new oCheckBox(18, 20, cSettings.topBarHeight + rh * 15.25, "右栏面板跟随主面板联动切换", "auto_sw ? true : false", "settings_checkboxes_action", this.id));
+			this.elements.push(new oCheckBox(19, 20, cSettings.topBarHeight + rh * 16.25, "顶栏和底栏开启阴影效果", "show_shadow ? true : false", "settings_checkboxes_action", this.id));
+			this.elements.push(new oRadioButton(20, 20, cSettings.topBarHeight + rh * 18.25, "系统", (sys_scrollbar == true), "settings_radioboxes_action", this.id));
+			this.elements.push(new oRadioButton(21, zoom(120, zdpi), cSettings.topBarHeight + rh * 18.25, "较窄", (sys_scrollbar == false), "settings_radioboxes_action", this.id));
 			break;
 		case 4:
 			//jssb options

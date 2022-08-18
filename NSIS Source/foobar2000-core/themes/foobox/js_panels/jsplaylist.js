@@ -8,6 +8,7 @@ var zdpi = fbx_set[9];
 var follow_cursor = fbx_set[10];
 var ui_mode = fbx_set[11];
 var random_mode = fbx_set[12];
+var esl_hcolor_auto = fbx_set[31];
 var esl_font_auto = fbx_set[16];
 var esl_font_bold = fbx_set[17];
 var rating2tag = fbx_set[18];
@@ -24,7 +25,7 @@ var show_shadow = fbx_set[28];
 var sys_scrollbar = fbx_set[29];
 var col_by_cover = fbx_set[30];
 // GLOBALS
-var g_script_version = "6.1.6.11";
+var g_script_version = "6.1.6.11.2";
 var g_middle_clicked = false;
 var g_middle_click_timer = false;
 var g_queue_origin = -1;

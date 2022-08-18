@@ -9,15 +9,16 @@ var esl_font_bold = fbx_set[17];
 var follow_cursor = fbx_set[10];
 var rating_to_tag = fbx_set[18];
 var show_shadow = fbx_set[28];
-//font
-var g_font, g_font2, g_font_esl, font_size;
-get_font();
+var esl_hcolor_auto = fbx_set[31];
 var foo_spec = utils.CheckComponent("foo_uie_vis_channel_spectrum", true);
 var is_mood = window.GetProperty("Display.Mood", true);
 var spec_show_bg = window.GetProperty("Spectrum Background: Show bgcolor", true);
 var spec_show_grid = window.GetProperty("Spectrum Background: Show grid", true);
 var spec_grid_spacing = window.GetProperty("Spectrum Background: Grid spacing", 20);
-var ESL_color_delay = window.GetProperty("ESL colorized delayed", 600);
+var g_font, g_font2, font_size;
+var eslCtrl = new ActiveXObject("ESLyric");
+var eslPanels = eslCtrl.GetAll();
+get_font();
 if (spec_grid_spacing <= 0) spec_grid_spacing = 20;
 var spec_h = Math.floor(font_size * 3 / 12) * 20;
 if (spec_h > 300) spec_h = 300;
@@ -56,8 +57,8 @@ var img_rating_on, img_rating_off, btn_mood, mood_img;
 var col_spec, col_grid;
 
 get_colors();
-
-var timer_esl_1 = window.SetTimeout(function() {
+set_esl_color();
+/*var timer_esl_1 = window.SetTimeout(function() {
 	set_esl_color();
 	timer_esl_1 && window.ClearTimeout(timer_esl_1);
 	timer_esl_1 = false;
@@ -69,7 +70,7 @@ var timer_esl_2 = window.SetTimeout(function() {
 	timer_esl_2 = false;
 }, ESL_color_delay);
 //确保esl已经载入
-
+*/
 var pointArr = {
 	p1: Array(9*zdpi, 1*zdpi, 6.4*zdpi, 5.6*zdpi, 1*zdpi, 6.6*zdpi, 4.6*zdpi, 10.6*zdpi, 4*zdpi, 16*zdpi, 9*zdpi, 13.6*zdpi, 14*zdpi, 16*zdpi, 13.4*zdpi, 10.6*zdpi, 17*zdpi, 6.6*zdpi, 11.6*zdpi, 5.6*zdpi),
 	p2: Array(2*zdpi,1*zdpi,2*zdpi,16*zdpi,8*zdpi,12*zdpi,14*zdpi,16*zdpi,14*zdpi,1*zdpi),
@@ -242,14 +243,16 @@ function get_font() {
 	font_size = fbx_set[14];
 	g_font = GdiFont(fbx_set[13], fbx_set[14] + 2, 1);
 	g_font2 = GdiFont(fbx_set[13], fbx_set[14], fbx_set[15]);
-	g_font_esl = GdiFont(fbx_set[13], fbx_set[14], esl_font_bold ? 1 : fbx_set[15]);
-	if (esl_font_auto) window.NotifyOthers("_eslyric_set_text_font_", g_font_esl);
+	if (esl_font_auto) {
+		eslPanels.SetTextFont(fbx_set[13], fbx_set[14], esl_font_bold ? 1 : fbx_set[15]);
+		//eslPanels.SetVariesFontDeltaHeight(13);
+	}
 }
 
 function set_esl_color() {
-	window.NotifyOthers("_eslyric_set_background_color_", esl_bg);
-	window.NotifyOthers("_eslyric_set_text_color_normal_", esl_txt_normal);
-	window.NotifyOthers("_eslyric_set_text_color_highlight_", esl_txt_hight);
+	eslPanels.SetBackgroundColor(esl_bg);
+	eslPanels.SetTextColor(esl_txt_normal);
+	if(esl_hcolor_auto) eslPanels.SetTextHighlightColor(esl_txt_hight);
 }
 
 function get_imgs() {
@@ -471,6 +474,10 @@ function on_notify_data(name, info) {
 	case "set_eslfont_bold":
 		esl_font_bold = info;
 		get_font();
+		break;
+	case "set_eslhcolor_auto":
+		esl_hcolor_auto = info;
+		set_esl_color();
 		break;
 	case "set_rating_2_tag":
 		rating_to_tag = info;
