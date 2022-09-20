@@ -397,9 +397,9 @@ function get_font() {
 }
 
 function check_pidx() {
-	var total = plman.PlaylistCount;
 	if (show_active_pl) pidx = plman.ActivePlaylist;
 	else {
+		var total = plman.PlaylistCount;
 		for (var i = 0; i < total; i++) {
 			if (plman.GetPlaylistName(i) == "媒体库视图") {
 				pidx = i;
@@ -514,8 +514,10 @@ function on_playlists_changed() {
 	}
 }
 function on_playlist_switch() {
-	check_pidx();
-	if (show_active_pl || pidx == plman.ActivePlaylist) load_pl(20);
+	if (show_active_pl) {
+		check_pidx();
+		load_pl(20);
+	}
 }
 function on_playlist_items_selection_change() {
 	glist.focus_id = plman.GetPlaylistFocusItemIndex(pidx);
@@ -689,12 +691,12 @@ function on_notify_data(name, info) {
 		gcursor.bar_w = sys_scrollbar ? utils.GetSystemMetrics(2) : 12*zdpi;
 		repaint_main1 = repaint_main2;
 		break;
-	case "MPV":
+	/*case "MPV":
 		show_active_pl = true;
-		//window.SetProperty("List: Show active playlist", show_active_pl);
 		update_swBtn();
 		check_pidx();
 		load_pl(20);
+		break;*/
 	}
 }
 function on_script_unload() {

@@ -344,8 +344,8 @@ function on_mouse_lbtn_up(x, y) {
 		window.NotifyOthers("panel_main", active_main);
 		show_pl_setting = false;
 		window.RepaintRect(0, line_y, ww, 3);
-		auto_switch_lib();
-		window.NotifyOthers("MPV", true);
+		//auto_switch_lib();
+		//window.NotifyOthers("MPV", true);
 		window.RepaintRect(0, line_y, ww, 3);
 	}
 	//buttons[5].MouseUp();
