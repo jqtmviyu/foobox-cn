@@ -31,14 +31,14 @@ set "ID="
 
 :cmd1
 regsvr32.exe "%~dp0ShellExt32.dll"
-regsvr32.exe "%~dp0ShellExt64.dll"
+if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (regsvr32.exe "%~dp0ShellExt64.dll")
 if exist "%~dp0profile\user-components\foo_input_sacd\dsd_transcoder_x64.dll" (regsvr32.exe "%~dp0profile\user-components\foo_input_sacd\dsd_transcoder_x64.dll")
 echo 按任意键返回菜单
 goto backtomenu
 
 :cmd3
 regsvr32.exe /u "%~dp0ShellExt32.dll"
-regsvr32.exe /u "%~dp0ShellExt64.dll"
+if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (regsvr32.exe /u "%~dp0ShellExt64.dll")
 if exist "%~dp0profile\user-components\foo_input_sacd\dsd_transcoder_x64.dll" (regsvr32.exe /u "%~dp0profile\user-components\foo_input_sacd\dsd_transcoder_x64.dll")
 echo 按任意键返回菜单
 goto backtomenu
