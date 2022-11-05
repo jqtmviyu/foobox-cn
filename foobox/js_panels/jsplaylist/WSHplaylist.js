@@ -1075,14 +1075,13 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 							if (this.l_rating != this.rating) {
 								if (this.metadb) {
 									if (rating2tag && this.tracktype < 2) this.metadb.UpdateFileInfoSimple("RATING", this.l_rating);
-									fb.RunContextCommandWithMetadb("等级/" + ((this.l_rating == 0) ? "<不设置>" : this.l_rating), this.metadb) || fb.RunContextCommandWithMetadb("Rating/" + ((this.l_rating == 0) ? "<not set>" : this.l_rating), this.metadb);
+									fb.RunContextCommandWithMetadb("播放统计信息/等级/" + ((this.l_rating == 0) ? "<未设置>" : this.l_rating), this.metadb) || fb.RunContextCommandWithMetadb("Playback Statistics/Rating/" + ((this.l_rating == 0) ? "<not set>" : this.l_rating), this.metadb);
 									this.rating = this.l_rating;
 								};
 							};
 							else {
 								if (rating2tag && this.tracktype < 2) this.metadb.UpdateFileInfoSimple("RATING", "");
-								fb.RunContextCommandWithMetadb("等级/<不设置>", this.metadb) || fb.RunContextCommandWithMetadb("Rating/<not set>", this.metadb);
-
+								fb.RunContextCommandWithMetadb("播放统计信息/等级/<未设置>", this.metadb) || fb.RunContextCommandWithMetadb("Playback Statistics/Rating/<not set>", this.metadb);
 								this.rating = 0;
 							};
 						};
