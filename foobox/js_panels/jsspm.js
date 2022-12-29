@@ -5,7 +5,7 @@
 
 var sys_scrollbar = window.GetProperty("foobox.ui.scrollbar.system", false);
 var zdpi = 1, dark_mode = 0;
-var g_handles = 0;
+//var g_handles = 0;
 var default_sort =  window.GetProperty("_PROPERTY: New playlist sortorder", "%album% | %discnumber% | %tracknumber% | %title%");
 var DefaultPlaylistIdx = -1;
 var g_font, g_font_b, g_font_track;
@@ -715,7 +715,7 @@ oBrowser = function(name) {
 					};
 					brw.repaint();
 				};
-				if (g_handles > 0) {
+				/*if (g_handles > 0) {
 					var row_current = this.activeRow;
 					if (this.activeRow > -1 && !plman.IsAutoPlaylist(row_current)) {
 						var insert_index = plman.PlaylistItemCount(row_current);
@@ -725,7 +725,7 @@ oBrowser = function(name) {
 						plman.InsertPlaylistItems(plman.PlaylistCount - 1, 0, plman.GetPlaylistSelectedItems(plman.ActivePlaylist), false);
 					}
 				}
-				g_handles = 0;
+				g_handles = 0;*/
 			};
 
 			// scrollbar
@@ -791,7 +791,7 @@ oBrowser = function(name) {
 				if (y > brw.y) {
 					if (this.activeRow > -1) {
 						if (this.rows[this.activeRow].isAutoPlaylist) {
-							g_dragndrop_targetPlaylistId = -1;
+							g_dragndrop_targetPlaylistId = -2;
 						}
 						else {
 							g_dragndrop_targetPlaylistId = this.activeRow;
@@ -800,7 +800,7 @@ oBrowser = function(name) {
 					else {
 						g_dragndrop_targetPlaylistId = -1;
 					};
-				};
+				} else if(y > ppt.headerBarHeight) g_dragndrop_targetPlaylistId = -1;
 			}
 			else {
 				g_dragndrop_bottom = true;
@@ -1641,7 +1641,7 @@ function get_colors() {
 	g_color_bt_overlay = g_color_normal_txt & 0x35ffffff;
 	g_scroll_color = g_color_normal_txt & 0x95ffffff;
 	g_color_selected_bg = window.GetColourDUI(ColorTypeDUI.selection);
-	g_color_topbar = g_color_normal_txt & 0x08ffffff;
+	g_color_topbar = g_color_normal_txt & 0x09ffffff;
 	c_default_hl = window.GetColourDUI(ColorTypeDUI.highlight);
 	g_color_highlight = c_default_hl;
 	g_color_playing_txt = RGB(255, 255, 255);
@@ -2083,10 +2083,10 @@ function on_notify_data(name, info) {
 			brw.repaint();
 		}
 		break;
-	case "WSH_playlist_drag_drop":
+	//case "WSH_playlist_drag_drop":
 		// send from a WSH playlist panel to simulate a drag and drop feature
-		g_handles = info;
-		break;
+		//g_handles = info;
+		//break;
 	case "lock_lib_playlist":
 		if (ppt.lockReservedPlaylist == info) break;
 		ppt.lockReservedPlaylist = info;
@@ -2142,7 +2142,7 @@ function on_drag_over(action, x, y, mask) {
 };
 
 function on_drag_drop(action, x, y, mask) {
-	if (y < brw.y) {
+	if (y < ppt.headerBarHeight) {
 		action.Effect = 0;
 	} else {
 		var drop_done = false;
@@ -2155,9 +2155,10 @@ function on_drag_drop(action, x, y, mask) {
 			action.Base = plman.PlaylistItemCount(total_pl);
 			action.ToSelect = plman.PlaylistCount == 1; // switch to and set focus if only playlist
 			action.Effect = 1;
-		} else if (plman.IsPlaylistLocked(g_dragndrop_targetPlaylistId)) {
+		} else if (g_dragndrop_targetPlaylistId == -2 || plman.IsPlaylistLocked(g_dragndrop_targetPlaylistId)) {
 			// mouse over an existing playlist but can't drop there
 			action.Effect = 0;
+			fb.ShowPopupMessage("  错误信息\n----------------\n目标播放列表是智能列表或已被锁定，不可以手动添加音轨.", "不允许的操作");
 		} else {
 			// drop to an existing playlist
 			drop_done = true;

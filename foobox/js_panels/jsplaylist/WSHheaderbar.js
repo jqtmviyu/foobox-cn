@@ -158,9 +158,9 @@ oHeaderBar = function() {
 		};
 	};
 
-	this.drawHiddenPanel = function(gr) {
-		gr.FillSolidRect(this.x, this.y, this.w + cScrollBar.width, 1, g_color_normal_bg); //g_color_normal_txt & 0x09ffffff);
-	}
+	//this.drawHiddenPanel = function(gr) {
+	//	gr.FillSolidRect(this.x, this.y, this.w + cScrollBar.width, 1, g_color_normal_bg); //g_color_normal_txt & 0x09ffffff);
+	//}
 
 	this.drawColumns = function(gr) {
 		var j = 0,

@@ -103,25 +103,9 @@ StringAlignment = {
 	Centre: 1,
 	Far: 2
 };
-var lt_stringformat = StringFormat(StringAlignment.Near, StringAlignment.Near);
-var ct_stringformat = StringFormat(StringAlignment.Centre, StringAlignment.Near);
-var rt_stringformat = StringFormat(StringAlignment.Far, StringAlignment.Near);
 var lc_stringformat = StringFormat(StringAlignment.Near, StringAlignment.Centre);
 var cc_stringformat = StringFormat(StringAlignment.Centre, StringAlignment.Centre);
-var rc_stringformat = StringFormat(StringAlignment.Far, StringAlignment.Centre);
-var lb_stringformat = StringFormat(StringAlignment.Near, StringAlignment.Far);
-var cb_stringformat = StringFormat(StringAlignment.Centre, StringAlignment.Far);
-var rb_stringformat = StringFormat(StringAlignment.Far, StringAlignment.Far);
 
-var lc_txt = DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX | DT_END_ELLIPSIS;
-var rc_txt = DT_RIGHT | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX | DT_END_ELLIPSIS;
-var rb_txt = DT_RIGHT | DT_BOTTOM | DT_CALCRECT | DT_NOPREFIX | DT_END_ELLIPSIS;
-var lt_txt = DT_LEFT | DT_TOP | DT_CALCRECT | DT_NOPREFIX | DT_END_ELLIPSIS;
-var cc_txt = DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX | DT_END_ELLIPSIS;
-var ccf_txt = DT_CENTER | DT_NOPREFIX | DT_CALCRECT | DT_VCENTER;
-var lcs_txt = DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX | DT_SINGLELINE | DT_END_ELLIPSIS;
-var rcs_txt = DT_RIGHT | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX | DT_SINGLELINE | DT_END_ELLIPSIS;
-var ccs_txt = DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX | DT_SINGLELINE | DT_END_ELLIPSIS;
 //}}
 // {{
 function num(strg, nb) {
@@ -390,4 +374,12 @@ function crc32(str) {
 	};
 
 	return crc ^ (-1);
+};
+
+var g_drop_effect = {
+    none: 0,
+    copy: 1,
+    move: 2,
+    link: 4,
+    scroll: 0x80000000
 };

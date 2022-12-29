@@ -13,7 +13,7 @@ var track_edit_app = window.GetProperty("foobox.track.editor", "D:\\MusicTag\\Mu
 var color_bycover = window.GetProperty("foobox.color.by.cover", true);
 let dark_mode = 0;
 // GLOBALS
-var g_script_version = "7.0";
+var g_script_version = "7.1";
 var g_middle_clicked = false;
 var g_middle_click_timer = false;
 var g_queue_origin = -1;
@@ -23,11 +23,8 @@ var g_focus = true;
 var g_init_window = true;
 var g_left_click_hold = false;
 var g_selHolder = null;
-var g_repaint = 0;
 var g_seconds = 0;
-var g_1x1 = false;
-var repaint_main = true,
-	repaint_main1 = true,
+var	repaint_main1 = true,
 	repaint_main2 = true,
 	g_timer1 = false,
 	g_timer2 = false;
@@ -40,15 +37,15 @@ var fso = new ActiveXObject("Scripting.FileSystemObject");
 var setting_init = false;
 // drag'n drop from windows system
 var g_dragndrop_status = false;
-var g_dragndrop_x = -1;
-var g_dragndrop_y = -1;
+//var g_dragndrop_x = -1;
+//var g_dragndrop_y = -1;
 var g_dragndrop_bottom = false;
 var g_dragndrop_timer = false;
 var g_dragndrop_trackId = -1;
 var g_dragndrop_rowId = -1;
-var g_dragndrop_targetPlaylistId = -1;
-var g_dragndrop_total_before = 0;
-var g_dragndrop_drop_forbidden = false;
+//var g_dragndrop_targetPlaylistId = -1;
+//var g_dragndrop_total_before = 0;
+//var g_dragndrop_drop_forbidden = false;
 // font vars
 var g_fname, g_fsize, g_fstyle;
 var g_font = null;
@@ -72,7 +69,7 @@ var g_avoid_on_playlist_items_reordered = false;
 var g_avoid_on_item_focus_change = false;
 var g_avoid_on_playlist_items_added = false;
 var g_avoid_on_playlist_items_removed = false;
-var g_collect_counter = 0;
+//var g_collect_counter = 0;
 var g_first_launch = true;
 var g_instancetype = window.InstanceType;
 
@@ -285,7 +282,7 @@ dragndrop = {
 	drop_id: -1,
 	timerID: false,
 	drag_in: false,
-	drag_out: false,
+	//drag_out: false,
 	clicked: false,
 	moved: false
 };
@@ -329,9 +326,7 @@ function set_scroll_delta() {
 
 // Images cache
 function on_get_album_art_done(metadb, art_id, image, image_path) {
-
-	if (g_image_cache.counter > 0) g_image_cache.counter--;
-
+	//if (g_image_cache.counter > 0) g_image_cache.counter--;
 	var cover_metadb = null;
 	var fin = p.list.items.length;
 	for (var i = 0; i < fin; i++) {
@@ -345,26 +340,14 @@ function on_get_album_art_done(metadb, art_id, image, image_path) {
 			};
 			if (cover_metadb.Compare(metadb)) {
 				p.list.groups[albumIndex].cover_img = g_image_cache.getit(metadb, p.list.items[i].tracktype, image, albumIndex);
-				var cx = p.list.items[i].x;
-				var cy = p.list.items[i].y;
-				// fix for a weird behaviour with engine Jscript9
-				if (!cx) cx = 2;
-				else if (cx < 2) cx = 2;
-				if (!cy) cy = 2;
-				else if (cy < 2) cy = 2;
-				var cw = cover.column ? ((p.headerBar.columns[0].w <= cover.max_w) ? cover.max_w : p.headerBar.columns[0].w) : cover.max_w;
 				if (!g_mouse_wheel_timer && !cScrollBar.timerID2 && !cList.repaint_timer) {
 					if (!cover.repaint_timer) {
 						cover.repaint_timer = window.SetTimeout(function() {
-							g_1x1 = false;
 							if (!g_mouse_wheel_timer && !cScrollBar.timerID2 && !cList.repaint_timer) cover_repaint(); //window.RepaintRect(p.list.x, p.list.y, cw, p.list.h);
 							cover.repaint_timer && window.ClearTimeout(cover.repaint_timer);
 							cover.repaint_timer = false;
-						}, 20);
+						}, 10);
 					};
-					g_1x1 = true;
-					window.RepaintRect(0, 0, 1, 1);
-					g_1x1 = false;
 				};
 				break;
 			};
@@ -380,26 +363,14 @@ function on_load_image_done(tid, image){
 			if(p.list.groups[albumIndex].tid == tid && p.list.groups[albumIndex].load_requested == 1) {
 				p.list.groups[albumIndex].load_requested = 2;
 				p.list.groups[albumIndex].cover_img = g_image_cache.getit(p.list.items[k].metadb, p.list.items[k].tracktype, image, albumIndex);
-				var cx = p.list.items[k].x;
-				var cy = p.list.items[k].y;
-				// fix for a weird behaviour with engine Jscript9
-				if (!cx) cx = 2;
-				else if (cx < 2) cx = 2;
-				if (!cy) cy = 2;
-				else if (cy < 2) cy = 2;
-				var cw = cover.column ? ((p.headerBar.columns[0].w <= cover.max_w) ? cover.max_w : p.headerBar.columns[0].w) : cover.max_w;
 				if (!g_mouse_wheel_timer && !cScrollBar.timerID2 && !cList.repaint_timer) {
 					if (!cover.repaint_timer) {
 						cover.repaint_timer = window.SetTimeout(function() {
-							g_1x1 = false;
 							if (!g_mouse_wheel_timer && !cScrollBar.timerID2 && !cList.repaint_timer) cover_repaint(); //window.RepaintRect(p.list.x, p.list.y, cw, p.list.h);
 							cover.repaint_timer && window.ClearTimeout(cover.repaint_timer);
 							cover.repaint_timer = false;
-						}, 20);
+						}, 8);
 					};
-					g_1x1 = true;
-					window.RepaintRect(0, 0, 1, 1);
-					g_1x1 = false;
 				};
                 break;
             };
@@ -408,14 +379,14 @@ function on_load_image_done(tid, image){
 };
 
 image_cache = function() {
-	this.counter = 0;
+	//this.counter = 0;
 	this._cachelist = {};
 	this.hit = function(metadb, albumIndex, force) {
 		var _crc = p.list.groups[albumIndex].cachekey;
 		var img = this._cachelist[_crc];
 		if (typeof img == "undefined" || img == null || force) { // if image not in cache, we load it asynchronously
 			var crc_exist = check_cache(albumIndex);
-			if (crc_exist && p.list.groups[albumIndex].load_requested == 0){
+			if (crc_exist && p.list.groups[albumIndex].load_requested == 0 && !g_mouse_wheel_timer && !cScrollBar.timerID2){
 				if (!cover.load_timer) {
 					cover.load_timer = window.SetTimeout(function() {
 						try {
@@ -424,10 +395,10 @@ image_cache = function() {
                             } catch(e) {};
 						cover.load_timer && window.ClearTimeout(cover.load_timer);
 						cover.load_timer = false;
-					}, (g_mouse_wheel_timer || cScrollBar.timerID2 ? 20 : 5));
+					}, 12);//(g_mouse_wheel_timer || cScrollBar.timerID2 ? 20 : 6));
 				};
 			}
-			else if(p.list.groups[albumIndex].load_requested == 0){
+			else if(p.list.groups[albumIndex].load_requested == 0 && !g_mouse_wheel_timer && !cScrollBar.timerID2){
 				if (!cover.load_timer) {
 					cover.load_timer = window.SetTimeout(function() {
 						switch (cGroup.pattern_idx) {
@@ -458,14 +429,14 @@ image_cache = function() {
 								full_repaint();
 							}
 							else {
-								g_image_cache.counter++;
+								//g_image_cache.counter++;
 								p.list.groups[albumIndex].load_requested = 1;
 								utils.GetAlbumArtAsync(window.ID, metadb, art_id, true, false, false);
 							}
 						} catch(e) {};
 						cover.load_timer && window.ClearTimeout(cover.load_timer);
 						cover.load_timer = false;
-					}, (g_mouse_wheel_timer || cScrollBar.timerID2 ? 25 : 5));
+					}, 16);//(g_mouse_wheel_timer || cScrollBar.timerID2 ? 25 : 8));
 				};
 			}
 		};
@@ -630,6 +601,8 @@ function on_init() {
 		};
 
 		if (repaint_1) {
+			//images.loading_angle = (images.loading_angle < 360 ? images.loading_angle + 36 : 36);
+			images.loading_angle = (images.loading_angle + 30) % 360;
 			window.Repaint();
 		};
 
@@ -656,14 +629,15 @@ function on_init() {
 			window_visible = true;
 		};
 
-		images.loading_angle = (images.loading_angle < 360 ? images.loading_angle + 36 : 36);
+		//images.loading_angle = (images.loading_angle < 360 ? images.loading_angle + 36 : 36);
+		images.loading_angle = (images.loading_angle + 30) % 360;
 
 		if (repaint_cover1 == repaint_cover2) {
 			repaint_cover2 = !repaint_cover1;
 			if (!cScrollBar.timerID2 && !g_mouse_wheel_timer) repaint_2 = true;
 		};
 
-		if (repaint_2 || g_image_cache.counter > 0) {
+		if (repaint_2) {// || g_image_cache.counter > 0) {
 			if (!g_mouse_wheel_timer && !cScrollBar.timerID2 && !cList.repaint_timer) {
 				var bigger_grp_height = (cGroup.default_expanded_height > cGroup.default_collapsed_height ? cGroup.default_expanded_height : cGroup.default_collapsed_height);
 				if (p.headerBar.columns[0].percent > 0) {
@@ -722,147 +696,126 @@ function on_size() {
 
 function on_paint(gr) {
 	if (!ww) return true;
-
-	if (!g_1x1) {
-
-		if (!cSettings.visible) {
-			gr.FillSolidRect(0, p.list.y, ww, wh - p.list.y, g_color_normal_bg);
-
-			// List
-			if (p.list) {
-				if (p.list.count > 0) {
-					// calculate columns metrics before drawing row contents!
-					p.headerBar.calculateColumns();
-
-					// draw rows of the playlist
-					p.list && p.list.draw(gr);
-
-					// scrollbar
-					if (/*properties.showscrollbar && */p.scrollbar && p.list.totalRows > 0 && (p.list.totalRows > p.list.totalRowVisible)) {
-						p.scrollbar.visible = true;
-						p.scrollbar.draw(gr);
-					}
-					else {
-						p.scrollbar.visible = false;
-					};
-
-					// draw flashing beam if scroll max reached on mouse wheel! (android like effect)
-					if (p.list.beam > 0) {
-						var r = getRed(g_color_highlight);
-						var g = getGreen(g_color_highlight);
-						var b = getBlue(g_color_highlight);
-						var a = Math.floor((p.list.beam_alpha <= 250 ? p.list.beam_alpha : 250) / 12);
-						var beam_h = Math.floor(cTrack.height * 7 / 4);
-						var alpha = (p.list.beam_alpha <= 255 ? p.list.beam_alpha : 255);
-						switch (p.list.beam) {
-						case 1:
-							// top beam
-							gr.DrawImage(images.beam, p.list.x, p.list.y - cHeaderBar.borderWidth * 10, p.list.w, beam_h - cHeaderBar.borderWidth, 0, 0, images.beam.Width, images.beam.Height, 180, alpha);
-							break;
-						case 2:
-							// bot beam
-							gr.DrawImage(images.beam, p.list.x, p.list.y + p.list.h - beam_h + cHeaderBar.borderWidth * 10, p.list.w, beam_h, 0, 0, images.beam.Width, images.beam.Height, 0, alpha);
-							break;
-						};
-					};
-
+	if (!cSettings.visible) {
+		gr.FillSolidRect(0, p.list.y, ww, wh - p.list.y, g_color_normal_bg);
+		// List
+		if (p.list) {
+			if (p.list.count > 0) {
+				// calculate columns metrics before drawing row contents!
+				p.headerBar.calculateColumns();
+				// draw rows of the playlist
+				p.list && p.list.draw(gr);
+				// scrollbar
+				if (/*properties.showscrollbar && */p.scrollbar && p.list.totalRows > 0 && (p.list.totalRows > p.list.totalRowVisible)) {
+					p.scrollbar.visible = true;
+					p.scrollbar.draw(gr);
 				}
 				else {
-
-					if (plman.PlaylistCount > 0) {
-						var text_top = p.list.name;
-						var text_bot = "空列表";
-					}
-					else {
-						var text_top = "从播放列表管理面板创建一个新的播放列表开始！";
-						var text_bot = "当前无播放列表";
-					};
-					var c_txtlight = blendColors(g_color_normal_bg, g_color_normal_txt, 0.4);
-					// if Search Playlist, draw image "No Result"
-					if (text_top.substr(0, 4) == "搜索 [") {
-						var search_text = text_top.substr(4, text_top.length - 5);
-						gr.GdiDrawText("搜索 \"" + search_text + "\" 无结果", g_font_blank,c_txtlight, 0, 0 - zoom(20, zdpi), ww, wh, cc_txt);
-						gr.GdiDrawText(text_bot, g_font_group2, c_txtlight, 0, 0 + zoom(20, zdpi), ww, wh, cc_txt);
-						gr.FillGradRect(40, Math.floor(wh / 2), ww - 80, 1, 0, 0, c_txtlight, 0.5);
-					}
-					else {
-						// if empty playlist, display text info
-						gr.GdiDrawText(text_top, g_font_blank, c_txtlight, 0, 0 - zoom(20, zdpi), ww, wh, cc_txt);
-						gr.GdiDrawText(text_bot, g_font_group2, c_txtlight, 0, 0 + zoom(20, zdpi), ww, wh, cc_txt);
-						gr.FillGradRect(40, Math.floor(wh / 2), ww - 80, 1, 0, 0, c_txtlight, 0.5);
+					p.scrollbar.visible = false;
+				};
+				// draw flashing beam if scroll max reached on mouse wheel! (android like effect)
+				if (p.list.beam > 0) {
+					var r = getRed(g_color_highlight);
+					var g = getGreen(g_color_highlight);
+					var b = getBlue(g_color_highlight);
+					var a = Math.floor((p.list.beam_alpha <= 250 ? p.list.beam_alpha : 250) / 12);
+					var beam_h = Math.floor(cTrack.height * 7 / 4);
+					var alpha = (p.list.beam_alpha <= 255 ? p.list.beam_alpha : 255);
+					switch (p.list.beam) {
+					case 1:
+						// top beam
+						gr.DrawImage(images.beam, p.list.x, p.list.y - cHeaderBar.borderWidth * 10, p.list.w, beam_h - cHeaderBar.borderWidth, 0, 0, images.beam.Width, images.beam.Height, 180, alpha);
+						break;
+					case 2:
+						// bot beam
+						gr.DrawImage(images.beam, p.list.x, p.list.y + p.list.h - beam_h + cHeaderBar.borderWidth * 10, p.list.w, beam_h, 0, 0, images.beam.Width, images.beam.Height, 0, alpha);
+						break;
 					};
 				};
-			};
-
-			gr.FillSolidRect(0, 0, ww, p.list.y, g_color_normal_bg);
-			gr.FillSolidRect(0, p.list.y, ww, 1, g_color_line_div);
-			p.headerBar && p.headerBar.drawColumns(gr);
-			if (p.headerBar.borderDragged && p.headerBar.borderDraggedId >= 0) {
-				// all borders
-				var fin = p.headerBar.borders.length;
-				for (var b = 0; b < fin; b++) {
-					var lg_x = p.headerBar.borders[b].x - 2;
-					var lg_w = p.headerBar.borders[b].w;
-					var segment_h = g_z5;
-					var gap_h = g_z5;
-					if (b == p.headerBar.borderDraggedId) {
-						var d = ((mouse_x / g_z10) - Math.floor(mouse_x / g_z10)) * g_z10; // give a value between [0;9]
-					}
-					else {
-						d = 5;
-					};
-					var ty = 0;
-					for (var lg_y = p.list.y; lg_y < p.list.y + p.list.h + segment_h; lg_y += segment_h + gap_h) {
-						ty = lg_y - segment_h + d;
-						th = segment_h;
-						if (ty < p.list.y) {
-							th = th - Math.abs(p.list.y - ty);
-							ty = p.list.y;
-						}
-						if (b == p.headerBar.borderDraggedId) {
-							gr.FillSolidRect(lg_x, ty, lg_w, th, g_color_normal_txt & 0x32ffffff);
-						}
-						else {
-							gr.FillSolidRect(lg_x, ty, lg_w, th, g_color_normal_txt & 0x16ffffff);
-						};
-					};
-				};
-			};
-			p.headerBar && p.headerBar.drawHiddenPanel(gr);
-
-			// Incremental Search Display
-			if (cList.search_string.length > 0) {
-				var string_w = gr.CalcTextWidth(cList.search_string, cList.incsearch_font);
-				gr.SetSmoothingMode(2);
-				p.list.tt_w = Math.round(string_w + 24 * zdpi);
-				p.list.tt_h = cTrack.height * 1.5;
-				p.list.tt_x = Math.floor((p.list.w - p.list.tt_w) / 2);
-				p.list.tt_y = p.list.y + Math.floor((p.list.h - p.list.tt_h) / 2);;
-				gr.FillRoundRect(p.list.tt_x, p.list.tt_y, p.list.tt_w, p.list.tt_h, 5, 5, RGBA(0, 0, 0, 150));
-				gr.DrawRoundRect(p.list.tt_x-1, p.list.tt_y-1, p.list.tt_w+2, p.list.tt_h+2, 5, 5, 1.0, RGBA(0, 0, 0, 180));
-				try {
-					gr.GdiDrawText(cList.search_string, cList.incsearch_font, RGB(0, 0, 0), p.list.tt_x + 1, p.list.tt_y + 1, p.list.tt_w, p.list.tt_h, ccf_txt);
-					gr.GdiDrawText(cList.search_string, cList.incsearch_font, cList.inc_search_noresult ? RGB(255, 70, 70) : RGB(250, 250, 250), p.list.tt_x, p.list.tt_y, p.list.tt_w, p.list.tt_h, ccf_txt);
+			}
+			else {
+				if (plman.PlaylistCount > 0) {
+					var text_top = p.list.name;
+					var text_bot = "空列表";
 				}
-				catch (e) {};
+				else {
+					var text_top = "从播放列表管理面板创建一个新的播放列表开始！";
+					var text_bot = "当前无播放列表";
+				};
+				var c_txtlight = blendColors(g_color_normal_bg, g_color_normal_txt, 0.4);
+				// if Search Playlist, draw image "No Result"
+				if (text_top.substr(0, 4) == "搜索 [") {
+					var search_text = text_top.substr(4, text_top.length - 5);
+					gr.GdiDrawText("搜索 \"" + search_text + "\" 无结果", g_font_blank,c_txtlight, 0, 0 - zoom(20, zdpi), ww, wh, cc_txt);
+					gr.GdiDrawText(text_bot, g_font_group2, c_txtlight, 0, 0 + zoom(20, zdpi), ww, wh, cc_txt);
+					gr.FillGradRect(40, Math.floor(wh / 2), ww - 80, 1, 0, 0, c_txtlight, 0.5);
+				}
+				else {
+					// if empty playlist, display text info
+					gr.GdiDrawText(text_top, g_font_blank, c_txtlight, 0, 0 - zoom(20, zdpi), ww, wh, cc_txt);
+					gr.GdiDrawText(text_bot, g_font_group2, c_txtlight, 0, 0 + zoom(20, zdpi), ww, wh, cc_txt);
+					gr.FillGradRect(40, Math.floor(wh / 2), ww - 80, 1, 0, 0, c_txtlight, 0.5);
+				};
 			};
-
-		}
-		else {
-			// Settings...
-			p.settings && p.settings.draw(gr);
 		};
-	};
-	// tweaks to fix bug in timer/memory/repaint handle in WSH Panel Mod v1.5.6
-	g_collect_counter++;
-	if (g_collect_counter > 50) {
-		g_collect_counter = 0;
-		//CollectGarbage();
+		gr.FillSolidRect(0, 0, ww, p.list.y, g_color_normal_bg);
+		gr.FillSolidRect(0, p.list.y, ww, 1, g_color_line_div);
+		p.headerBar && p.headerBar.drawColumns(gr);
+		if (p.headerBar.borderDragged && p.headerBar.borderDraggedId >= 0) {
+			// all borders
+			var fin = p.headerBar.borders.length;
+			for (var b = 0; b < fin; b++) {
+				var lg_x = p.headerBar.borders[b].x - 2;
+				var lg_w = p.headerBar.borders[b].w;
+				var segment_h = g_z5;
+				var gap_h = g_z5;
+				if (b == p.headerBar.borderDraggedId) {
+					var d = ((mouse_x / g_z10) - Math.floor(mouse_x / g_z10)) * g_z10; // give a value between [0;9]
+				}
+				else {
+					d = 5;
+				};
+				var ty = 0;
+				for (var lg_y = p.list.y; lg_y < p.list.y + p.list.h + segment_h; lg_y += segment_h + gap_h) {
+					ty = lg_y - segment_h + d;
+					th = segment_h;
+					if (ty < p.list.y) {
+						th = th - Math.abs(p.list.y - ty);
+						ty = p.list.y;
+					}
+					if (b == p.headerBar.borderDraggedId) {
+						gr.FillSolidRect(lg_x, ty, lg_w, th, g_color_normal_txt & 0x32ffffff);
+					}
+					else {
+						gr.FillSolidRect(lg_x, ty, lg_w, th, g_color_normal_txt & 0x16ffffff);
+					};
+				};
+			};
+		};
+		//p.headerBar && p.headerBar.drawHiddenPanel(gr);
+		// Incremental Search Display
+		if (cList.search_string.length > 0) {
+			var string_w = gr.CalcTextWidth(cList.search_string, cList.incsearch_font);
+			gr.SetSmoothingMode(2);
+			p.list.tt_w = Math.round(string_w + 24 * zdpi);
+			p.list.tt_h = cTrack.height * 1.5;
+			p.list.tt_x = Math.floor((p.list.w - p.list.tt_w) / 2);
+			p.list.tt_y = p.list.y + Math.floor((p.list.h - p.list.tt_h) / 2);;
+			gr.FillRoundRect(p.list.tt_x, p.list.tt_y, p.list.tt_w, p.list.tt_h, 5, 5, RGBA(0, 0, 0, 150));
+			gr.DrawRoundRect(p.list.tt_x-1, p.list.tt_y-1, p.list.tt_w+2, p.list.tt_h+2, 5, 5, 1.0, RGBA(0, 0, 0, 180));
+			try {
+				gr.GdiDrawText(cList.search_string, cList.incsearch_font, RGB(0, 0, 0), p.list.tt_x + 1, p.list.tt_y + 1, p.list.tt_w, p.list.tt_h, ccf_txt);
+				gr.GdiDrawText(cList.search_string, cList.incsearch_font, cList.inc_search_noresult ? RGB(255, 70, 70) : RGB(250, 250, 250), p.list.tt_x, p.list.tt_y, p.list.tt_w, p.list.tt_h, ccf_txt);
+			}
+			catch (e) {};
+		};
+	}
+	else {
+		p.settings && p.settings.draw(gr);
 	};
 };
 
 // Mouse Callbacks
-
 function on_mouse_lbtn_down(x, y) {
 
 	if (properties.enableTouchControl) {
@@ -995,13 +948,13 @@ function on_mouse_lbtn_up(x, y) {
 		// check list
 		p.list.check("up", x, y);
 
-		if (dragndrop.drag_out) {
+		//if (dragndrop.drag_out) {
 
-			if (x < 0 && y > 0 && y < wh) {
-				window.NotifyOthers("WSH_playlist_drag_drop", p.list.metadblist_selection.Count);
-				dragndrop.drag_out = false;
-			};
-		};
+			//if (x < 0 && y > 0 && y < wh) {
+				//window.NotifyOthers("WSH_playlist_drag_drop", p.list.metadblist_selection.Count);
+				//dragndrop.drag_out = false;
+			//};
+		//};
 
 		// check scrollbar
 		if (/*properties.showscrollbar && */p.scrollbar && p.list.totalRows > 0 && (p.list.totalRows > p.list.totalRowVisible)) {
@@ -1054,11 +1007,10 @@ function on_mouse_lbtn_up(x, y) {
 				};
 			};
 		};
-
 		dragndrop.drag_id = -1;
 		dragndrop.drop_id = -1;
 		dragndrop.drag_in = false;
-		dragndrop.drag_out = false;
+		//dragndrop.drag_out = false;
 		dragndrop.moved = false;
 		dragndrop.clicked = false;
 		dragndrop.moved = false;
@@ -1195,7 +1147,7 @@ function on_mouse_move(x, y) {
 			};
 
 			// if Dragging Track on playlist, scroll playlist if required
-			if (dragndrop.drag_in) {
+		/*	if (dragndrop.drag_in) {
 				// Dragn Drop
 				if (y < p.list.y) {
 					if (!p.list.buttonclicked) {
@@ -1241,7 +1193,7 @@ function on_mouse_move(x, y) {
 						}, 75);
 					};
 				};
-			};
+			};*/
 		};
 	};
 	// save coords
@@ -1316,7 +1268,7 @@ function on_mouse_wheel(delta) {
 			// timer to tell to other functions (on cover load asynch done, ...) that a repaint is already running
 			if (!g_mouse_wheel_timer) {
 				// set scroll speed / mouse y offset from panel limits
-				if (g_dragndrop_status) {
+				/*if (g_dragndrop_status) {
 					if (g_dragndrop_y < p.list.y + cTrack.height) {
 						var s = Math.abs(g_dragndrop_y - (p.list.y + cTrack.height));
 						var h = Math.ceil(cTrack.height / 2);
@@ -1336,8 +1288,8 @@ function on_mouse_wheel(delta) {
 					else {
 						scroll_speed_ms = 20;
 					};
-				}
-				else {
+				}*/
+				//else {
 					if (mouse_y < p.list.y) {
 						var s = Math.abs(mouse_y - p.list.y);
 						var h = Math.ceil(cTrack.height / 2);
@@ -1357,7 +1309,7 @@ function on_mouse_wheel(delta) {
 					else {
 						scroll_speed_ms = 20;
 					};
-				};
+				//};
 					//
 				g_mouse_wheel_timer = window.SetTimeout(function() {
 					var cw = cover.column ? ((p.headerBar.columns[0].w <= cover.max_w) ? cover.max_w : p.headerBar.columns[0].w) : cover.max_w;
@@ -2251,7 +2203,7 @@ function get_colors() {
 	g_scroll_color = g_color_normal_txt & 0x95ffffff;
 	g_color_selected_bg = window.GetColourDUI(ColorTypeDUI.selection);
 	g_group_header_bg = RGBA(0, 0, 0, 6);
-	g_color_topbar = g_color_normal_txt & 0x08ffffff;
+	g_color_topbar = g_color_normal_txt & 0x09ffffff;
 	c_default_hl = window.GetColourDUI(ColorTypeDUI.highlight);
 	g_color_highlight = c_default_hl;
 	g_color_bt_overlay = g_color_normal_txt & 0x35ffffff;
@@ -2730,34 +2682,74 @@ function on_drag_leave() {
 	g_dragndrop_status = false;
 	g_dragndrop_trackId = -1;
 	g_dragndrop_rowId = -1;
-	g_dragndrop_targetPlaylistId = -1;
+	//g_dragndrop_targetPlaylistId = -1;
 	p.list.buttonclicked = false;
 	cScrollBar.timerID1 && window.ClearInterval(cScrollBar.timerID1);
 	cScrollBar.timerID1 = false;
 };
 
 function on_drag_over(action, x, y, mask) {
-	if (y < p.list.y) {
-		action.Effect = 0;
-	} else {
-		g_dragndrop_trackId = -1;
-		g_dragndrop_rowId = -1;
-		g_dragndrop_bottom = false;
-		p.list.check("drag_over", x, y);
-		action.Effect = plman.ActivePlaylist > -1 && plman.IsPlaylistLocked(plman.ActivePlaylist) ? 0 : 1;
-	}
-	full_repaint();
+	if (dragndrop.drag_in && g_dragndrop_status) {
+		// Dragn Drop
+		if (y < p.list.y) {
+			action.Effect = 0;
+			if (!p.list.buttonclicked) {
+				p.list.buttonclicked = true;
+				if (!cScrollBar.timerID1) {
+					cScrollBar.timerID1 = window.SetInterval(function() {
+					on_mouse_wheel(1);
+					}, 5);
+				};
+			} else {
+				full_repaint();
+			};
+		} else if (y > p.list.h) {
+			action.Effect = 0;
+			if (!p.list.buttonclicked) {
+				p.list.buttonclicked = true;
+				if (!cScrollBar.timerID1) {
+					cScrollBar.timerID1 = window.SetInterval(function() {
+					on_mouse_wheel(-1);
+					}, 5);
+				};
+			} else {
+				full_repaint();
+			};
+		} else {
+			cScrollBar.timerID1 && window.ClearInterval(cScrollBar.timerID1);
+			cScrollBar.timerID1 = false;
+			p.list.buttonclicked = false;
+			
+			if(action.IsInternal) action.Effect = 2;
+			else action.Effect = 1;
+			g_dragndrop_trackId = -1;
+			g_dragndrop_rowId = -1;
+			//g_dragndrop_bottom = false;
+			if (!dragndrop.timerID) {
+				dragndrop.timerID = window.SetTimeout(function() {
+				p.list.check("drag_over", x, y);
+				full_repaint();
+				dragndrop.timerID && window.ClearTimeout(dragndrop.timerID);
+				dragndrop.timerID = false;
+				}, 75);
+			};
+		};
+	};
 };
 
 function on_drag_drop(action, x, y, mask) {
 	if (y < p.list.y) {
 		action.Effect = 0;
-	} else {
+	} else if (action.IsInternal) {
+		action.Effect = 0; 
+		on_mouse_lbtn_up(x, y);
+    } else {
 		if (plman.ActivePlaylist > -1 && plman.IsPlaylistLocked(plman.ActivePlaylist)) {
 			action.Effect = 0;
+			fb.ShowPopupMessage("  错误信息\n----------------\n当前播放列表是智能列表或已被锁定，不可以手动添加音轨.", "不允许的操作");
 		} else if (plman.PlaylistCount == 0 || plman.ActivePlaylist == -1) {
 			var count = plman.PlaylistCount;
-			plman.CreatePlaylist(count, "Dropped Items");
+			plman.CreatePlaylist(count, "拖入的项目");
 			action.Playlist = count;
 			action.Base = 0;
 			action.ToSelect = true;
@@ -2766,17 +2758,38 @@ function on_drag_drop(action, x, y, mask) {
 			plman.ClearPlaylistSelection(plman.ActivePlaylist);
 			plman.UndoBackup(plman.ActivePlaylist);
 			action.Playlist = plman.ActivePlaylist;
-			action.Base = g_dragndrop_bottom ? plman.PlaylistItemCount(plman.ActivePlaylist) : g_dragndrop_trackId;
+			action.Base = plman.PlaylistItemCount(plman.ActivePlaylist);
 			action.ToSelect = true;
 			action.Effect = 1;
+			g_dragndrop_timer = setTimeout(function(){
+                plman.SetPlaylistFocusItem(plman.ActivePlaylist, plman.PlaylistItemCount(plman.ActivePlaylist));
+                p.list.showFocusedItem();
+                clearTimeout(g_dragndrop_timer);
+                g_dragndrop_timer = false;
+            },75);
 		}
 		
 	}
-	g_dragndrop_targetPlaylistId = -1;
+	//g_dragndrop_targetPlaylistId = -1;
 	g_dragndrop_trackId = -1;
 	g_dragndrop_rowId = -1;
 	g_dragndrop_bottom = false;
 	full_repaint();
+};
+
+function createDragText(line1, line2){
+	var img_h = z(62), img_w = z(100);
+	var drag_img = gdi.CreateImage(img_w, img_h);
+    var gb = drag_img.GetGraphics();
+	gb.FillSolidRect(0,0,img_w,img_h,g_color_normal_txt);
+	gb.SetSmoothingMode(1);
+	gb.FillGradRect(5,img_h/2,img_w-10, 1, 0, g_color_normal_txt, g_color_normal_bg, 0.5);
+	gb.SetSmoothingMode(0);
+	gb.SetTextRenderingHint(5);
+	gb.DrawString(line1, g_font, g_color_normal_bg, 0, 0, img_w, img_h/2, cc_stringformat);
+	gb.DrawString(line2, g_font, g_color_normal_bg, 0, img_h/2, img_w, img_h/2, cc_stringformat);
+	drag_img.ReleaseGraphics(gb);
+	return drag_img;
 };
 
 function process_cachekey(str) {

@@ -404,7 +404,7 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 		this.y = y;
 		this.w = w; // - 2;
 		this.h = h;
-		this.cal_y1 = this.y + this.h - cList.borderWidth_half;
+		this.cal_y1 = this.y + this.h - cList.borderWidth_half * 2;
 		switch (this.type) {
 		case 0:
 			// ===============
@@ -551,7 +551,11 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 						};
 					}
 					else {
-						gr.DrawImage(images.loading, cv_x - 1, cv_y - 1, cv_w, cv_h, 0, 0, images.loading.Width, images.loading.Height, images.loading_angle, 225);
+						var c_delta = Math.round(cv_h/8), cv_ww = cv_w - c_delta*2;
+						if(images.loading.Width != cv_ww) {
+							images.loading = images.loading.Resize(cv_ww, cv_h - c_delta*2, 7);
+						}
+						gr.DrawImage(images.loading, cv_x + c_delta, cv_y + c_delta, images.loading.Width, images.loading.Height, 0, 0, images.loading.Width, images.loading.Height, images.loading_angle, 160);
 					};
 				};
 			};
@@ -574,15 +578,15 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 					if (dragndrop.drag_in && this.ishover && p.list.ishover) {
 						if (!plman.IsPlaylistItemSelected(p.list.playlist, this.track_index)) {
 							if (this.track_index > dragndrop.drag_id) {
-								gr.FillSolidRect(tcolumn_x, this.cal_y1, this.w - cover.w, cList.borderWidth, g_color_selected_bg);
-								gr.FillSolidRect(tcolumn_x, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
-								gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
+								gr.FillSolidRect(tcolumn_x, this.cal_y1, this.w - cover.w, cList.borderWidth, g_color_normal_txt);
+								//gr.FillSolidRect(tcolumn_x, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
+								//gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
 								dragndrop.drop_id = this.track_index;
 							}
 							else if (this.track_index < dragndrop.drag_id) {
-								gr.FillSolidRect(tcolumn_x, this.y - cList.borderWidth_half, this.w - cover.w, cList.borderWidth, g_color_selected_bg);
-								gr.FillSolidRect(tcolumn_x, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
-								gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
+								gr.FillSolidRect(tcolumn_x, this.y - cList.borderWidth_half, this.w - cover.w, cList.borderWidth, g_color_normal_txt);
+								//gr.FillSolidRect(tcolumn_x, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
+								//gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
 								dragndrop.drop_id = this.track_index;
 							};
 						}
@@ -593,13 +597,13 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 				};
 			};
 
-			if (this.ishover && g_dragndrop_status && g_dragndrop_rowId > -1) {
+			/*if (this.ishover && g_dragndrop_status && g_dragndrop_rowId > -1) {
 				if (this.row_index == g_dragndrop_rowId) {
-					gr.FillSolidRect(tcolumn_x, this.y - cList.borderWidth_half, this.w - cover.w, cList.borderWidth, g_color_selected_bg);
-					gr.FillSolidRect(tcolumn_x, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
-					gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
+					gr.FillSolidRect(tcolumn_x, this.y - cList.borderWidth_half, this.w - cover.w, cList.borderWidth, g_color_normal_txt);
+					gr.FillSolidRect(tcolumn_x, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
+					gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
 				};
-			};
+			};*/
 			break;
 		case 1:
 			// ===============
@@ -710,7 +714,7 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 			if (this.obj) {
 				for (var k = 0; k < this.obj.count; k++) {
 					if (plman.IsPlaylistItemSelected(p.list.playlist, this.obj.start + k) && this.obj.collapsed) {
-						gr.FillSolidRect(this.x, (this.y - groupDelta) + 1, this.w + cScrollBar.width, this.h - 1, g_color_selected_bg & 0x30ffffff);
+						gr.FillSolidRect(this.x, (this.y - groupDelta) + 1, this.w + cScrollBar.width, this.h - 1, g_color_selected_bg & 0x75ffffff);
 						break;
 					}
 					else {
@@ -718,7 +722,7 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 						if (fb.IsPlaying) {
 							if (plman.PlayingPlaylist == this.playlist) {
 								if (!now_playing_found && p.list.nowplaying.PlaylistItemIndex >= this.obj.start && p.list.nowplaying.PlaylistItemIndex < this.obj.start + this.obj.count && this.obj.collapsed) {
-									gr.FillSolidRect(this.x, (this.y - groupDelta) + 1, this.w + cScrollBar.width, this.h - 1, g_color_highlight & 0x50ffffff);
+									gr.FillSolidRect(this.x, (this.y - groupDelta) + 1, this.w + cScrollBar.width, this.h - 1, g_color_highlight & 0x75ffffff);
 									now_playing_found = true;
 								};
 							};
@@ -782,7 +786,11 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 							};
 						}
 						else {
-							gr.DrawImage(images.loading, cv_x - 1, cv_y - 1, cv_w, cv_h, 0, 0, images.loading.Width, images.loading.Height, images.loading_angle, 225);
+							var c_delta = Math.round(cv_h/8), cv_ww = cv_w - c_delta*2;
+							if(images.loading.Width != cv_ww) {
+								images.loading = images.loading.Resize(cv_ww, cv_h - c_delta*2, 7);
+							}
+							gr.DrawImage(images.loading, cv_x + c_delta, cv_y + c_delta, images.loading.Width, images.loading.Height, 0, 0, images.loading.Width, images.loading.Height, images.loading_angle, 160);
 						};
 					};
 				};
@@ -791,35 +799,35 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 			// if dragging items, draw line at top of the hover items to show where dragged items will be inserted on mouse button up
 			if (this.obj) {
 				if (!properties.enableTouchControl) {
-					if (dragndrop.drag_in && this.ishover && p.list.ishover) {
+					if (dragndrop.drag_in && this.ishover && p.list.ishover && this.obj.collapsed) {
 						if (!plman.IsPlaylistItemSelected(plman.ActivePlaylist, this.track_index)) {
-							var cover_w = (p.headerBar.columns[0].percent > 0 ? p.headerBar.columns[0].w : 0);
+							//var cover_w = (p.headerBar.columns[0].percent > 0 ? p.headerBar.columns[0].w : 0);
 							if (this.track_index <= dragndrop.drag_id) {
 								if (this.groupRowDelta == 0) {
-									gr.FillSolidRect(this.x + cover_w, this.y - cList.borderWidth_half, this.w - cover_w, cList.borderWidth, g_color_selected_bg);
-									gr.FillSolidRect(this.x + cover_w, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
-									gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
+									gr.FillSolidRect(this.x, this.y - cList.borderWidth_half, this.w, cList.borderWidth, g_color_normal_txt);
+									//gr.FillSolidRect(this.x + cover_w, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
+									//gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
 								}
-								if (this.obj.collapsed) {
+								//if (this.obj.collapsed) {
 									dragndrop.drop_id = this.track_index;
-								}
-								else {
-									dragndrop.drop_id = this.track_index;
-								};
+								//}
+								//else {
+								//	dragndrop.drop_id = this.track_index;
+								//};
 							}
 							else {
-								if (this.obj.collapsed) {
-									gr.FillSolidRect(this.x + cover_w, this.cal_y1, this.w - cover_w, cList.borderWidth, g_color_selected_bg);
-									gr.FillSolidRect(this.x + cover_w, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
-									gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
+								//if (this.obj.collapsed) {
+									gr.FillSolidRect(this.x, this.cal_y1, this.w, cList.borderWidth, g_color_normal_txt);
+									//gr.FillSolidRect(this.x + cover_w, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
+									//gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
 									dragndrop.drop_id = this.track_index + this.obj.count - 1;
-								}
-								else {
-									gr.FillSolidRect(this.x + cover_w, this.cal_y1, this.w - cover_w, cList.borderWidth, g_color_selected_bg);
-									gr.FillSolidRect(this.x + cover_w, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
-									gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
-									dragndrop.drop_id = this.track_index - 1;
-								};
+								//}
+								//else {
+								//	gr.FillSolidRect(this.x + cover_w, this.cal_y1, this.w - cover_w, cList.borderWidth, g_color_normal_txt);
+								//	gr.FillSolidRect(this.x + cover_w, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
+								//	gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.cal_y1 - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
+								//	dragndrop.drop_id = this.track_index - 1;
+								//};
 							};
 						}
 						else {
@@ -829,13 +837,13 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 				};
 			};
 
-			if (this.ishover && g_dragndrop_status && g_dragndrop_rowId > -1) {
+			/*if (this.ishover && g_dragndrop_status && g_dragndrop_rowId > -1  && this.obj.collapsed) {
 				if (this.row_index == g_dragndrop_rowId) {
-					gr.FillSolidRect(this.x, this.y - cList.borderWidth_half, this.w, cList.borderWidth, g_color_selected_bg);
-					gr.FillSolidRect(this.x, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
-					gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_selected_bg);
+					gr.FillSolidRect(this.x, this.y - cList.borderWidth_half, this.w, cList.borderWidth, g_color_normal_txt);
+					gr.FillSolidRect(this.x, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
+					gr.FillSolidRect(this.x + this.w - cList.borderWidth, this.y - cList.borderWidth_half - 3 * cList.borderWidth, cList.borderWidth, 7 * cList.borderWidth, g_color_normal_txt);
 				};
-			};
+			};*/
 			break;
 		};
 	};
@@ -902,7 +910,7 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 								dragndrop.x = x;
 								dragndrop.y = y;
 								dragndrop.drag_id = this.track_index;
-								dragndrop.drag_out = true;
+								//dragndrop.drag_out = true;
 								if (!isQueuePlaylistActive()) {
 									dragndrop.timerID = window.SetTimeout(function() {
 										dragndrop.drag_in = true;
@@ -934,7 +942,7 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 									dragndrop.moved = false;
 									dragndrop.x = x;
 									dragndrop.y = y;
-									dragndrop.drag_out = true;
+									//dragndrop.drag_out = true;
 									if (p.list.metadblist_selection.Count > 1) {
 										// test if selection is contigus, if not, drag'n drop disable
 										var first_item_selected_id = p.list.handleList.Find(p.list.metadblist_selection[0]);
@@ -1254,6 +1262,23 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 			};
 			if (dragndrop.clicked) {
 				dragndrop.moved = true;
+				//g_dragndrop_status = true;
+				var items = plman.GetPlaylistSelectedItems(p.list.playlist);
+				if(this.track_index > -1){
+					var line1 = items.Count+" 音轨";
+					var line2 = "拖放中";
+				}
+				var options = {
+					show_text : false,
+					use_album_art : false,
+					use_theming : false,
+					custom_image : createDragText(line1, line2)
+				}
+				var effect = fb.DoDragDrop(window.ID, items, g_drop_effect.move | g_drop_effect.copy | g_drop_effect.link, options);
+				// nothing happens here until the mouse button is released
+				on_mouse_lbtn_up(x, y);
+				items = undefined;
+				on_drag_leave();
 			};
 			break;
 		};
@@ -1911,7 +1936,7 @@ oList = function(object_name, playlist) {
 	};
 
 	this.showNowPlaying = function() {
-		if (fb.IsPlaying) {
+		if (fb.IsPlaying && plman.PlayingPlaylist > -1) {
 			if (plman.PlayingPlaylist != this.playlist) {
 				plman.ActivePlaylist = plman.PlayingPlaylist;
 				this.playlist = plman.ActivePlaylist;
@@ -2240,10 +2265,10 @@ oList = function(object_name, playlist) {
 			row_top_y += item_h - (this.items[i].groupRowDelta * cTrack.height);
 		};
 
-		if (g_dragndrop_drop_forbidden) {
-			gr.FillsolidRect(this.x, this.y, this.w, this.h, RGBA(0, 0, 0, 100));
-		}
-		else {
+		//if (g_dragndrop_drop_forbidden) {
+		//	gr.FillsolidRect(this.x, this.y, this.w, this.h, RGBA(0, 0, 0, 100));
+		//}
+		//else {
 			if (g_dragndrop_status && g_dragndrop_bottom) {
 				var rowId = fin - 1;
 				var item_height_row = (this.items[rowId].type == 0 ? 1 : this.items[rowId].heightInRow);
@@ -2257,7 +2282,7 @@ oList = function(object_name, playlist) {
 				gr.FillSolidRect(rx, ry + item_height - cList.borderWidth_half - 4 * cList.borderWidth, cList.borderWidth, 9 * cList.borderWidth, g_color_selected_bg);
 				gr.FillSolidRect(rx + rw - cList.borderWidth, ry + item_height - cList.borderWidth_half - 4 * cList.borderWidth, cList.borderWidth, 9 * cList.borderWidth, g_color_selected_bg);
 			};
-		};
+		//};
 
 		// Draw rect selection
 		if (this.drawRectSel) {
@@ -2368,8 +2393,8 @@ oList = function(object_name, playlist) {
 			};
 			break;
 		case "move":
-			var fin = this.items.length;
-			for (var i = 0; i < fin; i++) {
+			//var fin = this.items.length;
+			for (var i = 0; i < this.items.length; i++) {
 				this.items[i].check(event, x, y);
 			};
 			if (!this.drawRectSel) {

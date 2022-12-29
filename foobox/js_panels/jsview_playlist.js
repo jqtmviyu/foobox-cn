@@ -321,7 +321,7 @@ function get_colors() {
 	g_scroll_color = fontcolor & 0x95ffffff;
 	g_btn_color1 = fontcolor & 0x35ffffff;
 	g_btn_color2 = RGBA(0, 0, 0, 90)
-	g_color_topbar = fontcolor & 0x08ffffff;
+	g_color_topbar = fontcolor & 0x09ffffff;
 	g_color_playing_txt = RGB(255, 255, 255);
 	c_default_hl = window.GetColourDUI(ColorTypeDUI.highlight);
 	g_color_highlight = c_default_hl;
@@ -404,10 +404,6 @@ function get_imgs() {
 	gb.SetSmoothingMode(2);
 	gb.FillRoundRect(2*zdpi,x5, 18*zdpi,10*zdpi, x5,x5, g_btn_color1);
 	gb.FillRoundRect(2*zdpi+2,x5+2, 10*zdpi-4,10*zdpi-4, x5-2,x5-2, RGBA(255, 255, 255, 180));
-	gb.FillRoundRect(2*zdpi,x5 + btn_h, 18*zdpi,10*zdpi, x5,x5, g_btn_color1);
-	gb.FillRoundRect(2*zdpi+2,x5+2 + btn_h, 10*zdpi-4,10*zdpi-4, x5-2,x5-2, RGBA(255, 255, 255, 180));
-	gb.FillRoundRect(2*zdpi,x5 + btn_h * 2, 18*zdpi,10*zdpi, x5,x5, g_btn_color1);
-	gb.FillRoundRect(2*zdpi+2,x5+2 + btn_h * 2, 10*zdpi-4,10*zdpi-4, x5-2,x5-2, RGBA(255, 255, 255, 180));
 	img_plsw.ReleaseGraphics(gb)
 	
 	img_plsw_2 = gdi.CreateImage(btn_w, btn_h * 3);
@@ -415,10 +411,6 @@ function get_imgs() {
 	gb.SetSmoothingMode(2);
 	gb.FillRoundRect(2*zdpi,x5, 18*zdpi,10*zdpi, x5,x5, g_btn_color1);
 	gb.FillRoundRect(10*zdpi+2,x5+2, 10*zdpi-4,10*zdpi-4, x5-2,x5-2, RGBA(255, 255, 255, 180));
-	gb.FillRoundRect(2*zdpi,x5 + btn_h, 18*zdpi,10*zdpi, x5,x5, g_btn_color1);
-	gb.FillRoundRect(10*zdpi+2,x5+2 + btn_h, 10*zdpi-4,10*zdpi-4, x5-2,x5-2, RGBA(255, 255, 255, 180));
-	gb.FillRoundRect(2*zdpi,x5 + btn_h * 2, 18*zdpi,10*zdpi, x5,x5, g_btn_color1);
-	gb.FillRoundRect(10*zdpi+2,x5+2 + btn_h * 2, 10*zdpi-4,10*zdpi-4, x5-2,x5-2, RGBA(255, 255, 255, 180));
 	img_plsw_2.ReleaseGraphics(gb);
 	
 	playing_ico = gdi.CreateImage(imgw, imgh);

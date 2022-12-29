@@ -38,7 +38,7 @@ ppt = {
 	sourceMode: window.GetProperty("_PROPERTY: Source Mode", 1),
 	// 0 = Library, 1 = Playlist
 	locklibpl: window.GetProperty("_PROPERTY: Lock to Library playlist", true),
-	tagMode: window.GetProperty("_PROPERTY: Tag Mode", 2),
+	tagMode: window.GetProperty("_PROPERTY: Tag Mode", 1),
 	// 1 = album, 2 = artist, 3 = genre
 	albumMode: window.GetProperty("_PROPERTY: Album Mode", 1), //0-with art, 1-without art
 	artistMode: window.GetProperty("_PROPERTY: Artist Mode", 0), //0-albumartist, 1-artist
@@ -356,7 +356,7 @@ image_cache = function() {
 						}, 100);
 					};
 				};
-			};
+			}
 		};
 
 		brw.groups[albumId].cover_type = cover_type;
@@ -2956,7 +2956,7 @@ function get_colors() {
 	g_color_normal_txt = window.GetColourDUI(ColorTypeDUI.text);
 	g_scroll_color = g_color_normal_txt & 0x95ffffff;
 	g_color_line = RGBA(0, 0, 0, 45);
-	g_color_topbar = g_color_normal_txt & 0x08ffffff;
+	g_color_topbar = g_color_normal_txt & 0x09ffffff;
 	g_btn_color1 = g_color_normal_txt & 0x35ffffff;
 	g_color_bt_overlay = g_color_normal_txt & 0x35ffffff;
 	c_default_hl =  window.GetColourDUI(ColorTypeDUI.highlight);

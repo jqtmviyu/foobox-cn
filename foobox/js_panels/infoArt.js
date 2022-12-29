@@ -48,7 +48,7 @@ SearchItems.push(new SearchItem("Last.fm", "http://www.last.fm/search?q=%s&type=
 //----------infobar---------------------
 var show_infobar = window.GetProperty("Display.InfoBar", true);
 var rating_to_tag =  window.GetProperty("foobox.rating.write.to.file", false);
-var is_mood = window.GetProperty("Display.Mood", true);
+var is_mood = window.GetProperty("Display.Mood", false);
 var g_font, g_font2;
 var currentMetadb;
 var rating_x, imgw, imgh, mood_h, infobar_h, pointArr, line2_y, infobar_y = 0;
@@ -56,7 +56,7 @@ g_tfo = {
 	rating: fb.TitleFormat("%rating%"),
 	title: fb.TitleFormat("$if2(%title%,)"),
 	artist: fb.TitleFormat("$if2(%artist%,)"),
-	album: fb.TitleFormat("$if(%album%,  |  %album%,)"),
+	album: fb.TitleFormat("$if2(%album%,)"),
 	mood: fb.TitleFormat("%mood%"),
 	codec: fb.TitleFormat("%codec%"),
 	bitrate: fb.TitleFormat("$if(%codec_profile%, | %codec_profile% | %bitrate%,  | %bitrate%)")
@@ -68,8 +68,7 @@ if (time_circle > 60000) time_circle = 60000;
 var rbutton = Array();
 var c_background, c_highlight, fontcolor, fontcolor2, icocolor, c_default_hl;
 var tracktype;
-var img_rating_on, img_rating_off, btn_mood, mood_img, btn_mood, TextBtn_info;
-var col_spec, col_grid;
+var img_rating_on, img_rating_off, mood_img, btn_mood, TextBtn_info;
 
 function TextBtn() {
 	this.setSize = function (x, y , w, h){
@@ -194,7 +193,13 @@ function OnMetadbChanged() {
 		rating = 0;
 	}
 	txt_title = g_tfo.title.EvalWithMetadb(currentMetadb);
-	txt_info = g_tfo.artist.EvalWithMetadb(currentMetadb) + g_tfo.album.EvalWithMetadb(currentMetadb);
+	var txt_info_artist = g_tfo.artist.EvalWithMetadb(currentMetadb);
+	var txt_info_album = g_tfo.album.EvalWithMetadb(currentMetadb);
+	if(txt_info_artist) {
+		txt_info = txt_info_artist;
+		if(txt_info_album) txt_info = txt_info + "  |  " + txt_info_album;
+	}else if(txt_info_album) txt_info = txt_info_album;
+	else txt_info = "";
 	txt_profile = g_tfo.codec.EvalWithMetadb(currentMetadb) + g_tfo.bitrate.EvalWithMetadb(currentMetadb) + "K";
 	l_mood = g_tfo.mood.EvalWithMetadb(currentMetadb);
 	tracktype = TrackType(currentMetadb.RawPath.substring(0, 4));
@@ -501,7 +506,7 @@ function ImageLoader(maxCacheLength, w, h) {
 		return new ImageItem(img, srcW, srcH);
 	}
 
-	this.Load = function(pathitem, whendone, ignoreCache, sync) {
+	this.Load = function(pathitem, whendone, ignoreCache){//, sync) {
 		pathitem.time = Logger.profiler.Time;
 		var imgitem = (!maxCacheLength || ignoreCache) ? null : SearchCache(pathitem, w, h);
 		if (imgitem) {
@@ -511,19 +516,19 @@ function ImageLoader(maxCacheLength, w, h) {
 			return;
 		} else pathitem.cacheHit = false;
 
-		if (sync) {
+		/*if (sync) {
 			var img;
 			if (pathitem.artId == -1) img = gdi.Image(pathitem.path);
 			else if (pathitem.embed) img = utils.GetAlbumArtEmbedded(pathitem.metadb.RawPath, pathitem.artId);
 			else img = utils.GetAlbumArtV2(pathitem.metadb, pathitem.artId, false);
 			imgitem = new ImageItem(img);
 			whendone && whendone(imgitem);
-		} else {
+		} else {*/
 			var cookie = null;
 			if (pathitem.artId == -1) cookie = gdi.LoadImageAsync(window_id, pathitem.path);
 			else utils.GetAlbumArtAsync(window_id, pathitem.metadb, pathitem.artId, false, pathitem.embed);
 			imgLoadingQueue.push(new QueueItem(cookie, pathitem, whendone));
-		}
+		//}
 	}
 
 	this.OnGetAlbumArtDone = function(metadb, art_id, image, image_path) {
@@ -1744,16 +1749,16 @@ function Controller(imgArray, imgDisplay, prop) {
 		if (!currentPathItem) return;
 		var str = [];
 
-		str.push("-- 当前图片信息 --------------------\n");
+		str.push("  当前图片信息\n----------------------");
 
-		str.push("\n" + "图片类型" + ":\t");
+		str.push("\n图片类型:  ");
 		str.push(currentPathItem.artId == -1 ? "流派" : GetCaption(AlbumArtId.GetName(currentPathItem.artId).capitalize()));
 
-		str.push("\n" + "文件路径" + ":\t");
+		str.push("\n文件路径:  ");
 		if (currentPathItem.embed) str.push("(内嵌) ");
 		str.push(currentPathItem.path);
 
-		str.push("\n" + "分辨率" + ":\t");
+		str.push("\n分辨率:  ");
 		str.push(imgArray.currentImageItem ? (imgArray.currentImageItem.srcW + "×" + imgArray.currentImageItem.srcH) : "Invalid");
 
 		PopMessage(str.join(""), 0);
@@ -1877,7 +1882,7 @@ function Controller(imgArray, imgDisplay, prop) {
 	}
 
 	this.OnDoubleClick = function(x, y) {
-		if (CoverDisplay.isXYIn(x, y) && currentPathItem) {
+		if (CoverDisplay.isXYIn(x, y)){// && currentPathItem) {
 			this.ManageAttachedImages([0, currentMetadb]); // "Edit attached pictures"
 		}
 	}
@@ -1993,7 +1998,7 @@ function Controller(imgArray, imgDisplay, prop) {
 		else c_highlight = c_default_hl;
 		if(c_highlight != c_hl_tmp){
 			get_imgs();
-			btn_mood.resetImg();
+			if (is_mood && show_infobar) btn_mood.resetImg();
 			if(eslPanels) eslPanels.SetTextHighlightColor(c_highlight);
 			window.RepaintRect(0, infobar_y, ww, infobar_h);
 		}
@@ -2330,6 +2335,7 @@ function on_get_album_art_done(metadb, art_id, image, image_path) {
 	Covers.OnGetAlbumArtDone(metadb, art_id, image, image_path);
 }
 
+
 function on_load_image_done(cookie, image) {
 	Covers.OnLoadImageDone(cookie, image)
 }
@@ -2417,15 +2423,24 @@ function on_notify_data(name, info) {
 //----------------infobar-----------------------
 var timer_cycle = false;
 
-if (show_infobar && timer_cycle) {
+if (timer_cycle) {
 	window.KillTimer(timer_cycle);
 	timer_cycle = false;
 }
 
-timer_cycle = window.SetInterval(function() {
-	show_info = !show_info;
-	window.RepaintRect(0, line2_y, ww, 25*zdpi);
-}, time_circle);
+function activate_infotimer(){
+	if(!timer_cycle) timer_cycle = window.SetInterval(function() {
+		show_info = !show_info;
+		window.RepaintRect(0, line2_y, ww, 25*zdpi);
+	}, time_circle);
+}
+
+function dactivate_infotimer(){
+	timer_cycle && window.ClearInterval(timer_cycle);
+	timer_cycle = false;
+}
+
+if(show_infobar) activate_infotimer();
 
 /****************************************
  * DEFINE CLASS ButtonUI  for RATING
@@ -2462,7 +2477,6 @@ function ButtonUI_R() {
 }
 
 function on_script_unload() {
-	time_circle && window.ClearInterval(time_circle);
-	time_circle = false;
+	dactivate_infotimer();
 }
 //EOF

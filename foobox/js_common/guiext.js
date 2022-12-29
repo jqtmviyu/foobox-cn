@@ -90,6 +90,10 @@ function UISlider(ImgBg, ImgOverlay, ImgKnob, ImgDiv) {
 		}
 		return false;
 	}
+	
+	this.MouseLeave = function() {
+		this.State = 0;
+	}
 
 	this.Repaint = function() {
 		try{window.RepaintRect(this.X - (ImgKnob.Width / 2), this.Y, this.Width + ImgKnob.Width, this.Height)}
@@ -166,7 +170,7 @@ function UITextView(txt, FontObj, color, formatStr) {
 	
 
 	this.Paint = function(gr) {
-		gr.GdiDrawText(this.Text, FontObj, color, this.X, this.Y, this.Width, this.Height, formatStr | DT_NOPREFIX);
+		gr.GdiDrawText(this.Text, FontObj, color, this.X, this.Y, this.Width, this.Height, formatStr);
 	}
 }
 
@@ -190,7 +194,8 @@ ButtonUI.prototype.SetXY = function(x, y){
 }
 
 ButtonUI.prototype.Paint = function(gr) {
-	gr.DrawImage(this.img, this.x, this.y, this.width, this.height, 0, this.state * this.height, this.width, this.height, 0);
+	gr.DrawImage(this.img, this.x, this.y, this.width, this.height, 0, 0, this.width, this.height, 0);
+	if(this.state > 0) gr.DrawImage(this.img, this.x, this.y, this.width, this.height, 0, this.state * this.height, this.width, this.height, 0);
 }
 
 ButtonUI.prototype.Repaint = function() {
