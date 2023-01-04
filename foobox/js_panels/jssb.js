@@ -74,7 +74,6 @@ ppt = {
 	scrollSmoothness: 2.5,
 	refreshRate: 40,
 	refreshRateCover: 2,
-	defaultHeaderBarHeight: 28,
 	headerBarHeight: 28,
 	enableTouchControl: window.GetProperty("_PROPERTY: Enable Scroll Touch Control", true),
 	botStampHeight: 48,
@@ -83,8 +82,6 @@ ppt = {
 	botTextRowHeight: 17,
 	textLineHeight: 10
 };
-
-var _showAllItem = ppt.showAllItem;
 
 cTouch = {
 	down: false,
@@ -963,8 +960,6 @@ oBrowser = function(name) {
 			this.marginSide = 0;
 			this.marginCover = 1;
 		};
-		if(this.groups.length < 2) ppt.showAllItem = 0;
-		else ppt.showAllItem = _showAllItem;
 		// Adjust Column 
 		this.totalColumns = Math.floor((this.w - this.marginLR * 2) / this.thumb_w);
 		if (this.totalColumns < 1) this.totalColumns = 1;
@@ -1300,8 +1295,6 @@ oBrowser = function(name) {
 				};
 			};
 		};
-		if (g < 2) ppt.showAllItem = 0;
-		else ppt.showAllItem = _showAllItem;
 		if (g > 0) {
 			// update last group properties
 			this.groups[g - 1].finalize(t, tr, pl);
@@ -1868,12 +1861,12 @@ oBrowser = function(name) {
 					};
 				};
 				var frame_col = g_color_normal_txt & 0x25ffffff;//“所有项目”的边框
-				gr.DrawRect(ii_x1, ii_y1, all_w - 1, all_h - 1, 1.0, frame_col);
-				gr.DrawRect(ii_x1, ii_y1, all_w - 1, Math.round(all_h / 2) - 1, 1.0, frame_col);
-				gr.DrawRect(ii_x1, ii_y1, Math.round(all_w / 2) - 1, all_h - 1, 1.0, frame_col);
+				gr.DrawRect(ii_x1, ii_y1, all_w - 2, all_h - 2, 1.0, frame_col);
+				gr.FillSolidRect(ii_x1 + 1, ii_y1 + Math.round(all_h / 2) - 1, all_w - 3, 1, frame_col);
+				gr.FillSolidRect(ii_x1 + Math.round(all_w / 2) - 1, ii_y1 + 1, 1,  all_h - 3, frame_col);
 
 				// redraw hover frame selection on ALL item for Grid view
-				if (ppt.panelMode == 3) { // grid
+				if (ppt.panelMode != 1) { // grid
 					if (g_rightClickedIndex == 0 || this.activeIndex == 0) {
 						gr.DrawRect(all_x + 1, all_y + 1, all_w - 3, all_h - 3, 3.0, g_color_selected_bg & 0xddffffff);
 					};
@@ -2126,7 +2119,6 @@ oBrowser = function(name) {
 		var _menu = window.CreatePopupMenu();
 		var Context = fb.CreateContextMenuManager();
 		var _child01 = window.CreatePopupMenu();
-		var _allitem = (ppt.showAllItem && albumIndex == 0);
 
 		var crc = this.groups[albumIndex].cachekey;
 
@@ -2234,7 +2226,7 @@ oBrowser = function(name) {
 		_menu2.CheckMenuRadioItem(901, 903, 900 + ppt.panelMode);
 		_menu2.AppendMenuSeparator();
 		_menu2.AppendMenuItem(MF_STRING, 911, "合计项目");
-		_menu2.CheckMenuItem(911, _showAllItem);
+		_menu2.CheckMenuItem(911, ppt.showAllItem);
 		_menu2.AppendMenuSeparator();
 		_menu2.AppendMenuItem(MF_STRING, 912, "重置磁盘缓存");
 		_menu2.AppendTo(_menu, MF_STRING, "显示");
@@ -2319,10 +2311,8 @@ oBrowser = function(name) {
 			brw.update();
 			break;
 		case (idx == 911):
-			_showAllItem = !_showAllItem;
-			if(brw.groups.length < 2) ppt.showAllItem = 0;
-			else ppt.showAllItem = _showAllItem;
-			window.SetProperty("_PROPERTY: Show ALL item", _showAllItem);
+			ppt.showAllItem = !ppt.showAllItem;
+			window.SetProperty("_PROPERTY: Show ALL item", ppt.showAllItem);
 			brw.populate();
 			break;
 		case (idx == 912):
@@ -2827,7 +2817,7 @@ function get_metrics() {
 	cScrollBar.width = sys_scrollbar ? get_system_scrollbar_width() : 12*zdpi;
 	cScrollBar.minCursorHeight = 25*zdpi;
 	cScrollBar.maxCursorHeight = sys_scrollbar ? 125*zdpi : 110*zdpi;
-	ppt.headerBarHeight = Math.ceil((ppt.defaultHeaderBarHeight - 2) * zdpi) + 2;
+	ppt.headerBarHeight = Math.ceil(26 * zdpi) + 2;
 	g_switchbar.x = 5*zdpi;
 	g_switchbar.y = 5*zdpi;
 	g_switchbar.w = 200*zdpi;

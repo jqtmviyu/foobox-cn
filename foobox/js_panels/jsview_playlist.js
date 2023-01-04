@@ -14,7 +14,7 @@ if (title_type<1 || title_type>5) {
 var cursor_min = 25;
 var cursor_max = 110;
 var show_active_pl = window.GetProperty("List: Show active playlist", false);
-var playing_ico, imgw, imgh;
+var playing_ico;
 var tf_string = [];
 tf_string[0] = fb.TitleFormat("$if2(%tracknumber%,)^^%title%^^%length%");
 tf_string[1] = fb.TitleFormat("$if2(%tracknumber%,)^^%title%^^%length%^^$if2(%album%,单曲)");
@@ -92,14 +92,14 @@ olist = function() {
 			var y2_ = i * row_height + margin_top - scroll_;
 			if (plman.IsPlaylistItemSelected(pidx, i)) {
 				if (i == this.focus_id) gr.FillSolidRect(0, y2_, ww, row_height, g_color_selected_bg);
-				else gr.FillSolidRect(0, y2_, ww, row_height, g_color_selected_bg & RGBA(255, 255, 255, 60))
+				else gr.FillSolidRect(0, y2_, ww, row_height, g_color_selected_bg & 0x85ffffff)
 			} else if (i == this.focus_id) gr.DrawRect(1, y2_, ww - 2, row_height, 2, g_color_selected_bg);
 			var tracknum = show_active_pl ? this.list_dr[i].index : this.list_dr[i].string[0];
 			if (fb.IsPlaying && plman.PlayingPlaylist == pidx) {
 				var _playing = plman.GetPlayingItemLocation();
 				if (i == _playing.PlaylistItemIndex) {
 					gr.FillSolidRect(0, y2_, ww, row_height, g_color_highlight);
-					gr.DrawImage(playing_ico, Math.round(15 + 7 * zdpi), Math.round(y_ + (row_height - imgh) / 2), imgw, imgh, 0, 0, imgw, imgh, 0, 255);
+					gr.DrawImage(playing_ico, Math.round(15 + 7 * zdpi), Math.round(y_ + (row_height - playing_ico.Height) / 2), playing_ico.Width, playing_ico.Height, 0, 0, playing_ico.Width, playing_ico.Height, 0, 255);
 					gr.GdiDrawText(this.list_dr[i].string[2], g_font, g_color_playing_txt, ww - len_w_rx, y_, len_w, row_height, txt_format_r);
 					gr.GdiDrawText(this.list_dr[i].string[1], g_font, g_color_playing_txt, 30 + _x30, y_, ww - _x30 - 30 - len_w_rx, row_height, txt_format);
 				} else {
@@ -118,43 +118,17 @@ olist = function() {
 	this.item_context_menu = function(x, y, albumIndex) {
 		var _menu = window.CreatePopupMenu();
 		var Context = fb.CreateContextMenuManager();
-		var _child01 = window.CreatePopupMenu();
 		_menu.AppendMenuItem((plman.IsAutoPlaylist(pidx) || plman.GetPlaylistName(pidx) == "播放队列")?MF_DISABLED|MF_GRAYED:MF_STRING, 800, "移除");
 		_menu.AppendMenuSeparator();
 		this.metadblist_selection = plman.GetPlaylistSelectedItems(pidx);
 		Context.InitContext(this.metadblist_selection);
 		Context.BuildMenu(_menu, 1, -1);
-		//var fso = new ActiveXObject("Scripting.FileSystemObject");
-		//if(fso.FileExists(fb.FoobarPath +"assemblies\\MusicTag\\MusicTag.exe")) _menu.AppendMenuItem(MF_STRING, 803, "用MusicTag编辑");
-		_child01.AppendTo(_menu, MF_STRING, "发送到...");
-		_child01.AppendMenuItem(MF_STRING, 801, "新播放列表");
-		_menu.AppendMenuSeparator();
-		var pl_count = plman.PlaylistCount;
-		if (pl_count > 1) {
-			_child01.AppendMenuItem(MF_SEPARATOR, 0, "");
-		};
-		for (var i = 0; i < pl_count; i++) {
-			if (i != pidx && !plman.IsAutoPlaylist(i)) {
-				_child01.AppendMenuItem(MF_STRING, 1000 + i, plman.GetPlaylistName(i));
-			}
-		};
 		var ret = _menu.TrackPopupMenu(x, y);
 		if (ret > 0 && ret < 800) {
 			Context.ExecuteByID(ret - 1);
 		}
-		else {
-			switch (ret) {
-			case 800:
-				plman.RemovePlaylistSelection(pidx, false);
-				break;
-			case 801:
-				fb.RunMainMenuCommand("文件/新建播放列表");
-				plman.InsertPlaylistItems(plman.PlaylistCount - 1, 0, this.metadblist_selection, false);
-				break;
-			default:
-				var insert_index = plman.PlaylistItemCount(ret - 1000);
-				plman.InsertPlaylistItems((ret - 1000), insert_index, this.metadblist_selection, false);
-			}
+		else if(ret == 800) {
+			plman.RemovePlaylistSelection(pidx, false);
 		}
 		return true;
 	}
@@ -197,7 +171,7 @@ olist = function() {
 			if (y > margin_top) {
 				if(plman.ActivePlaylist != pidx) fb.RunContextCommandWithMetadb("播放", this.list_dr[this.activeindex].metadb, 0);
 				else plman.ExecutePlaylistDefaultAction(plman.ActivePlaylist, plman.GetPlaylistFocusItemIndex(plman.ActivePlaylist));
-			} else if (y < margin_top && x < ww - imgw - 1) {
+			} else if (y < margin_top && x < ww - playing_ico.Width - 1) {
 				if (fb.IsPlaying && plman.PlayingPlaylist == pidx) this.show_playing();
 				else this.show_focus();
 			}
@@ -252,8 +226,6 @@ ocursor = function() {
 get_metrics = function(){
 	cursor_min = 25*zdpi;
 	cursor_max = sys_scrollbar ? 125*zdpi : 110*zdpi;
-	imgw = Math.round(16 * zdpi);
-	imgh = Math.round(14 * zdpi);
 	row_height = Math.round(default_row_height * zdpi);
 	ocursor.bar_w = sys_scrollbar ? utils.GetSystemMetrics(2) : 12*zdpi;
 }
@@ -334,7 +306,7 @@ function get_font() {
 	g_fstyle = g_font.Style;
 	zdpi = g_fsize / 12;
 	g_font2 = GdiFont(g_fname, g_fsize, 1);
-	margin_top = Math.ceil(26 * Math.floor(g_fsize / 12 * 100) / 100) + 2;
+	margin_top = Math.ceil(26 * zdpi) + 2;
 }
 
 function check_pidx() {
@@ -413,7 +385,7 @@ function get_imgs() {
 	gb.FillRoundRect(10*zdpi+2,x5+2, 10*zdpi-4,10*zdpi-4, x5-2,x5-2, RGBA(255, 255, 255, 180));
 	img_plsw_2.ReleaseGraphics(gb);
 	
-	playing_ico = gdi.CreateImage(imgw, imgh);
+	playing_ico = gdi.CreateImage(z(16), z(14));
 	gb = playing_ico.GetGraphics();
 	gb.SetSmoothingMode(2);
 	var ponit_arr = new Array(3 * zdpi, 2 * zdpi, 3 * zdpi, 12 * zdpi, 13 * zdpi, 7 * zdpi);

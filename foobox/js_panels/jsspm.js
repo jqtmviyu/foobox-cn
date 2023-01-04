@@ -91,7 +91,6 @@ ppt = {
 	refreshRate: 20,
 	//showHeaderBar: window.GetProperty("_DISPLAY: Show Top Bar", true),
 	lockReservedPlaylist: window.GetProperty("_PROPERTY: Lock Reserved Playlist", false),
-	defaultSearchBarHeight: 28,
 	SearchBarHeight: 28,
 	headerBarHeight: 28,
 	//showFilterBox: window.GetProperty("_PROPERTY: Enable Playlist Filterbox in Top Bar", true),
@@ -1016,7 +1015,7 @@ oBrowser = function(name) {
 			fb.RunMainMenuCommand("文件/载入播放列表...");
 			break;
 		case (idx == 13):
-			fb.RunMainMenuCommand("文件/保存所有播放列表");
+			fb.RunMainMenuCommand("文件/保存所有播放列表...");
 			break;
 		case (idx == 3):
 			// set rename it
@@ -1393,7 +1392,7 @@ function get_metrics() {
 		cScrollBar.maxCursorHeight = 110*zdpi;
 	}
 	ppt.rowHeight = Math.round(ppt.defaultRowHeight * zdpi);
-	ppt.SearchBarHeight = Math.ceil((ppt.defaultSearchBarHeight - 2) * zdpi) + 2;
+	ppt.SearchBarHeight = Math.ceil(26 * zdpi) + 2;
 	ppt.headerBarHeight = ppt.SearchBarHeight + ppt.rowHeight;
 	cFilterBox.y = Math.round(ppt.SearchBarHeight + (ppt.rowHeight - cFilterBox.h)/2);
 	cSearchBox.h = 22 * zdpi;

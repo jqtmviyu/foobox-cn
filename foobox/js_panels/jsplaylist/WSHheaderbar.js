@@ -220,9 +220,9 @@ oHeaderBar = function() {
 					};
 					gr.GdiDrawText(this.columns[j].label, g_font_b, g_color_normal_txt, cx + (this.borderWidth * 2), cy + 1, cw - (this.borderWidth * 4) - 1, this.h, this.columns[j].DT_align | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX | DT_END_ELLIPSIS);
 				}
-				else if (j == this.columnDraggedId && this.columnDragged == 2) {
-					gr.FillGradRect(cx, cy, cw, this.h, 90, RGBA(0, 0, 0, 60), 0, 1.0);
-				};
+				//else if (j == this.columnDraggedId && this.columnDragged == 2) {
+					//gr.FillGradRect(cx, cy, cw, this.h, 90, RGBA(0, 0, 0, 60), 0, 1.0);
+				//};
 			};
 
 			if (this.borders[i].drag) {
@@ -264,9 +264,9 @@ oHeaderBar = function() {
 					};
 					gr.GdiDrawText(this.columns[j].label, g_font_b, g_color_normal_txt, cx + (this.borderWidth * 2), cy + 1, cw - (this.borderWidth * 4) - 1, this.h, this.columns[j].DT_align | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX | DT_END_ELLIPSIS);
 				}
-				else if (j == this.columnDraggedId && this.columnDragged == 2) {
-					gr.FillGradRect(cx, cy, cw, this.h, 90, RGBA(0, 0, 0, 70), 0, 1.0);
-				};
+				//else if (j == this.columnDraggedId && this.columnDragged == 2) {
+					//gr.FillGradRect(cx, cy, cw, this.h, 90, RGBA(0, 0, 0, 70), 0, 1.0);
+				//};
 				break;
 			};
 		};
@@ -276,13 +276,13 @@ oHeaderBar = function() {
 			cx = Math.floor(mouse_x - this.clickX) + 2;
 			cy = this.y + 3;
 			// shadow
-			gr.FillSolidRect(cx + 4, cy + 3, Math.floor(this.columns[this.columnDraggedId].w - 2), this.h, RGBA(0, 0, 0, 10));
-			gr.FillSolidRect(cx + 3, cy + 2, Math.floor(this.columns[this.columnDraggedId].w - 2), this.h, RGBA(0, 0, 0, 15));
-			gr.FillSolidRect(cx + 2, cy + 1, Math.floor(this.columns[this.columnDraggedId].w - 2), this.h, RGBA(0, 0, 0, 30));
+			//gr.FillSolidRect(cx + 4, cy + 3, Math.floor(this.columns[this.columnDraggedId].w - 2), this.h, RGBA(0, 0, 0, 10));
+			//gr.FillSolidRect(cx + 3, cy + 2, Math.floor(this.columns[this.columnDraggedId].w - 2), this.h, RGBA(0, 0, 0, 15));
+			//gr.FillSolidRect(cx + 2, cy + 1, Math.floor(this.columns[this.columnDraggedId].w - 2), this.h, RGBA(0, 0, 0, 30));
 			// header bg
-			gr.FillSolidRect(cx, cy, Math.floor(this.columns[this.columnDraggedId].w - 2), this.h, g_color_normal_txt & 0x66ffffff);
+			gr.FillSolidRect(cx, cy, Math.floor(this.columns[this.columnDraggedId].w - 2), this.h-2, g_color_normal_txt & 0x80ffffff);
 			gr.DrawRect(cx, cy + 1, Math.floor(this.columns[this.columnDraggedId].w - 2), this.h - 2, 2.0, g_color_normal_txt);
-			gr.DrawRect(cx + 1, cy + 2, Math.floor(this.columns[this.columnDraggedId].w - 5), this.h - 5, 1.0, blendColors(g_color_normal_txt, g_color_normal_bg, 0.55));
+			//gr.DrawRect(cx + 1, cy + 2, Math.floor(this.columns[this.columnDraggedId].w - 5), this.h - 5, 1.0, blendColors(g_color_normal_txt, g_color_normal_bg, 0.55));
 			// header text info
 			gr.GdiDrawText(this.columns[this.columnDraggedId].label, g_font_b, g_color_normal_bg, cx + (this.borderWidth * 2), cy + 1, this.columns[this.columnDraggedId].w - (this.borderWidth * 4) - 2, this.h, this.columns[this.columnDraggedId].DT_align | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX | DT_END_ELLIPSIS);
 		};

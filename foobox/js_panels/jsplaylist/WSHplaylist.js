@@ -451,11 +451,11 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 					if (plman.IsPlaylistItemSelected(p.list.playlist, this.track_index)) {
 						if (p.list.focusedTrackId == this.track_index) {
 							//**
-							gr.FillSolidRect(tcolumn_x, this.y + 1, line_width, this.h - 1, g_color_selected_bg);
+							gr.FillSolidRect(tcolumn_x, this.y, line_width, this.h, g_color_selected_bg);
 						}
 						else {
 							//**
-							gr.FillSolidRect(tcolumn_x, this.y + 1, line_width, this.h - 1, g_color_selected_bg & 0xa5ffffff);
+							gr.FillSolidRect(tcolumn_x, this.y, line_width, this.h, g_color_selected_bg & 0x85ffffff);
 						};
 						this.text_colour = p.list.text_colour_selected;
 					}
@@ -463,7 +463,7 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 						// if row is focused, draw focused colors & style ELSE draw with normal colors
 						if (p.list.focusedTrackId == this.track_index) {
 							// frame on focused item
-							gr.DrawRect(tcolumn_x + 1, this.y + 1, line_width - 2, this.h - 2, 1.0, g_color_selected_bg);
+							gr.DrawRect(tcolumn_x, this.y + 1, line_width, this.h - 2, 1.0, g_color_selected_bg);
 						};
 						this.normalTextColor = true;
 						this.text_colour = g_color_normal_txt;
@@ -714,7 +714,7 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 			if (this.obj) {
 				for (var k = 0; k < this.obj.count; k++) {
 					if (plman.IsPlaylistItemSelected(p.list.playlist, this.obj.start + k) && this.obj.collapsed) {
-						gr.FillSolidRect(this.x, (this.y - groupDelta) + 1, this.w + cScrollBar.width, this.h - 1, g_color_selected_bg & 0x75ffffff);
+						gr.FillSolidRect(this.x, (this.y - groupDelta), this.w + cScrollBar.width, this.h, g_color_selected_bg & 0x75ffffff);
 						break;
 					}
 					else {
@@ -722,7 +722,7 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 						if (fb.IsPlaying) {
 							if (plman.PlayingPlaylist == this.playlist) {
 								if (!now_playing_found && p.list.nowplaying.PlaylistItemIndex >= this.obj.start && p.list.nowplaying.PlaylistItemIndex < this.obj.start + this.obj.count && this.obj.collapsed) {
-									gr.FillSolidRect(this.x, (this.y - groupDelta) + 1, this.w + cScrollBar.width, this.h - 1, g_color_highlight & 0x75ffffff);
+									gr.FillSolidRect(this.x, (this.y - groupDelta), this.w + cScrollBar.width, this.h, g_color_highlight & 0x75ffffff);
 									now_playing_found = true;
 								};
 							};
