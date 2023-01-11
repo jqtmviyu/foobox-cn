@@ -13,7 +13,7 @@ var track_edit_app = window.GetProperty("foobox.track.editor", "D:\\MusicTag\\Mu
 var color_bycover = window.GetProperty("foobox.color.by.cover", true);
 let dark_mode = 0;
 // GLOBALS
-var g_script_version = "7.2";
+var g_script_version = "7.3";
 var g_middle_clicked = false;
 var g_middle_click_timer = false;
 var g_queue_origin = -1;
@@ -2720,8 +2720,8 @@ function on_drag_over(action, x, y, mask) {
 			cScrollBar.timerID1 = false;
 			p.list.buttonclicked = false;
 			
-			if(action.IsInternal) action.Effect = 2;
-			else action.Effect = 1;
+			//if(action.IsInternal) action.Effect = 2;
+			action.Effect = 1;
 			g_dragndrop_trackId = -1;
 			g_dragndrop_rowId = -1;
 			//g_dragndrop_bottom = false;

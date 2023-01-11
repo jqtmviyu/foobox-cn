@@ -1,12 +1,10 @@
 ﻿//foobox https://github.com/dream7180
 var time_length = 0;
-var zdpi, c_background, c_font, c_normal, c_shadow, c_shadow_h, c_seek_bg, c_tip_bg, c_seekoverlay, c_default_hl,
+var zdpi, c_background, c_font, c_normal, c_shadow, c_shadow_h, c_seek_bg, c_tip_bg, c_seekoverlay, c_default_hl, c_seeker_core,
 	img_play, img_pause, img_next, img_previous, img_vol, img_pbo = [], img_list, img_cover, img_lib,
 	align_center = 1;
 
 //play back order
-var MF_STRING = 0x00000000;
-var MF_DISABLED = 0x00000002;
 var PBOTips = new Array("默认", "重复(列表)", "重复(音轨)", "随机", "乱序(音轨)", "乱序(专辑)", "乱序(目录)");
 var hbtn = false;
 var ww = 0,
@@ -219,21 +217,24 @@ function get_font() {
 function get_color() {
 	c_background = utils.GetSysColour(COLOR_3DFACE);
 	c_font= window.GetColourDUI(ColorTypeDUI.text);
-	if(!isDarkMode(c_background) && !isDarkMode(c_font)){
-		c_dui_background = window.GetColourDUI(ColorTypeDUI.background);
-		c_font = blendColors(RGB(0,0,0), c_dui_background, 0.8);
-		c_normal = c_dui_background;
+	var light_mode = isDarkMode(c_font);
+	if(!isDarkMode(c_background) && !light_mode){
+		c_background = RGB(32, 32, 32);//window.GetColourDUI(ColorTypeDUI.background);
+		
 	}
-	else{
-		c_normal = blendColors(c_background, c_font, 0.75);
-	}
+	c_normal = blendColors(c_background, c_font, 0.75);
 	c_default_hl = window.GetColourDUI(ColorTypeDUI.highlight);
 	c_seekoverlay = c_default_hl;
 	c_shadow_h =  c_normal & 0x25ffffff;
 	c_shadow = c_normal & 0x45ffffff;
 	c_seek_bg =  c_normal & 0x35ffffff;
-	c_tip_bg = RGBA(255,255,255,200);
-	
+	if (light_mode){
+		c_tip_bg = RGBA(255, 255, 255, 200);
+		c_seeker_core = RGB(255, 255, 255);
+	} else {
+		c_tip_bg = RGBA(0, 0, 0, 200);
+		c_seeker_core = RGB(0, 0, 0);
+	}
 }
 
 PBO_Menu = function(x, y) {
@@ -298,7 +299,7 @@ function init_overlay_obj(overlay_frame, overlay_seek) {
 	gb = seeker.GetGraphics();
 	gb.SetSmoothingMode(2);
 	gb.FillEllipse(3*zdpi, 3*zdpi, 12*zdpi, 12*zdpi, overlay_seek);
-	gb.FillEllipse(7*zdpi, 7*zdpi, 4*zdpi, 4*zdpi, RGB(255,255,255));
+	gb.FillEllipse(7*zdpi, 7*zdpi, 4*zdpi, 4*zdpi, c_seeker_core);
 	gb.SetSmoothingMode(0);
 	seeker.ReleaseGraphics(gb);
 	
@@ -328,7 +329,7 @@ function init_obj() {
 	PlaybackTimeText.SetSize(btn_space*2, win_y, time_length, seek_h);
 	PlaybackLengthText.SetSize(seek_len + seek_start + btn_space, win_y, time_length, seek_h);
 	TimeTip = new UITooltip(seek_start + z(12), win_y, "", g_font, c_font, tip_bg);
-	VolumeTip = new UITooltip(ww - seek_start + z(5), btn_y + z(2), (fb.Volume | 0).toString() + " dB", g_font, c_font, false);
+	VolumeTip = new UITooltip(ww - seek_start + z(5), btn_y + z(2), "", g_font, c_font, false);
 	MuteBtn.SetXY(volbtn_x, Math.round(btn_y + 2*zdpi));
 	pbo_start = volbtn_x - pbo_btn_img.Width - btn_space;
 	PBOBtn.SetXY(pbo_start, btn_y);
@@ -651,6 +652,21 @@ function on_paint(gr) {
 }
 
 function on_mouse_move(x, y) {
+	if (fb.IsPlaying && seekbar.MouseMove(x, y)) {
+		TimeTip.Text = TimeFmt(seekbar.Value);
+		if (x < seek_start) _x = seek_start;
+		else if (x > seek_start + seek_len) _x = seek_start + seek_len;
+		else _x = x;
+		TimeTip.X = (x > seek_start + seek_len - TimeTip.Width - 12) ? _x - TimeTip.Width - 12 : _x + 6;
+		//window.RepaintRect(seek_start, TimeTip.Y, seek_start + seek_len, TimeTip.Height);
+		TimeTip.Repaint();
+	}
+	if (VolumeBar.MouseMove(x, y)) {
+		fb.Volume = pos2vol(VolumeBar.Value);
+		VolumeTip.Text = (fb.Volume | 0).toString() + " dB  ";
+		//window.RepaintRect(vol_start, VolumeTip.Y, ww - vol_start, VolumeTip.Height);
+		VolumeTip.Repaint();
+	}
 	if(y < win_y) return;
 	var _x = 0;
 	if (PBOpen.MouseMove(x, y)) hbtn = true;
@@ -661,19 +677,6 @@ function on_mouse_move(x, y) {
 	if (MuteBtn.MouseMove(x, y)) hbtn = true;
 	if (PBOBtn.MouseMove(x, y)) hbtn = true;
 	g_switchbar.on_mouse("move", x, y);
-	if (fb.IsPlaying && seekbar.MouseMove(x, y)) {
-		TimeTip.Text = TimeFmt(seekbar.Value);
-		if (x < seek_start) _x = seek_start;
-		else if (x > seek_start + seek_len) _x = seek_start + seek_len;
-		else _x = x;
-		TimeTip.X = (x > seek_start + seek_len - TimeTip.Width - 12) ? _x - TimeTip.Width - 12 : _x + 6;
-		window.RepaintRect(seek_start, TimeTip.Y, seek_start + seek_len, TimeTip.Height);
-	}
-	if (VolumeBar.MouseMove(x, y)) {
-		fb.Volume = pos2vol(VolumeBar.Value);
-		VolumeTip.Text = (fb.Volume | 0).toString() + " dB";
-		window.RepaintRect(vol_start, VolumeTip.Y, ww - vol_start, VolumeTip.Height);
-	}
 }
 
 function on_mouse_lbtn_down(x, y) {
@@ -706,6 +709,16 @@ function on_mouse_lbtn_down(x, y) {
 }
 
 function on_mouse_lbtn_up(x, y) {
+	if (seekbar.MouseUp()) {
+		PlaybackTimeText.ChangeText(TimeFmt(seekbar.Value));
+		fb.PlaybackTime = seekbar.Value;
+		//window.RepaintRect(seek_start, TimeTip.Y, seek_start + seek_len, TimeTip.Height);
+		TimeTip.Repaint();
+		TimeTip.Deactivate();
+	}
+	if (VolumeBar.MouseUp()) {
+		VolumeTip.Deactivate();
+	}
 	if(y < win_y) return;
 	if (PBOpen.MouseUp()) fb.RunMainMenuCommand("打开...")
 	if (PBPrevious.MouseUp()) fb.Prev();
@@ -715,15 +728,6 @@ function on_mouse_lbtn_up(x, y) {
 	if (MuteBtn.MouseUp()) fb.VolumeMute();
 	g_switchbar.on_mouse("lbtn_up", x, y);
 	PBOBtn.MouseUp();
-	if (seekbar.MouseUp()) {
-		PlaybackTimeText.ChangeText(TimeFmt(seekbar.Value));
-		fb.PlaybackTime = seekbar.Value;
-		window.RepaintRect(seek_start, TimeTip.Y, seek_start + seek_len, TimeTip.Height);
-		TimeTip.Deactivate();
-	}
-	if (VolumeBar.MouseUp()) {
-		VolumeTip.Deactivate();
-	}
 }
 
 function on_mouse_leave() {
@@ -754,12 +758,12 @@ function on_mouse_wheel(step) {
 
 function on_playback_pause(state) {
 	PBPlay.img = state ? img_play : img_pause;
-	window.RepaintRect(PBPlay.x, PBPlay.y, PBPlay.width, PBPlay.height);
+	PBPlay.Repaint();
 }
 
 function on_playback_new_track(info) {
 	PBPlay.img = (fb.IsPlaying && !fb.IsPaused) ? img_pause : img_play;
-	window.RepaintRect(PBPlay.x, PBPlay.y, PBPlay.width, PBPlay.height);
+	PBPlay.Repaint();
 	seekbar.MaxValue = Math.max(0, fb.PlaybackLength);
 	seekbar.ChangeValue(0);
 	if(info){
@@ -772,7 +776,7 @@ function on_playback_new_track(info) {
 function on_playback_stop(reason) {
 	if (PBPlay.img != img_play) {
 		PBPlay.img = img_play;
-		window.RepaintRect(PBPlay.x, PBPlay.y, PBPlay.width, PBPlay.height);
+		PBPlay.Repaint();
 	}
 	if (reason != 2) {
 		PlaybackTimeText.ChangeText("00:00:00");
@@ -792,7 +796,7 @@ function on_volume_change(v) {
 
 function on_playback_order_changed() {
 	PBOBtn.Tooltip.Text = PBOTips[plman.PlaybackOrder];
-	window.RepaintRect(pbo_start, 0, pbo_btn_img.Width, wh);
+	PBOBtn.Repaint();
 }
 
 function on_font_changed() {

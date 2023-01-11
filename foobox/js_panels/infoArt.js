@@ -1828,17 +1828,11 @@ function Controller(imgArray, imgDisplay, prop) {
 	}
 
 	this.ViewWithExternalViewer = function() {
-		if (!currentPathItem) return;
-		var filepath = currentPathItem.path;
-		if (currentPathItem.path.substring(0,1) == "B") filepath = filepath.replace('B:\\', fb.FoobarPath);
-		ShellExecute('"' + filepath + '"', "", "", "open", 1);
+		if (currentPathItem) ShellExecute('"' +  currentPathItem.path + '"', "", "", "open", 1);
 	}
 
 	this.OpenContainingFolder = function() {
-		if (!currentPathItem) return;
-		var filepath = currentPathItem.path;
-		if (currentPathItem.path.substring(0,1) == "B") filepath = filepath.replace('B:\\', fb.FoobarPath);
-		ShellExecute("explorer", '/select,\"' + filepath + '"', "", "open", 1);
+		if (currentPathItem) ShellExecute("explorer", '/select,\"' +  currentPathItem.path + '"', "", "open", 1);
 	}
 
 	function ShellExecute(arg1, arg2, arg3, arg4, arg5) {

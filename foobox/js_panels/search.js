@@ -357,7 +357,7 @@ function g_onSearch() {
 		var isFound = false;
 		var total = plman.PlaylistCount;
 		for (var i = 0; i < total; i++) {
-			if (plman.GetPlaylistName(i).substr(0, 4) == "搜索 [") {
+			if (plman.GetPlaylistName(i).substr(0, 4) == "搜索 |") {
 				if (!ppts.multiple) {
 					if (!isFound) {
 						var plIndex = i;
@@ -389,14 +389,14 @@ function g_onSearch() {
 			6: "%comment% HAS "
 		};
 		if (scopecases[ppts.scope]) {
-			plman.CreateAutoPlaylist(plIndex, "搜索 [" + s1 + "]", scopecases[ppts.scope] + s1, "", 0);
+			plman.CreateAutoPlaylist(plIndex, "搜索 | " + s1, scopecases[ppts.scope] + s1, "", 0);
 		} else {
-			plman.CreateAutoPlaylist(plIndex, "搜索 [" + s1 + "]", s1, "", 0);
+			plman.CreateAutoPlaylist(plIndex, "搜索 | " + s1, scopecases[1]+s1 + " OR " + scopecases[2]+s1 + " OR " + scopecases[3]+s1 + " OR " + scopecases[4]+s1 + " OR " + scopecases[5]+s1, "", 0);
 		};
 
 		// 转换自动列表为普通列表
-		plman.DuplicatePlaylist(plIndex, "搜索 [" + s1 + "]");
-		plman.RemovePlaylist(plIndex);
+		//plman.DuplicatePlaylist(plIndex, "搜索 [" + s1 + "]");
+		//plman.RemovePlaylist(plIndex);
 		plman.ActivePlaylist = plIndex;
 	}
 }
@@ -576,56 +576,47 @@ function trimstr(str) {
 function GetQTFMRadiolist(){
 	g_searchbox.inputbox.edit = false;
 	SetBoxText("正在更新电台菜单...");
-    var searchURL = "http://rapi.qingting.fm/regions";
-	try {
-		var qtlistid = ""
-		xmlHttp.open("GET", searchURL, true);
-		xmlHttp.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
-		xmlHttp.send(null);
-		xmlHttp.onreadystatechange = function () {
-			if (xmlHttp.readyState == 4) {
-				if (xmlHttp.status == 200) {
-					var listid = "";
-					var c = 0;
-					var ret = json(xmlHttp.responseText)["Data"];
-					if (ret && ret.length > 0) {
-						if(c == 0) c = ret.length + 1;
-						l = 0;
-						url = "http://rapi.qingting.fm/categories/" + 408 + "/channels?page=1&pagesize=100";//国家台409
+	var qtlistid = "";
+	var listid = "";
+	var ret = {
+		id: [433,442,429,439,432,441,430,431,440,438,435,436,434],
+		title: ["资讯台","音乐台","交通台","经济台","文艺台","都市台","体育台","双语台","综合台","生活台","旅游台","曲艺台","方言台"],
+		count:[300,300,300,100,100,100,20,20,500,100,50,20,50]
+	};
+	var c = ret.id.length;
+	var l = 0;
+	url = "http://rapi.qingting.fm/categories/" + ret.id[l] + "/channels?page=1&pagesize="+ret.count[l];
+	try{
+		xmlHttp2.open("GET", url, true);
+		xmlHttp2.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
+		xmlHttp2.send(null);
+		xmlHttp2.onreadystatechange = function() {
+			if (xmlHttp2.readyState == 4) {
+				if (xmlHttp2.status == 200) {
+					var ret1 = json(xmlHttp2.responseText)["Data"];
+					listid = ret.title[l] + ": g;";
+					if(ret1 != null){
+						for (var k = 0; k < ret1.length; k++) {
+							listid += ret1[k].title + ":" + ret1[k].content_id + ";"
+						}
+						if(listid.charAt(listid.length-1) == ";") qtlistid += listid.slice(0,listid.length-1) + "|";
+						if(l+1==c) {
+							try {fso.DeleteFile(qtfm_arr);}catch(e) {};
+							qtlistid = qtlistid.slice(0,qtlistid.length-1);
+							SaveAs(qtlistid, qtfm_arr);
+							ppts.webkqtradioarr = qtlistid.split("|");
+						};
+					}
+				}
+				l++;
+				if (l < c){
+					var URL_Timer = window.SetTimeout(function () {
+						url = "http://rapi.qingting.fm/categories/" + ret.id[l] + "/channels?page=1&pagesize="+ret.count[l];
 						xmlHttp2.open("GET", url, true);
 						xmlHttp2.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
 						xmlHttp2.send(null);
-						xmlHttp2.onreadystatechange = function() {
-							if (xmlHttp2.readyState == 4) {
-								if (xmlHttp2.status == 200) {
-									var ret1 = json(xmlHttp2.responseText)["Data"];
-									listid = (l==0?"网络台":ret[l-1].title) + ": g;";
-									if(ret1 != null){
-										for (var k = 0; k < ret1.length; k++) {
-											listid += ret1[k].title + ":" + ret1[k].content_id + ";"
-										}
-										if(listid.charAt(listid.length-1) == ";") qtlistid += listid.slice(0,listid.length-1) + "|";
-										if(l+1==c) {
-											try {fso.DeleteFile(qtfm_arr);}catch(e) {};
-											qtlistid = qtlistid.slice(0,qtlistid.length-1);
-											SaveAs(qtlistid, qtfm_arr);
-											ppts.webkqtradioarr = qtlistid.split("|");
-										};
-									}
-								}
-								l++;
-								if (l > 0 && l < c){
-									var URL_Timer = window.SetTimeout(function () {
-										url = "http://rapi.qingting.fm/categories/" + ret[l-1].id + "/channels?page=1&pagesize=100";
-										xmlHttp2.open("GET", url, true);
-										xmlHttp2.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
-										xmlHttp2.send(null);
-										URL_Timer && window.ClearTimeout(URL_Timer);
-									}, 5);
-								}
-							}
-						}
-					}
+						URL_Timer && window.ClearTimeout(URL_Timer);
+					}, 5);
 				}
 			}
 		}

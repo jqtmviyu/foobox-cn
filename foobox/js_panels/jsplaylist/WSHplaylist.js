@@ -1274,7 +1274,7 @@ oItem = function(playlist, row_index, type, handle, track_index, group_index, tr
 					use_theming : false,
 					custom_image : createDragText(line1, line2)
 				}
-				var effect = fb.DoDragDrop(window.ID, items, g_drop_effect.move | g_drop_effect.copy | g_drop_effect.link, options);
+				var effect = fb.DoDragDrop(window.ID, items, g_drop_effect.copy | g_drop_effect.move | g_drop_effect.link, options);
 				// nothing happens here until the mouse button is released
 				on_mouse_lbtn_up(x, y);
 				items = undefined;
