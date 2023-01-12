@@ -439,21 +439,21 @@ oSwitchbar = function() {
 	this.draw = function(gr){
 		var sw_img_y = Math.round((ppt.headerBarHeight - images.album.Height)/2);
 		gr.DrawImage(images.album, Math.round(10*zdpi), sw_img_y, images.album.Width, images.album.Height, 0, 0, images.album.Width, images.album.Height,0,255);
-		gr.DrawImage(images.artist, Math.round(70*zdpi), sw_img_y, images.artist.Width, images.artist.Height, 0, 0, images.artist.Width, images.artist.Height,0,255);
-		gr.DrawImage(images.genre, Math.round(140*zdpi), sw_img_y, images.genre.Width, images.genre.Height, 0, 0, images.genre.Width, images.genre.Height,0,255);
-		gr.GdiDrawText("专 辑", g_font, g_color_normal_txt, 30*zdpi, sw_img_y, 30*zdpi, images.album.Height, lc_txt);
-		gr.GdiDrawText("艺术家", g_font, g_color_normal_txt, 90*zdpi, sw_img_y, 40*zdpi, images.album.Height, lc_txt);
-		gr.GdiDrawText(ppt.genre_dir?"文件夹":"流 派", g_font, g_color_normal_txt, 160*zdpi, sw_img_y, 40*zdpi, images.album.Height, lc_txt);
+		gr.DrawImage(images.artist, Math.round(75*zdpi), sw_img_y, images.artist.Width, images.artist.Height, 0, 0, images.artist.Width, images.artist.Height,0,255);
+		gr.DrawImage(images.genre, Math.round(145*zdpi), sw_img_y, images.genre.Width, images.genre.Height, 0, 0, images.genre.Width, images.genre.Height,0,255);
+		gr.GdiDrawText("专 辑", g_font, g_color_normal_txt, 30*zdpi, sw_img_y, 35*zdpi, images.album.Height, lc_txt);
+		gr.GdiDrawText("艺术家", g_font, g_color_normal_txt, 95*zdpi, sw_img_y, 40*zdpi, images.album.Height, lc_txt);
+		gr.GdiDrawText(ppt.genre_dir?"文件夹":"流 派", g_font, g_color_normal_txt, 165*zdpi, sw_img_y, 40*zdpi, images.album.Height, lc_txt);
 		var bys = Math.round((ppt.headerBarHeight - 2) / 2);
 		gr.FillGradRect(this.x + this.w -1, 0, 1, bys, 90, RGBA(0, 0, 0, 3), RGBA(0, 0, 0, 35));
 		gr.FillGradRect(this.x + this.w -1, bys, 1, bys, 270, RGBA(0, 0, 0, 3), RGBA(0, 0, 0, 35));
 		gr.FillSolidRect(this.x + this.w, 0, 1, ppt.headerBarHeight - 2, g_color_normal_bg);
-		if(this.hover_tab == 1) gr.FillSolidRect(this.x, ppt.headerBarHeight - 4, 60*zdpi, 4, g_color_selected_bg);
-		else if(this.hover_tab > 1) gr.FillSolidRect((this.hover_tab-1)*68*zdpi, ppt.headerBarHeight - 4, 63*zdpi, 4, g_color_selected_bg);
+		if(this.hover_tab == 1) gr.FillSolidRect(this.x, ppt.headerBarHeight - 4, 63*zdpi, 4, g_color_selected_bg);
+		else if(this.hover_tab > 1) gr.FillSolidRect((this.hover_tab-1)*70*zdpi, ppt.headerBarHeight - 4, 68*zdpi, 4, g_color_selected_bg);
 		if(ppt.tagMode==1)
-			gr.FillSolidRect(this.x, ppt.headerBarHeight - 4, 60*zdpi, 4, g_color_highlight);
+			gr.FillSolidRect(this.x, ppt.headerBarHeight - 4, 63*zdpi, 4, g_color_highlight);
 		else
-			gr.FillSolidRect((ppt.tagMode-1)*68*zdpi, ppt.headerBarHeight - 4, 63*zdpi, 4, g_color_highlight);
+			gr.FillSolidRect((ppt.tagMode-1)*70*zdpi, ppt.headerBarHeight - 4, 68*zdpi, 4, g_color_highlight);
 	}
 }
 
@@ -2820,7 +2820,7 @@ function get_metrics() {
 	ppt.headerBarHeight = Math.ceil(26 * zdpi) + 2;
 	g_switchbar.x = 5*zdpi;
 	g_switchbar.y = 5*zdpi;
-	g_switchbar.w = 200*zdpi;
+	g_switchbar.w = 205*zdpi;
 	g_switchbar.h = ppt.headerBarHeight;
 	cFilterBox.x = g_switchbar.x * 2 + g_switchbar.w;
 	cFilterBox.w = 120*zdpi;
@@ -3120,12 +3120,11 @@ function on_key_down(vkey) {
 			break;
 		case KMask.alt:
 			switch (vkey) {
-			case 65:
-				// ALT+A
+			case 65:// ALT+A
 				fb.RunMainMenuCommand("视图/总在最上面");
 				break;
-			case VK_ALT:
-				// ALT key alone
+			case 115://Alt+F4
+				fb.RunMainMenuCommand("文件/退出");
 				break;
 			};
 			break;

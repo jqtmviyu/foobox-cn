@@ -566,6 +566,54 @@ function on_notify_data(name, info) {
 		break;
 	}
 }
+
+function on_key_down(vkey) {
+	var mask = GetKeyboardMask();
+	switch (mask) {
+	case KMask.ctrl:
+		switch (vkey) {
+		case 80:// CTRL+P
+			fb.RunMainMenuCommand("文件/参数选项");
+			break;
+		case 70:// CTRL+F
+			fb.RunMainMenuCommand("编辑/搜索");
+			break;
+		case 78:// CTRL+N
+			fb.RunMainMenuCommand("文件/新建播放列表");
+			break;
+		case 83:// CTRL+S
+			fb.RunMainMenuCommand("文件/保存播放列表...");
+			break;
+		case 87:// CTRL+W
+			fb.RunMainMenuCommand("文件/移除播放列表");
+			break;
+		case 79:// CTRL+O
+			fb.RunMainMenuCommand("文件/打开...");
+			break;
+		case 85:// CTRL+U
+			fb.RunMainMenuCommand("文件/添加位置...");
+			break;
+		case 65:// CTRL+A
+			SelectAtoB(0, glist.list.Count-1);
+			break;
+		}
+		break;
+	case KMask.alt:
+		switch (vkey) {
+		case 65:// ALT+A
+			fb.RunMainMenuCommand("视图/总在最上面");
+			break;
+		case 115://Alt+F4
+			fb.RunMainMenuCommand("文件/退出");
+			break;
+		case 13://Alt+Enter
+			fb.RunMainMenuCommand("属性");
+			break;
+		};
+		break;
+	}
+}
+
 function on_script_unload() {
 	g_timer && window.ClearInterval(g_timer);
 	g_timer = false;

@@ -1993,12 +1993,11 @@ function on_key_down(vkey) {
 				break;
 			case KMask.alt:
 				switch (vkey) {
-				case 65:
-					// ALT+A
+				case 65:// ALT+A
 					fb.RunMainMenuCommand("视图/总在最上面");
 					break;
-				case VK_ALT:
-					// ALT key alone
+				case 115://Alt+F4
+					fb.RunMainMenuCommand("文件/退出");
 					break;
 				};
 				break;

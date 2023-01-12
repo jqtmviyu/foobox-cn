@@ -26,58 +26,6 @@ IDC_APPSTARTING = 32650;
 IDC_HAND = 32649;
 IDC_HELP = 32651;
 // }}
-
-// Keyboard Flags & Tools
-// {{
-var VK_F1 = 0x70;
-var VK_F2 = 0x71;
-var VK_F3 = 0x72;
-var VK_F4 = 0x73;
-var VK_F5 = 0x74;
-var VK_F6 = 0x75;
-var VK_BACK = 0x08;
-var VK_TAB = 0x09;
-var VK_RETURN = 0x0D;
-var VK_SHIFT = 0x10;
-var VK_CONTROL = 0x11;
-var VK_ALT = 0x12;
-var VK_ESCAPE = 0x1B;
-var VK_PGUP = 0x21;
-var VK_PGDN = 0x22;
-var VK_END = 0x23;
-var VK_HOME = 0x24;
-var VK_LEFT = 0x25;
-var VK_UP = 0x26;
-var VK_RIGHT = 0x27;
-var VK_DOWN = 0x28;
-var VK_INSERT = 0x2D;
-var VK_DELETE = 0x2E;
-var VK_SPACEBAR = 0x20;
-var VK_LWIN = 0x5B;
-var KMask = {
-	none: 0,
-	ctrl: 1,
-	shift: 2,
-	ctrlshift: 3,
-	ctrlalt: 4,
-	ctrlaltshift: 5,
-	alt: 6
-};
-
-function GetKeyboardMask() {
-	var c = utils.IsKeyPressed(VK_CONTROL) ? true : false;
-	var a = utils.IsKeyPressed(VK_ALT) ? true : false;
-	var s = utils.IsKeyPressed(VK_SHIFT) ? true : false;
-	var ret = KMask.none;
-	if (c && !a && !s) ret = KMask.ctrl;
-	if (!c && !a && s) ret = KMask.shift;
-	if (c && !a && s) ret = KMask.ctrlshift;
-	if (c && a && !s) ret = KMask.ctrlalt;
-	if (c && a && s) ret = KMask.ctrlaltshift;
-	if (!c && a && !s) ret = KMask.alt;
-	return ret;
-};
-// }}
 // {{
 // Used in gr.DrawString()
 function StringFormat() {

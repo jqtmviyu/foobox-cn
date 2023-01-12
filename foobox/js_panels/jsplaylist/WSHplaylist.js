@@ -2552,7 +2552,7 @@ oList = function(object_name, playlist) {
 
 		this.metadblist_selection = plman.GetPlaylistSelectedItems(this.playlist);
 		Context.InitContext(this.metadblist_selection);
-		var o_title = fb.TitleFormat("$ifequal($stricmp(%title%,%filename%),1,,%title%)");
+		var o_title = fb.TitleFormat("$ifequal($stricmp(%title%,?),1,%filename%,%title%)");
 		var o_artist = fb.TitleFormat("$ifequal($stricmp(%artist%,?),1,,%artist%)");
 		var o_album = fb.TitleFormat("$ifequal($stricmp(%album%,?),1,,%album%)");
 		var o_genre = fb.TitleFormat("$ifequal($stricmp(%genre%,?),1,,%genre%)");
@@ -2585,8 +2585,8 @@ oList = function(object_name, playlist) {
 			_child03.AppendTo(_child01, MF_STRING, "发送到...");
 			_child03.AppendMenuItem(MF_STRING, 4000, "新建播放列表");
 			_child01.AppendMenuSeparator();
-			_child01.AppendMenuItem(this.metadblist_selection.count == 1 && !o_title.EvalWithMetadb(this.metadblist_selection[i]) && !o_artist.EvalWithMetadb(this.metadblist_selection[i]) && !o_album.EvalWithMetadb(this.metadblist_selection[i]) && !o_genre.EvalWithMetadb(this.metadblist_selection[i]) ? MF_GRAYED | MF_DISABLED : MF_STRING, 7000, "标签繁转简");
-			_child01.AppendMenuItem(this.metadblist_selection.count == 1 && !o_title.EvalWithMetadb(this.metadblist_selection[i]) && !o_artist.EvalWithMetadb(this.metadblist_selection[i]) && !o_album.EvalWithMetadb(this.metadblist_selection[i]) && !o_genre.EvalWithMetadb(this.metadblist_selection[i]) ? MF_GRAYED | MF_DISABLED : MF_STRING, 7001, "标签简转繁");
+			_child01.AppendMenuItem(MF_STRING, 7000, "标签繁转简");
+			_child01.AppendMenuItem(MF_STRING, 7001, "标签简转繁");
 
 			var pl_count = plman.PlaylistCount;
 
@@ -2648,23 +2648,28 @@ oList = function(object_name, playlist) {
 				plman.InsertPlaylistItems((ret - 4001), insert_index, this.metadblist_selection, false);
 				break;
 			case (ret == 7000):
-				for (i = 0; i < this.metadblist_selection.count; i++) {
-					var title = utils.LCMapString(o_title.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x02000000);
-					var artist = utils.LCMapString(o_artist.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x02000000);
-					var album = utils.LCMapString(o_album.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x02000000);
-					var genre = utils.LCMapString(o_genre.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x02000000);
-					this.metadblist_selection[i].UpdateFileInfoSimple("TITLE", title, "ARTIST", artist, "ALBUM", album, "GENRE", genre);
-
+				var arr = [];
+				for (let i = 0; i < this.metadblist_selection.Count; ++i) {
+					arr.push({
+						'title' : utils.MapString(o_title.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x02000000),
+						'artist' : utils.MapString(o_artist.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x02000000),
+						'album' : utils.MapString(o_album.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x02000000),
+						'genre' : utils.MapString(o_genre.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x02000000)
+					});
 				}
+				this.metadblist_selection.UpdateFileInfoFromJSON(JSON.stringify(arr));
 				break;
 			case (ret == 7001):
-				for (i = 0; i < this.metadblist_selection.count; i++) {
-					var title = utils.LCMapString(o_title.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x04000000);
-					var artist = utils.LCMapString(o_artist.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x04000000);
-					var album = utils.LCMapString(o_album.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x04000000);
-					var genre = utils.LCMapString(o_genre.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x04000000);
-					this.metadblist_selection[i].UpdateFileInfoSimple("TITLE", title, "ARTIST", artist, "ALBUM", album, "GENRE", genre);
+				var arr = [];
+				for (let i = 0; i < this.metadblist_selection.Count; ++i) {
+					arr.push({
+						'title' : utils.MapString(o_title.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x04000000),
+						'artist' : utils.MapString(o_artist.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x04000000),
+						'album' : utils.MapString(o_album.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x04000000),
+						'genre' : utils.MapString(o_genre.EvalWithMetadb(this.metadblist_selection[i]), 0x0804, 0x04000000)
+					});
 				}
+				this.metadblist_selection.UpdateFileInfoFromJSON(JSON.stringify(arr));
 				break;
 			};
 		};
