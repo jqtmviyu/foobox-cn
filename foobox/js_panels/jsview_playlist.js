@@ -118,17 +118,38 @@ olist = function() {
 	this.item_context_menu = function(x, y, albumIndex) {
 		var _menu = window.CreatePopupMenu();
 		var Context = fb.CreateContextMenuManager();
+		var _child01 = window.CreatePopupMenu();
 		_menu.AppendMenuItem((plman.IsAutoPlaylist(pidx) || plman.GetPlaylistName(pidx) == "播放队列")?MF_DISABLED|MF_GRAYED:MF_STRING, 800, "移除");
 		_menu.AppendMenuSeparator();
 		this.metadblist_selection = plman.GetPlaylistSelectedItems(pidx);
 		Context.InitContext(this.metadblist_selection);
 		Context.BuildMenu(_menu, 1, -1);
+		_child01.AppendTo(_menu, MF_STRING, "选择添加到...");
+		_child01.AppendMenuItem(MF_STRING, 801, "新播放列表");
+		if (plman.PlaylistCount > 1) {
+			_child01.AppendMenuItem(MF_SEPARATOR, 0, "");
+		};
+		for (var i = 0; i < plman.PlaylistCount; i++) {
+			if (i != pidx && !plman.IsAutoPlaylist(i)) {
+				_child01.AppendMenuItem(MF_STRING, 1000 + i, plman.GetPlaylistName(i));
+			}
+		};
 		var ret = _menu.TrackPopupMenu(x, y);
 		if (ret > 0 && ret < 800) {
 			Context.ExecuteByID(ret - 1);
-		}
-		else if(ret == 800) {
-			plman.RemovePlaylistSelection(pidx, false);
+		} else {
+			switch (ret) {
+			case 800:
+				plman.RemovePlaylistSelection(pidx, false);
+				break;
+			case 801:
+				fb.RunMainMenuCommand("文件/新建播放列表");
+				plman.InsertPlaylistItems(plman.PlaylistCount - 1, 0, this.metadblist_selection, false);
+				break;
+			default:
+				var insert_index = plman.PlaylistItemCount(ret - 1000);
+				plman.InsertPlaylistItems((ret - 1000), insert_index, this.metadblist_selection, false);
+			}
 		}
 		return true;
 	}
