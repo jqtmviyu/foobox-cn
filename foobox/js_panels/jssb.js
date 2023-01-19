@@ -2223,7 +2223,7 @@ oBrowser = function(name) {
 		_menu2.AppendMenuSeparator();
 		_menu2.AppendMenuItem(MF_STRING, 912, "重置磁盘缓存");
 		_menu2.AppendTo(_menu, MF_STRING, "显示");
-		_menu.AppendMenuItem(MF_STRING, 200, "刷新封面");
+		_menu.AppendMenuItem(MF_STRING, 200, "刷新封面 (F5)");
 		_menu.AppendMenuSeparator();
 		_menu.AppendMenuItem(MF_STRING, 201, "加载时动画效果");
 		_menu.CheckMenuItem(201, ppt.showloading);
