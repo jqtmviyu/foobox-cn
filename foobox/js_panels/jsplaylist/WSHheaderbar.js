@@ -372,7 +372,7 @@ oHeaderBar = function() {
 					fields.push(new Array("null", "null", "null", "$if2(%play_count%,0)", "$if2(%album artist%,'未知艺术家')", "null", "null", "null", "$if2(%genre%,'其他')", "null", "null", "null", "null", "null", "null", "$if(%__bitrate_dynamic%, $if(%isplaying%,$select($add($mod(%_time_elapsed_seconds%,2),1),%__bitrate_dynamic%,%__bitrate_dynamic%)'K',$if($stricmp($left(%codec_profile%,3),'VBR'),%codec_profile%,%__bitrate%'K')),$if($stricmp($left(%codec_profile%,3),'VBR'),%codec_profile%,%__bitrate%'K'))"));
 					break;
 				case 3:
-					fields.push(new Array("8000", "5000", "0", "5000", "38000", "0", "27000", "0", "0", "0", "0", "10000", "0", "0", "0", "7000"));
+					fields.push(new Array("10000", "5000", "0", "5000", "37000", "0", "26000", "0", "0", "0", "0", "10000", "0", "0", "0", "7000"));
 					break;
 				case 4:
 					fields.push(new Array("封面", "状态", "索引", "音轨号", "标题", "日期", "艺术家", "专辑艺术家", "专辑", "流派", "喜爱", "等级", "播放次数", "比特率", "编码类型", "持续时间"));
